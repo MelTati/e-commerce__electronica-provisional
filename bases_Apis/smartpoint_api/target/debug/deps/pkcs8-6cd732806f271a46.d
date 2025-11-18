@@ -1,0 +1,10 @@
+C:\e-commerce__electronica_angular\bases_Apis\smartpoint_api\target\debug\deps\pkcs8-6cd732806f271a46.d: C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\lib.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\error.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\private_key_info.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\traits.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\version.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\../README.md
+
+C:\e-commerce__electronica_angular\bases_Apis\smartpoint_api\target\debug\deps\libpkcs8-6cd732806f271a46.rmeta: C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\lib.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\error.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\private_key_info.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\traits.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\version.rs C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\../README.md
+
+C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\lib.rs:
+C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\error.rs:
+C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\private_key_info.rs:
+C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\traits.rs:
+C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\version.rs:
+C:\Users\cmatu\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\pkcs8-0.10.2\src\../README.md:

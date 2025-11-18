@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "DELETE FROM productos WHERE codigo_producto = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "dac908712bc0222bc568a1a31ef194870433602d2aa62061c4b14ae47e8ba70d"
+}

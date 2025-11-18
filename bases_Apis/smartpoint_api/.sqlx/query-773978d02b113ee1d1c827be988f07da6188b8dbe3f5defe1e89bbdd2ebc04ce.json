@@ -1,0 +1,80 @@
+{
+  "db_name": "MySQL",
+  "query": "\n        SELECT \n            p.codigo_producto, p.fldNombre, p.fldPrecio, \n            p.fldMarca, dp.descripcion, dp.unidades\n        FROM productos p\n        INNER JOIN detalle_productos dp ON p.id_detalle_producto = dp.id_detalle_producto\n        WHERE p.codigo_producto = ?\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "codigo_producto",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | PRIMARY_KEY | AUTO_INCREMENT",
+          "char_set": 63,
+          "max_size": 11
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "fldNombre",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 224,
+          "max_size": 400
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "fldPrecio",
+        "type_info": {
+          "type": "NewDecimal",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 12
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "fldMarca",
+        "type_info": {
+          "type": "VarString",
+          "flags": "",
+          "char_set": 224,
+          "max_size": 180
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "descripcion",
+        "type_info": {
+          "type": "VarString",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 224,
+          "max_size": 180
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "unidades",
+        "type_info": {
+          "type": "Long",
+          "flags": "NOT_NULL | NO_DEFAULT_VALUE",
+          "char_set": 63,
+          "max_size": 11
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "773978d02b113ee1d1c827be988f07da6188b8dbe3f5defe1e89bbdd2ebc04ce"
+}

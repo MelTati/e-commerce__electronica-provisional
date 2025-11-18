@@ -1,0 +1,12 @@
+{
+  "db_name": "MySQL",
+  "query": "CALL sp_registrar_cliente(?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "0a1f32a7bf17e4b1f82ff3bedd8d861780f02bbcae50e455777fcd1c75d32581"
+}

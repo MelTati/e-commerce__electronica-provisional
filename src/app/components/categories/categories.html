@@ -1,0 +1,60 @@
+<!--
+Se cambia la estructura del HTML por el de angular material ya que es más fácil de manejar y más estético.
+Se crean tres secciones de categorías, cada una con su propio encabezado y grid de ítems.
+Cada ítem tiene una imagen y una etiqueta, y en la última sección se agregan precios y botones de acción.
+-->
+
+<section class="main__categories">
+
+  <div class="categories__header">
+    <h3 class="categories__title">Departamentos</h3>
+  </div>
+
+  <div class="categories__grid">
+    @for (dept of (departments$ | async); track dept.id) {
+      <div class="categories__item mat-card">
+        <div class="categories__content-wrapper">
+          <img [ngSrc]="dept.imageUrl" [alt]="dept.label" class="categories__image" width="150" height="150" />
+          <span class="categories__label">{{ dept.label }}</span>
+        </div>
+      </div>
+    } @empty {
+      <div class="categories__item mat-card">
+        <div class="categories__content-wrapper">
+          <p>No se encontraron departamentos.</p>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="categories__separator"></div>
+
+  <div class="categories__header">
+    <h3 class="categories__title">Ecosistemas de Desarrollo</h3>
+  </div>
+
+  <div class="categories__grid">
+    @for (eco of (ecosystems$ | async); track eco.altText) {
+      <div class="categories__item mat-card">
+        <div class="categories__content-wrapper">
+          <img [ngSrc]="eco.imageUrl" [alt]="eco.altText" class="categories__image" width="150" height="150" />
+        </div>
+      </div>
+    } @empty {
+      <div class="categories__item mat-card">
+        <div class="categories__content-wrapper">
+          <p>No se encontraron ecosistemas.</p>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="categories__separator"></div>
+
+  <div class="categories__header">
+    <h3 class="categories__title">Kit de Electrónica y Robótica</h3>
+  </div>
+
+  <app-product-list></app-product-list>
+
+</section>

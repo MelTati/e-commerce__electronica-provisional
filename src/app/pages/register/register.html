@@ -1,0 +1,83 @@
+<section class="register">
+  <div class="register__image">
+    <div class="register__image-container">
+      <div class="register__text">
+        <h2 class="register__title">Bienvenido a Smart Point</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="register__form">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register__form-container" novalidate>
+
+      <p class="register__subtitle">Regístrate para continuar</p>
+
+      <!-- Teléfono -->
+      <div class="register__form-group">
+        <div class="register__floating-label">
+          <input type="text" formControlName="telefono" class="register__input" placeholder=" "
+                 [class.invalid]="f['telefono'].invalid && (f['telefono'].dirty || f['telefono'].touched)">
+          <label class="register__label">Teléfono</label>
+        </div>
+        <small class="register__error" *ngIf="f['telefono'].invalid && (f['telefono'].dirty || f['telefono'].touched)">
+          <span *ngIf="f['telefono'].hasError('required')">El teléfono es obligatorio.</span>
+          <span *ngIf="f['telefono'].hasError('pattern')">Debe tener 10 dígitos numéricos.</span>
+        </small>
+      </div>
+
+      <!-- Nombres -->
+      <div class="register__form-group">
+        <div class="register__floating-label">
+          <input type="text" formControlName="nombres" class="register__input" placeholder=" "
+                 [class.invalid]="f['nombres'].invalid && (f['nombres'].dirty || f['nombres'].touched)">
+          <label class="register__label">Nombres</label>
+        </div>
+        <small class="register__error" *ngIf="f['nombres'].invalid && (f['nombres'].dirty || f['nombres'].touched)">
+          <span *ngIf="f['nombres'].hasError('required')">Los nombres son obligatorios.</span>
+          <span *ngIf="f['nombres'].hasError('minlength')">
+            Deben tener al menos {{ f['nombres'].getError('minlength').requiredLength }} caracteres.
+          </span>
+        </small>
+      </div>
+
+      <!-- Apellidos -->
+      <div class="register__form-group">
+        <div class="register__floating-label">
+          <input type="text" formControlName="apellidos" class="register__input" placeholder=" "
+                 [class.invalid]="f['apellidos'].invalid && (f['apellidos'].dirty || f['apellidos'].touched)">
+          <label class="register__label">Apellidos</label>
+        </div>
+        <small class="register__error" *ngIf="f['apellidos'].invalid && (f['apellidos'].dirty || f['apellidos'].touched)">
+          <span *ngIf="f['apellidos'].hasError('required')">Los apellidos son obligatorios.</span>
+          <span *ngIf="f['apellidos'].hasError('minlength')">
+            Deben tener al menos {{ f['apellidos'].getError('minlength').requiredLength }} caracteres.
+          </span>
+        </small>
+      </div>
+
+      <!-- Correo Electrónico -->
+      <div class="register__form-group">
+        <div class="register__floating-label">
+          <input type="email" formControlName="email" class="register__input" placeholder=" "
+                 [class.invalid]="f['email'].invalid && (f['email'].dirty || f['email'].touched)">
+          <label class="register__label">Correo Electrónico</label>
+        </div>
+        <small class="register__error" *ngIf="f['email'].invalid && (f['email'].dirty || f['email'].touched)">
+          <span *ngIf="f['email'].hasError('required')">El correo es obligatorio.</span>
+          <span *ngIf="f['email'].hasError('email')">Ingresa un correo válido.</span>
+        </small>
+      </div>
+
+      <!-- Botón de registro -->
+      <button type="submit" class="register__button" [disabled]="registerForm.invalid || loading">
+        {{ loading ? 'Registrando...' : 'Registrarse' }}
+      </button>
+
+      <!-- Link a login -->
+      <div class="register__login">
+        <a routerLink="/login" class="register__login-link">¿Ya tienes cuenta? Inicia sesión</a>
+      </div>
+
+    </form>
+  </div>
+</section>
