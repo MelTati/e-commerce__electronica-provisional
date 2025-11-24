@@ -18,7 +18,6 @@
 
 .categories__grid {
   display: grid;
-  /* Ajusta el ancho mínimo para el tamaño de las tarjetas */
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
   justify-items: center;
@@ -38,10 +37,9 @@
   justify-content: flex-start;
   height: 100%;
   width: 100%;
-  max-width: 280px; /* Ancho máximo ajustado para productos */
+  max-width: 280px; 
 }
 
-/* Hover effect */
 .categories__grid .categories__item:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg) !important;
@@ -121,20 +119,15 @@
   border: 1px solid var(--primary-color) !important;
 }
 
-/* mat-card-actions se comporta como contenedor de bloque */
 .categories__item.mat-card mat-card-actions {
   margin-top: auto;
   display: block;
   padding: 0 1rem 1rem 1rem !important;
 }
 
-/* Asegura que el botón de Añadir al Carrito ocupe el ancho completo */
 .categories__button.categories__button--full-width {
   width: 100%;
 }
-
-
-/* Estilos generales de botones (aplicables a todos) */
 
 .categories__button {
   padding: 0.6rem 1rem !important;

@@ -10,7 +10,7 @@ import { RegisterComponent } from './pages/register/register';
 import { Location } from './pages/location/location';
 import { About} from './pages/about/about';
 import { Contact} from './pages/contact/contact';
-
+import { CategoriaPage} from './components/categories_by_id/categories_by_id';
 
 //rutas de busqueda
 export const routes: Routes = [
@@ -25,5 +25,6 @@ export const routes: Routes = [
   { path: 'location', component: Location},          // Ubicación
   { path: 'about', component: About},                //Acerca de
   { path: 'contact', component: Contact},            // Contacto
+  {path: 'categoria/:id',component:CategoriaPage }, // Categorías por ID
   { path: '**', redirectTo: '' }                     // Redirección por defecto
 ];
