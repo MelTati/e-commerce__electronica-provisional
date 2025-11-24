@@ -1,41 +1,41 @@
-<div class="loading-container" *ngIf="loading()">
-  <div class="spinner"></div>
-  <p>Cargando productos...</p>
+<div class="loading" *ngIf="loading()">
+  <div class="loading__spinner"></div>
+  <p class="loading__text">Cargando productos...</p>
 </div>
 
-<section class="categories__grid product-grid" *ngIf="!loading()">
+<section class="product-grid" *ngIf="!loading()">
 
   @for (product of productos(); track product.codigo_producto) {
 
-    <div class="categories__item product-card">
+    <div class="product-card">
 
-      <div class="product__image-container">
+      <div class="product-card__image-container">
         <img
           src="assets/img/no-image.jpg"
           alt="{{ product.Producto }}"
-          class="categories__image"
+          class="product-card__image"
           width="300"
           height="300"
         />
 
-        <div class="categories__quick-view-wrapper">
+        <div class="product-card__quick-view">
           <button
-            class="categories__button categories__button--quick-view"
+            class="product-card__button product-card__button--quick-view"
             (click)="openQuickView(product.codigo_producto)">
             Vista Rápida
           </button>
         </div>
       </div>
 
-      <div class="card-content">
-        <span class="categories__label">{{ product.Producto }}</span>
-        <p class="categories__price">MXN {{ product.fldPrecio }}</p>
-        <small class="categories__brand">{{ product.fldMarca }}</small>
+      <div class="product-card__content">
+        <span class="product-card__label">{{ product.Producto }}</span>
+        <p class="product-card__price">MXN {{ product.fldPrecio }}</p>
+        <small class="product-card__brand">{{ product.fldMarca }}</small>
       </div>
 
-      <div class="card-actions">
+      <div class="product-card__actions">
         <button
-          class="categories__button categories__button--full-width primary-btn"
+          class="product-card__button product-card__button--full-width product-card__button--primary"
           (click)="addToCart(product)">
           Añadir al carrito
         </button>
@@ -45,8 +45,10 @@
 
   } @empty {
 
-    <div class="categories__item full-width-item">
-      <p>No se encontraron productos disponibles en esta categoría.</p>
+    <div class="product-card product-card--empty">
+      <p class="product-card__empty-text">
+        No se encontraron productos disponibles en esta categoría.
+      </p>
     </div>
 
   }

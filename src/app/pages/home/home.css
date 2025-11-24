@@ -1,20 +1,14 @@
-/* Contenedor principal del contenido: Centrado y espaciado */
-.main__ecommerce {
-    max-width: 1280px;       /* Ancho máximo */
-    margin-left: auto;        /* Centrado horizontal */
-    margin-right: auto;       /* Centrado horizontal */
-    margin-top: 2rem;         /* Margen superior */
-    margin-bottom: 2rem;      /* Margen inferior */
+.main__ecommerce {  
+    margin-left: auto;        
+    margin-right: auto;       
 }
 
-/* Slideshow / Carrusel de imágenes */
 .slideshow {
     background-color: var(--surface-color);
     padding: 0;
-    border-radius: var(--border-radius-lg);
     width: 100%;              
     max-width: none;          
-    margin: 0;                /* Quita el centrado automático */
+    margin: 0;                
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-lg);

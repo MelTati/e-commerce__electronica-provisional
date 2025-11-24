@@ -1,6 +1,6 @@
 .main__categories {
   margin-top: 4rem;
-  padding: 5rem 10rem;
+  padding: 2rem 10rem;
 }
 
 .categories__header {
@@ -10,6 +10,7 @@
 }
 
 .categories__title {
+  margin-top: 2rem;
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-color);
