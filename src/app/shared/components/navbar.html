@@ -38,19 +38,17 @@
 
     <nav class="header__menu" id="main-menu">
         <ul class="header__menu-list">
-            <li class="header__menu-item"><a href="#services" class="header__menu-link"><i class="fa-solid fa-bars"></i> Servicios</a></li>
-            <li class="header__menu-item"><a href="#smd" class="header__menu-link"><i class="fa-solid fa-microchip"></i> SMD</a></li>
-            <li class="header__menu-item"><a href="#components" class="header__menu-link"><i class="fa-solid fa-plug"></i> Componentes</a></li>
-            <li class="header__menu-item"><a href="#kits" class="header__menu-link"><i class="fa-solid fa-box"></i> Kits</a></li>
-            <li class="header__menu-item"><a href="#brands" class="header__menu-link"><i class="fa-solid fa-tags"></i> Marcas</a></li>
-            <li class="header__menu-item"><a href="#lab" class="header__menu-link"><i class="fa-solid fa-flask"></i> Laboratorio</a></li>
-            <li class="header__menu-item"><a href="#energy" class="header__menu-link"><i class="fa-solid fa-bolt"></i> Energía</a></li>
-            <li class="header__menu-item"><a href="#cards" class="header__menu-link"><i class="fa-solid fa-credit-card"></i> Tarjetas</a></li>
-            <li class="header__menu-item"><a href="#sensors" class="header__menu-link"><i class="fa-solid fa-satellite-dish"></i> Sensores</a></li>
-            <li class="header__menu-item"><a href="#modules" class="header__menu-link"><i class="fa-solid fa-cubes"></i> Módulos</a></li>
-            <li class="header__menu-item"><a href="#opto" class="header__menu-link"><i class="fa-solid fa-lightbulb"></i> Optoelectrónica</a></li>
-            <li class="header__menu-item"><a href="#robotics" class="header__menu-link"><i class="fa-solid fa-robot"></i> Robótica</a></li>
-            <li class="header__menu-item"><a href="#outlet" class="header__menu-link"><i class="fa-solid fa-tags"></i> Outlet</a></li>
+            @for(cat of categories(); track cat.id_categorias) {
+                <li class="header__menu-item">
+                    <a 
+                        class="header__menu-link"
+                        [routerLink]="['/categoria', cat.id_categorias]"
+                    >
+                        {{ cat.fldNombre }}
+                    </a>
+                </li>
+            }
         </ul>
     </nav>
+
 </header>

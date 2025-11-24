@@ -11,7 +11,7 @@
     --secondary-color: #10b981;    /* Verde esmeralda */
     --background-color: #111827;  /* Azul marino muy oscuro */
     --surface-color: #1f2937;     /* Gris azulado oscuro */
-    --text-color: #d1d5db;         /* Gris claro para texto */
+    --text-color: #ffffff;         /* Gris claro para texto */
     --text-color-secondary: #9ca3af; /* Gris medio */
     --border-color: #374151;        /* Gris oscuro para bordes */
     --header-height: 60px;
@@ -25,9 +25,9 @@
 }
 
 body {
-    font-family: var(--font-family); /* Tipografía base heredada */
-    background-color: var(--background-color); /* Fondo oscuro */
-    color: var(--text-color); /* Texto claro */
+    font-family: var(--font-family);
+    background-color: var(--background-color); 
+    color: var(--text-color); 
     line-height: 1.6;
     font-size: 16px;
 }

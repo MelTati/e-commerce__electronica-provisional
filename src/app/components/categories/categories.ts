@@ -8,6 +8,7 @@ import { Ecosystem } from '../../interfaces/ecosystem.interface';
 import { ProductListItem } from '../../interfaces/product.list.interface';
 import { ProductListService } from '../../services/product-list.service';
 import {ProductListComponent } from '../product-list/product-list';
+
 //El observable es necesario para manejar datos asíncronos lo cual es común en Angular para servicios que obtienen datos de APIs
 import { Observable } from 'rxjs';
 

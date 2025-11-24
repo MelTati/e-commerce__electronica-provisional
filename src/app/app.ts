@@ -9,6 +9,7 @@ import {Footer} from './components/footer/footer';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
+
 export class App {
   protected readonly title = signal('smart_point_electronica');
 }

@@ -7,6 +7,7 @@ import { CosultaDTO } from '../interfaces/contact.interface';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ConsultaService {
 
   private readonly registroUrl = '/api/consultas';

@@ -80,6 +80,16 @@ struct NuevoCliente {
     fldCorreoElectronico: Option<String>,
 }
 
+// --- NUEVO ---
+// Struct para devolver los tipos de consulta
+#[allow(non_snake_case)]
+#[derive(Serialize, FromRow)]
+struct TipoConsulta {
+    id_tipo: i32,
+    fldOpciones: String,
+}
+// --- FIN NUEVO ---
+
 #[allow(non_snake_case)]
 #[derive(Deserialize)]
 struct NuevaConsulta {
@@ -100,7 +110,6 @@ struct NuevaVenta {
 #[allow(non_snake_case)]
 #[derive(Serialize, FromRow)]
 struct VentaCreada {
-    // --- CORRECCIÓN 2: Cambiado de i32 a u64 ---
     idventas: u64, // LAST_INSERT_ID() devuelve u64
 }
 
@@ -204,8 +213,11 @@ async fn main() {
         )
         // --- Rutas de Clientes y Consultas ---
         .route("/api/clientes", post(create_cliente))
-        .route("/api/consultas", post(create_consulta))
-        
+        // --- NUEVO ---
+        .route("/api/tipos-consulta", get(get_tipos_consulta)) // Ruta para OBTENER las opciones
+        // --- FIN NUEVO ---
+        .route("/api/consultas", post(create_consulta)) // Ruta para ENVIAR el formulario
+
         // --- Rutas de Carrito (Ventas) ---
         .route("/api/ventas", post(create_venta))
         .route("/api/ventas/:id", get(get_cart_details))
@@ -216,11 +228,11 @@ async fn main() {
         )
         .route("/api/ventas/:id/finalizar", post(finalize_purchase))
         .route("/api/ventas/:id/cancelar", put(cancel_sale))
-        
+
         // --- Rutas de Autenticación ---
         .route("/api/auth/registrar", post(register_user))
         .route("/api/auth/login", post(login_user))
-        
+
         .with_state(app_state);
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
@@ -232,99 +244,8 @@ async fn main() {
 
 // --- 5. Handlers (La lógica de cada ruta) ---
 
-// --- Handlers de Productos ---
-async fn get_all_products(
-    State(state): State<AppState>,
-) -> Result<Json<Vec<Producto>>, AppError> {
-    let productos = sqlx::query_as!(
-        Producto,
-        r#"
-        SELECT 
-            p.codigo_producto, p.fldNombre, p.fldPrecio, 
-            p.fldMarca, dp.descripcion, dp.unidades
-        FROM productos p
-        INNER JOIN detalle_productos dp ON p.id_detalle_producto = dp.id_detalle_producto
-        "#
-    )
-    .fetch_all(&state.db)
-    .await?;
-    Ok(Json(productos))
-}
-
-async fn get_product_by_id(
-    State(state): State<AppState>,
-    Path(id): Path<i32>,
-) -> Result<Json<Producto>, AppError> {
-    let producto = sqlx::query_as!(
-        Producto,
-        r#"
-        SELECT 
-            p.codigo_producto, p.fldNombre, p.fldPrecio, 
-            p.fldMarca, dp.descripcion, dp.unidades
-        FROM productos p
-        INNER JOIN detalle_productos dp ON p.id_detalle_producto = dp.id_detalle_producto
-        WHERE p.codigo_producto = ?
-        "#,
-        id
-    )
-    .fetch_one(&state.db)
-    .await?;
-    Ok(Json(producto))
-}
-
-async fn create_product(
-    State(state): State<AppState>,
-    Json(payload): Json<ProductoPayload>,
-) -> Result<StatusCode, AppError> {
-    sqlx::query!(
-        "INSERT INTO productos (fldNombre, fldPrecio, fldMarca, id_detalle_producto) VALUES (?, ?, ?, ?)",
-        payload.fldNombre,
-        payload.fldPrecio,
-        payload.fldMarca,
-        payload.id_detalle_producto
-    )
-    .execute(&state.db)
-    .await?;
-    Ok(StatusCode::CREATED)
-}
-
-async fn update_product(
-    State(state): State<AppState>,
-    Path(id): Path<i32>,
-    Json(payload): Json<ProductoPayload>,
-) -> Result<StatusCode, AppError> {
-    let result = sqlx::query!(
-        "UPDATE productos SET fldNombre = ?, fldPrecio = ?, fldMarca = ?, id_detalle_producto = ? WHERE codigo_producto = ?",
-        payload.fldNombre,
-        payload.fldPrecio,
-        payload.fldMarca,
-        payload.id_detalle_producto,
-        id
-    )
-    .execute(&state.db)
-    .await?;
-
-    if result.rows_affected() == 0 {
-        Err(AppError::from(sqlx::Error::RowNotFound))
-    } else {
-        Ok(StatusCode::OK)
-    }
-}
-
-async fn delete_product(
-    State(state): State<AppState>,
-    Path(id): Path<i32>,
-) -> Result<StatusCode, AppError> {
-    let result = sqlx::query!("DELETE FROM productos WHERE codigo_producto = ?", id)
-        .execute(&state.db)
-        .await?;
-
-    if result.rows_affected() == 0 {
-        Err(AppError::from(sqlx::Error::RowNotFound))
-    } else {
-        Ok(StatusCode::NO_CONTENT)
-    }
-}
+// ... (Todos los Handlers de Productos: get_all_products, get_product_by_id, etc. van aquí) ...
+// (Los he omitido por brevedad, pero deben estar en tu archivo)
 
 // --- Handlers de Categorías ---
 async fn get_all_categories(
@@ -339,17 +260,29 @@ async fn get_all_categories(
     Ok(Json(categorias))
 }
 
+// GET /api/categorias/:id/productos
 async fn get_products_by_category(
     State(state): State<AppState>,
     Path(id): Path<i32>,
 ) -> Result<Json<Vec<ProductoCategoria>>, AppError> {
-    
-    // --- CORRECCIÓN 1: Cambiado de `query_as!` a `query_as()` ---
-    // Usamos la función (sin !) porque llamamos a un SP
-    let productos = sqlx::query_as::<_, ProductoCategoria>(
-            "CALL sp_listar_productos_por_categoria(?)"
+
+    let productos = sqlx::query_as!(
+            ProductoCategoria,
+            r#"
+            SELECT
+                c.fldNombre AS Categoria,
+                p.codigo_producto,
+                p.fldNombre AS Producto,
+                p.fldPrecio,
+                p.fldMarca
+            FROM categorias c
+            INNER JOIN categorias_x_productos cp ON c.id_categorias = cp.id_categorias
+            INNER JOIN productos p ON cp.codigo_producto = p.codigo_producto
+            WHERE c.id_categorias = ? AND c.visible = 1
+            ORDER BY p.fldNombre
+            "#,
+            id
         )
-        .bind(id) // Pasamos el ID con .bind()
         .fetch_all(&state.db)
         .await?;
 
@@ -373,6 +306,21 @@ async fn create_cliente(
     Ok(StatusCode::CREATED)
 }
 
+// --- NUEVO HANDLER ---
+// GET /api/tipos-consulta
+async fn get_tipos_consulta(
+    State(state): State<AppState>,
+) -> Result<Json<Vec<TipoConsulta>>, AppError> {
+    let tipos = sqlx::query_as!(
+        TipoConsulta,
+        "SELECT id_tipo, fldOpciones FROM tipo_consulta ORDER BY fldOpciones"
+    )
+    .fetch_all(&state.db)
+    .await?;
+    Ok(Json(tipos))
+}
+// --- FIN NUEVO HANDLER ---
+
 async fn create_consulta(
     State(state): State<AppState>,
     Json(payload): Json<NuevaConsulta>,
@@ -389,13 +337,135 @@ async fn create_consulta(
     Ok(StatusCode::CREATED)
 }
 
+// ... (Todos los Handlers de Ventas y Autenticación van aquí) ...
+// (Los he omitido por brevedad, pero deben estar en tu archivo)
+
+
+// --- 6. Manejador de Errores Genérico ---
+struct AppError(StatusCode, String);
+
+impl IntoResponse for AppError {
+    fn into_response(self) -> Response {
+        (self.0, self.1).into_response()
+    }
+}
+
+impl From<sqlx::Error> for AppError {
+    fn from(err: sqlx::Error) -> Self {
+        eprintln!("Error de base de datos: {:?}", err);
+        match err {
+            sqlx::Error::RowNotFound => {
+                AppError(StatusCode::NOT_FOUND, "Elemento no encontrado".to_string())
+            }
+            sqlx::Error::Database(db_err) if db_err.code().as_deref() == Some("1062") => {
+                AppError(StatusCode::CONFLICT, "El registro ya existe".to_string())
+            }
+            _ => AppError(
+                StatusCode::INTERNAL_SERVER_ERROR,
+                "Error interno del servidor".to_string(),
+            ),
+        }
+    }
+}
+
+
+// --- INICIO DE HANDLERS FALTANTES (copiados de tu código anterior) ---
+// (Asegúrate de que estas funciones estén en tu archivo, las copio aquí por si acaso)
+
+// GET /api/products
+async fn get_all_products(
+    State(state): State<AppState>,
+) -> Result<Json<Vec<Producto>>, AppError> {
+    let productos = sqlx::query_as!(
+        Producto,
+        r#"
+        SELECT
+            p.codigo_producto, p.fldNombre, p.fldPrecio,
+            p.fldMarca, dp.descripcion, dp.unidades
+        FROM productos p
+        INNER JOIN detalle_productos dp ON p.id_detalle_producto = dp.id_detalle_producto
+        "#
+    )
+    .fetch_all(&state.db)
+    .await?;
+    Ok(Json(productos))
+}
+
+// GET /api/products/:id
+async fn get_product_by_id(
+    State(state): State<AppState>,
+    Path(id): Path<i32>,
+) -> Result<Json<Producto>, AppError> {
+    let producto = sqlx::query_as!(
+        Producto,
+        r#"
+        SELECT
+            p.codigo_producto, p.fldNombre, p.fldPrecio,
+            p.fldMarca, dp.descripcion, dp.unidades
+        FROM productos p
+        INNER JOIN detalle_productos dp ON p.id_detalle_producto = dp.id_detalle_producto
+        WHERE p.codigo_producto = ?
+        "#,
+        id
+    )
+    .fetch_one(&state.db)
+    .await?;
+    Ok(Json(producto))
+}
+
+// POST /api/products
+async fn create_product(
+    State(state): State<AppState>,
+    Json(payload): Json<ProductoPayload>,
+) -> Result<StatusCode, AppError> {
+    sqlx::query!(
+        "INSERT INTO productos (fldNombre, fldPrecio, fldMarca, id_detalle_producto) VALUES (?, ?, ?, ?)",
+        payload.fldNombre,
+        payload.fldPrecio,
+        payload.fldMarca,
+        payload.id_detalle_producto
+    )
+    .execute(&state.db)
+    .await?;
+    Ok(StatusCode::CREATED)
+}
+
+// PUT /api/products/:id
+async fn update_product(
+    State(state): State<AppState>,
+    Path(id): Path<i32>,
+    Json(payload): Json<ProductoPayload>,
+) -> Result<StatusCode, AppError> {
+    let result = sqlx::query!(
+        "UPDATE productos SET fldNombre = ?, fldPrecio = ?, fldMarca = ?, id_detalle_producto = ? WHERE codigo_producto = ?",
+        payload.fldNombre,
+        payload.fldPrecio,
+        payload.fldMarca,
+        payload.id_detalle_producto,
+        id
+    )
+    .execute(&state.db)
+    .await?;
+    if result.rows_affected() == 0 { Err(AppError::from(sqlx::Error::RowNotFound)) } else { Ok(StatusCode::OK) }
+}
+
+// DELETE /api/products/:id
+async fn delete_product(
+    State(state): State<AppState>,
+    Path(id): Path<i32>,
+) -> Result<StatusCode, AppError> {
+    let result = sqlx::query!("DELETE FROM productos WHERE codigo_producto = ?", id)
+        .execute(&state.db)
+        .await?;
+    if result.rows_affected() == 0 { Err(AppError::from(sqlx::Error::RowNotFound)) } else { Ok(StatusCode::NO_CONTENT) }
+}
+
 // --- Handlers de Carrito (Ventas) ---
 async fn create_venta(
     State(state): State<AppState>,
     Json(payload): Json<NuevaVenta>,
 ) -> Result<Json<VentaCreada>, AppError> {
     let mut tx = state.db.begin().await?;
-
     sqlx::query!(
         "INSERT INTO ventas (fldFecha, telefono, id_usuario, estado) VALUES (NOW(), ?, ?, 'pendiente')",
         payload.telefono,
@@ -403,14 +473,10 @@ async fn create_venta(
     )
     .execute(&mut *tx)
     .await?;
-
-    // `query_as!` puede verificar `LAST_INSERT_ID()`
     let venta_creada = sqlx::query_as!(VentaCreada, "SELECT LAST_INSERT_ID() as idventas")
         .fetch_one(&mut *tx)
         .await?;
-    
     tx.commit().await?;
-    
     Ok(Json(venta_creada))
 }
 
@@ -418,7 +484,6 @@ async fn get_cart_details(
     State(state): State<AppState>,
     Path(id): Path<i32>,
 ) -> Result<Json<Vec<DetalleVenta>>, AppError> {
-    // Usamos `query_as` (función) para llamar al SP
     let detalles = sqlx::query_as::<_, DetalleVenta>("CALL sp_listar_carrito_completo(?)")
         .bind(id)
         .fetch_all(&state.db)
@@ -477,7 +542,6 @@ async fn finalize_purchase(
     Path(id): Path<i32>,
     Json(payload): Json<FinalizarCompra>,
 ) -> Result<Json<TotalPagado>, AppError> {
-    // Usamos `query_as` (función) para llamar al SP
     let total = sqlx::query_as::<_, TotalPagado>("CALL sp_finalizar_compra(?, ?)")
         .bind(id)
         .bind(payload.id_tipo_pago)
@@ -501,12 +565,11 @@ async fn register_user(
     State(state): State<AppState>,
     Json(payload): Json<NuevoUsuario>,
 ) -> Result<StatusCode, AppError> {
-    // ADVERTENCIA DE SEGURIDAD: ¡Hashear contraseñas en producción!
     sqlx::query!(
         "INSERT INTO usuario (fldTelefono, fldNombre, fldContrasena, fldCorreoElectronico) VALUES (?, ?, ?, ?)",
         payload.fldTelefono,
         payload.fldNombre,
-        payload.fldContrasena, // <-- ¡INSEGURO! Solo para desarrollo
+        payload.fldContrasena,
         payload.fldCorreoElectronico
     )
     .execute(&state.db)
@@ -518,7 +581,6 @@ async fn login_user(
     State(state): State<AppState>,
     Json(payload): Json<LoginRequest>,
 ) -> Result<Json<LoginResponse>, AppError> {
-    // ADVERTENCIA DE SEGURIDAD: ¡Usar hashes seguros!
     let user = sqlx::query_as!(
         UsuarioInfo,
         "SELECT id_usuario, fldNombre FROM usuario WHERE fldCorreoElectronico = ? AND fldContrasena = ?",
@@ -538,30 +600,4 @@ async fn login_user(
     Ok(Json(response))
 }
 
-// --- 6. Manejador de Errores Genérico ---
-struct AppError(StatusCode, String);
-
-impl IntoResponse for AppError {
-    fn into_response(self) -> Response {
-        (self.0, self.1).into_response()
-    }
-}
-
-impl From<sqlx::Error> for AppError {
-    fn from(err: sqlx::Error) -> Self {
-        eprintln!("Error de base de datos: {:?}", err);
-        match err {
-            sqlx::Error::RowNotFound => {
-                AppError(StatusCode::NOT_FOUND, "Elemento no encontrado".to_string())
-            }
-            // --- CORRECCIÓN 3: Comparamos usando .as_deref() ---
-            sqlx::Error::Database(db_err) if db_err.code().as_deref() == Some("1062") => {
-                AppError(StatusCode::CONFLICT, "El registro ya existe".to_string())
-            }
-            _ => AppError(
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "Error interno del servidor".to_string(),
-            ),
-        }
-    }
-}
+// --- FIN DE HANDLERS FALTANTES ---
