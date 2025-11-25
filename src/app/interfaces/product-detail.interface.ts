@@ -2,9 +2,10 @@ export interface Product {
   id: number;
   title: string;
   price: number;
+  stock: number;
+  cantidad: number;
   imgURL: string;
-  currency: 'MXN' | 'USD';
-  availability: 'Hay existencias' | 'Agotado';
+  imgCarrusel: string[];
   details: {
     [key: string]: any;
   };

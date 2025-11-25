@@ -1,8 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-
-// Angular Material
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -22,47 +20,60 @@ import { CategoriesXProductDTO } from '../../interfaces/categories_x_product.int
   templateUrl: './categories_by_id.html',
   styleUrls: ['./categories_by_id.css'],
 })
-export class CategoriaPage {
+export class CategoriaPage implements OnInit {
 
   productos = signal<CategoriesXProductDTO[]>([]);
   loading = signal<boolean>(true);
 
   constructor(
     private route: ActivatedRoute,
-    private service: CategoriesXProductService
+    private service: CategoriesXProductService,
+    private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const categoriaId = Number(params.get('id'));
-      this.cargarProductos(categoriaId);
-    });
-  }
-
-  cargarProductos(id: number) {
-    this.loading.set(true);
-
-    this.service.getCategoriesXProduct(id).subscribe({
-      next: (data) => {
-        this.productos.set(data);
-
-        // Para UX suave
-        setTimeout(() => {
-          this.loading.set(false);
-        }, 400);
-      },
-      error: (err) => {
-        console.error('Error al cargar productos:', err);
+      if (!isNaN(categoriaId)) {
+        this.cargarProductos(categoriaId);
+      } else {
+        console.error('ID de categoría no válido');
+        this.productos.set([]);
         this.loading.set(false);
       }
     });
   }
 
-  addToCart(product: CategoriesXProductDTO) {
+  cargarProductos(id: number): void {
+    this.loading.set(true);
+
+    this.service.getCategoriesXProduct(id).subscribe({
+      next: (data: CategoriesXProductDTO[]) => {
+        this.productos.set(data);
+        this.loading.set(false); 
+      },
+      error: (err) => {
+        console.error('Error al cargar productos:', err);
+        this.productos.set([]);
+        this.loading.set(false);
+      }
+    });
+  }
+
+  addToCart(product: CategoriesXProductDTO): void {
     console.log('Añadiendo al carrito:', product);
   }
 
-  openQuickView(id: number) {
-    console.log('Vista rápida de:', id);
+  openQuickView(id: number): void {
+    this.goToProductDetail(id);
   }
+
+  goToProductDetail(id: number): void {
+    this.router.navigate(['/productos', id]);
+  }
+
+  trackByCodigoProducto(index: number, product: CategoriesXProductDTO): number {
+    return product.codigo_producto;
+  }
+
 }

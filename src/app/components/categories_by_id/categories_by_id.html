@@ -5,9 +5,11 @@
 
 <section class="product-grid" *ngIf="!loading()">
 
-  @for (product of productos(); track product.codigo_producto) {
+  <ng-container *ngIf="productos().length > 0; else noProductos">
 
-    <div class="product-card">
+    <div class="product-card" 
+         *ngFor="let product of productos(); trackBy: trackByCodigoProducto"
+         (click)="goToProductDetail(product.codigo_producto)">
 
       <div class="product-card__image-container">
         <img
@@ -21,7 +23,7 @@
         <div class="product-card__quick-view">
           <button
             class="product-card__button product-card__button--quick-view"
-            (click)="openQuickView(product.codigo_producto)">
+            (click)="$event.stopPropagation(); openQuickView(product.codigo_producto)">
             Vista Rápida
           </button>
         </div>
@@ -36,21 +38,21 @@
       <div class="product-card__actions">
         <button
           class="product-card__button product-card__button--full-width product-card__button--primary"
-          (click)="addToCart(product)">
+          (click)="$event.stopPropagation(); addToCart(product)">
           Añadir al carrito
         </button>
       </div>
 
     </div>
 
-  } @empty {
+  </ng-container>
 
+  <ng-template #noProductos>
     <div class="product-card product-card--empty">
       <p class="product-card__empty-text">
         No se encontraron productos disponibles en esta categoría.
       </p>
     </div>
-
-  }
+  </ng-template>
 
 </section>
