@@ -1,61 +1,55 @@
 <main class="product-detail">
 
   @if (isLoading()) {
-    <div class="product-detail__loading" role="status" aria-live="polite">
-      Cargando detalles del producto ID: {{ productId() }}...
-    </div>
-  } @else if (product()) {
+    <div class="product-detail__loading">Cargando...</div>
+  }
+
+  @else if (product()) {
     <section class="product-detail__product" aria-labelledby="product-detail__title">
 
-      <section class="product-detail__gallery">
+      <div class="product-detail__gallery-wrapper">
+
         <div class="product-detail__gallery-thumbs">
-          @for (img of galleryImages(); track idx; let idx = $index) {
-            <img
-              [src]="img"
-              [alt]="'Imagen ' + (idx + 1) + ' de ' + product()!.fldNombre"
-              class="product-detail__gallery-thumb"
-              [class.product-detail__gallery-thumb--active]="selectedIndex() === idx"
-              (click)="setMainImage(idx)"
-              role="button"
-              tabindex="0"
-              aria-label="Seleccionar imagen {{ idx + 1 }}"
-            />
+          @for (img of galleryImages(); track $index; let idx = $index) {
+            <button type="button"
+                    class="product-detail__gallery-thumb-wrapper"
+                    [class.active]="selectedIndex() === idx"
+                    (click)="setMainImage(idx)"
+                    [attr.aria-label]="'Ver imagen ' + (idx + 1)">
+              <img [src]="img" loading="lazy" alt="Miniatura {{ idx + 1 }}" class="product-detail__gallery-thumb">
+            </button>
           }
         </div>
 
-        <div class="product-detail__zoom">
+        <div class="product-detail__image-with-zoom">
           <div class="product-detail__gallery-main">
-            <button type="button" class="product-detail__gallery-arrow product-detail__gallery-arrow--left" (click)="prevImage()" aria-label="Imagen anterior">❮</button>
+            <button type="button" class="product-detail__gallery-arrow product-detail__gallery-arrow--left"
+                    (click)="prevImage()" aria-label="Imagen anterior">❮</button>
 
-            <img
-              #mainImage
-              [src]="selectedImage()"
-              [alt]="'Imagen principal de ' + product()!.fldNombre"
-              class="product-detail__gallery-main-image product-detail__gallery-main-image--fade"
-              (mousemove)="moveLens($event)"
-              (mouseenter)="createLens()"
-              (mouseleave)="removeLens()"
-              (click)="openLightbox()"
-            />
+            <img #mainImage
+                 [src]="selectedImage()"
+                 [alt]="product()!.fldNombre"
+                 class="product-detail__gallery-main-image"
+                 (mousemove)="moveLens($event)"
+                 (mouseenter)="createLens()"
+                 (mouseleave)="removeLens()"
+                 (click)="openLightbox()">
 
-            <button type="button" class="product-detail__gallery-arrow product-detail__gallery-arrow--right" (click)="nextImage()" aria-label="Imagen siguiente">❯</button>
+            <button type="button" class="product-detail__gallery-arrow product-detail__gallery-arrow--right"
+                    (click)="nextImage()" aria-label="Imagen siguiente">❯</button>
           </div>
 
           <div #lens class="product-detail__zoom-lens" aria-hidden="true"></div>
           <div #result class="product-detail__zoom-result" aria-hidden="true"></div>
         </div>
-      </section>
+      </div>
 
       <section class="product-detail__details product-detail__details--spaced">
         <h1 id="product-detail__title" class="product-detail__title">{{ product()!.fldNombre }}</h1>
-
-        <p class="product-detail__price">
-          ${{ product()!.fldPrecio | number:'1.2-2' }}
-        </p>
+        <p class="product-detail__price">${{ product()!.fldPrecio | number:'1.2-2' }}</p>
 
         <div class="product-detail__info">
           <h3 class="product-detail__specs-title">Detalles del producto</h3>
-
           <ul class="product-detail__specs-list">
             <li><strong>Marca:</strong> {{ product()!.fldMarca }}</li>
             <li><strong>Descripción:</strong> {{ product()!.descripcion }}</li>
@@ -63,16 +57,17 @@
           </ul>
 
           <div class="product-detail__cantidad">
-            <label for="cantidad">Cantidad</label>
+            <label>Cantidad</label>
             <div class="product-detail__cantidad-control">
-              <button type="button" (click)="decrementCantidad()" aria-label="Disminuir cantidad">−</button>
-              <input type="text" id="cantidad" [value]="cantidad()" readonly aria-live="polite" />
-              <button type="button" (click)="incrementCantidad()" aria-label="Aumentar cantidad">+</button>
+              <button type="button" (click)="decrementCantidad()" [disabled]="cantidad() <= 1">−</button>
+              <input type="text" [value]="cantidad()" readonly />
+              <button type="button" (click)="incrementCantidad()" [disabled]="cantidad() >= product()!.unidades">+</button>
             </div>
           </div>
 
           <div class="product-detail__actions">
-            <button type="button" class="product-detail__btn product-detail__btn--primary" (click)="addToCart()" aria-label="Agregar al carrito">
+            <button type="button" class="product-detail__btn product-detail__btn--primary"
+                    (click)="addToCart()" [disabled]="product()!.unidades === 0">
               Agregar al Carrito
             </button>
           </div>
@@ -80,16 +75,15 @@
       </section>
 
     </section>
-  } @else {
-    <div class="product-detail__error" role="alert">
-      Producto no encontrado. La ID {{ productId() }} no es válida.
-    </div>
+  }
+
+  @else {
+    <div class="product-detail__error">Producto no encontrado.</div>
   }
 
   @if (showLightbox()) {
     <div class="product-detail__lightbox" (click)="closeLightbox()" role="dialog" aria-modal="true">
-      <img class="product-detail__lightbox-image" [src]="selectedImage()" alt="Vista ampliada del producto" />
+      <img class="product-detail__lightbox-image" [src]="selectedImage()" [alt]="product()?.fldNombre" />
     </div>
   }
-
 </main>
