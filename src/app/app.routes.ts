@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 import { Home } from './pages/home/home';
 import { Products } from './pages/products/products';
 import productDetail from './pages/product-detail/product-detail';
@@ -13,6 +12,8 @@ import { About } from './pages/about/about';
 import { Contact } from './pages/contact/contact';
 import { CategoriesDashboardComponent } from './admin/pages/categories-dashboard/categories-dashboard';
 import { AdminLayout } from './admin/shared/dashboard';
+import { CategoriaPage} from './components/categories_by_id/categories_by_id';
+import { ProductDetailComponent} from './pages/ProductDatail/ProductDetail';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -26,6 +27,8 @@ export const routes: Routes = [
   { path: 'location', component: Location },
   { path: 'about', component: About },
   { path: 'contact', component: Contact },
+  {path: 'categoria/:id', component: CategoriaPage},
+  { path: 'productos/:id', component: ProductDetailComponent },
 
   {
     path: 'admin',
