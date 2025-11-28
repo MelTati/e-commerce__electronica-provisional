@@ -45,10 +45,16 @@
       </div>
 
       <section class="product-detail__details product-detail__details--spaced">
-        <h1 id="product-detail__title" class="product-detail__title">{{ product()!.fldNombre }}</h1>
-        <p class="product-detail__price">${{ product()!.fldPrecio | number:'1.2-2' }}</p>
+        <h1 id="product-detail__title" class="product-detail__title">
+          {{ product()!.fldNombre }}
+        </h1>
+
+        <p class="product-detail__price">
+          ${{ product()!.fldPrecio | number:'1.2-2' }}
+        </p>
 
         <div class="product-detail__info">
+
           <h3 class="product-detail__specs-title">Detalles del producto</h3>
           <ul class="product-detail__specs-list">
             <li><strong>Marca:</strong> {{ product()!.fldMarca }}</li>
@@ -59,18 +65,31 @@
           <div class="product-detail__cantidad">
             <label>Cantidad</label>
             <div class="product-detail__cantidad-control">
-              <button type="button" (click)="decrementCantidad()" [disabled]="cantidad() <= 1">−</button>
-              <input type="text" [value]="cantidad()" readonly aria-label="Cantidad" />
-              <button type="button" (click)="incrementCantidad()" [disabled]="cantidad() >= product()!.unidades">+</button>
+              <button type="button"
+                      (click)="decrementCantidad()"
+                      [disabled]="cantidad() <= 1">−</button>
+
+              <input type="text"
+                     [value]="cantidad()"
+                     readonly
+                     aria-label="Cantidad" />
+
+              <button type="button"
+                      (click)="incrementCantidad()"
+                      [disabled]="cantidad() >= product()!.unidades">+</button>
             </div>
           </div>
 
+          <!-- BOTÓN ADAPTADO PARA CARRITO -->
           <div class="product-detail__actions">
-            <button type="button" class="product-detail__btn product-detail__btn--primary"
-                    (click)="addToCart()" [disabled]="product()!.unidades === 0">
+            <button type="button"
+                    class="product-detail__btn product-detail__btn--primary"
+                    (click)="addToCart(product()!.codigo_producto)"
+                    [disabled]="product()!.unidades === 0">
               Agregar al Carrito
             </button>
           </div>
+
         </div>
       </section>
 
@@ -82,8 +101,14 @@
   }
 
   @if (showLightbox()) {
-    <div class="product-detail__lightbox" (click)="closeLightbox()" role="dialog" aria-modal="true">
-      <img class="product-detail__lightbox-image" [src]="selectedImage()" [alt]="product()?.fldNombre" />
+    <div class="product-detail__lightbox"
+         (click)="closeLightbox()"
+         role="dialog"
+         aria-modal="true">
+      <img class="product-detail__lightbox-image"
+           [src]="selectedImage()"
+           [alt]="product()?.fldNombre" />
     </div>
   }
+
 </main>

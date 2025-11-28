@@ -1,0 +1,84 @@
+.carrito {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: "Amazon Ember", Arial, sans-serif;
+}
+
+/* Título */
+.carrito__title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #222;
+  font-weight: 700;
+}
+
+/* Loading */
+.carrito__loading {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+}
+
+/* Encabezado tipo tabla */
+.carrito-header-row {
+  display: grid;
+  grid-template-columns: 40% 20% 20% 20%;
+  font-weight: 700;
+  color: #555;
+  font-size: 0.9rem;
+  padding: 0.8rem 0;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+/* Fila de producto */
+.carrito-item-row {
+  display: grid;
+  grid-template-columns: 40% 20% 20% 20%;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eaeaea;
+  transition: background .2s ease;
+}
+
+.carrito-item-row:hover {
+  background: #f9f9f9;
+}
+
+/* Columna: Producto */
+.carrito-item__product {
+  font-size: 1rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.carrito-item__description {
+  font-size: 0.85rem;
+  margin-top: 3px;
+  color: #666;
+}
+
+/* Cantidad / Precio / Subtotal */
+.carrito-item__quantity,
+.carrito-item__price,
+.carrito-item__subtotal {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Línea y total */
+.carrito__divider {
+  margin: 2rem 0;
+  border: none;
+  border-top: 2px solid #ddd;
+}
+
+.carrito__total {
+  text-align: right;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111;
+}

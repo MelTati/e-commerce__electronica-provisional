@@ -1,1 +1,48 @@
-<p>cart works!</p>
+<main class="carrito">
+
+  <h1 class="carrito__title">Carrito</h1>
+
+  <div *ngIf="isLoading()" class="carrito__loading">
+    Cargando...
+  </div>
+
+  <section *ngIf="!isLoading()" class="carrito__content">
+
+    <div class="carrito-header-row">
+      <span>Producto</span>
+      <span>Cantidad</span>
+      <span>Precio</span>
+      <span>Subtotal</span>
+    </div>
+
+    <div *ngFor="let item of detalles()" class="carrito-item-row">
+
+      <div class="carrito-item__product">
+        <strong>{{ item.Producto }}</strong> ({{ item.Marca }})  
+        <div class="carrito-item__description">
+          {{ item.DetalleDescripcion }}
+        </div>
+      </div>
+
+      <div class="carrito-item__quantity">
+        {{ item.cantidad }}
+      </div>
+
+      <div class="carrito-item__price">
+        ${{ item.PrecioUnitario }}
+      </div>
+
+      <div class="carrito-item__subtotal">
+        ${{ item.subtotal }}
+      </div>
+
+    </div>
+
+    <hr class="carrito__divider">
+
+    <h2 class="carrito__total">
+      Total: ${{ total }}
+    </h2>
+
+  </section>
+</main>

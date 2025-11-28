@@ -6,12 +6,12 @@
 
 :root {
     --primary-color: #3b82f6;      
-    --secondary-color: #10b981;    
-    --background-color: #111827; 
-    --surface-color: #1f2937;     
-    --text-color: #ffffff;         
+    --secondary-color: #1f8a66;    
+    --background-color: #ffffff; 
+    --surface-color: #ffffff;     
+    --text-color: #000000;         
     --text-color-secondary: #9ca3af; 
-    --border-color: #374151;        
+    --border-color: #ffffff;        
     --header-height: 60px;
     --font-family: "Manrope", system-ui, sans-serif;
     --border-radius-sm: 4px;

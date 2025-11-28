@@ -19,7 +19,6 @@ export const routes: Routes = [
   { path: '', component: Home },
   { path: 'products', component: Products },
   { path: 'product/:id', component: productDetail },
-  { path: 'cart', component: Cart },
   { path: 'checkout', component: Checkout },
   { path: 'orders', component: Orders },
   { path: 'login', component: Login },
@@ -29,6 +28,7 @@ export const routes: Routes = [
   { path: 'contact', component: Contact },
   {path: 'categoria/:id', component: CategoriaPage},
   { path: 'productos/:id', component: ProductDetailComponent },
+  { path: 'carrito', component: Cart },
 
   {
     path: 'admin',

@@ -121,17 +121,17 @@
     padding: 0.5rem;
 }
 
-.header__menu { 
+.header__menu {
     background: var(--surface-color);
     border-top: 1px solid var(--border-color);
     overflow-x: auto; 
-    white-space: nowrap;
-    -ms-overflow-style: none; 
+    white-space: nowrap; 
     scrollbar-width: none; 
+    -ms-overflow-style: none; 
 }
 
-.header__menu::-webkit-scrollbar { 
-    display: none; 
+.header__menu::-webkit-scrollbar {
+    display: none;
 }
 
 .header__menu-list {
@@ -145,8 +145,6 @@
     margin: auto;
     box-sizing: border-box; 
 }
-
-
 
 .header__menu-list li a { 
     text-decoration: none; 

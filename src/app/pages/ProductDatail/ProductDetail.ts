@@ -1,11 +1,11 @@
-
-import { Component, OnInit, HostListener, ElementRef, ViewChild, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, signal, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProductDetailService } from '../../services/ProductDetail.service';
-import { ProductDetailDTO } from '../../interfaces/ProductDetail.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ProductDetailService } from '../../services/ProductDetail.service';
+import { CartService } from '../../services/cart.service';
+import { ProductDetailDTO } from '../../interfaces/ProductDetail.interface';
 import { switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 
@@ -16,162 +16,215 @@ import { EMPTY } from 'rxjs';
   templateUrl: './ProductDetail.html',
   styleUrls: ['./ProductDetail.css']
 })
-
 export class ProductDetailComponent implements OnInit {
 
-  // Signals
-  productId = signal<number | null>(null);
   product = signal<ProductDetailDTO | null>(null);
   isLoading = signal(true);
-  selectedImage = signal('assets/img/no-image.jpg');
-  selectedIndex = signal(0);
-  showLightbox = signal(false);
+  productId = signal<number | null>(null);
+
   cantidad = signal(1);
 
+  selectedIndex = signal(0);
   galleryImages = signal<string[]>([
     'assets/img/no-image.jpg',
     'assets/img/no-image.jpg',
     'assets/img/no-image.jpg'
   ]);
 
-  @ViewChild('lens') zoomLens!: ElementRef<HTMLDivElement>;
-  @ViewChild('result') zoomResult!: ElementRef<HTMLDivElement>;
-  @ViewChild('mainImage') mainImage!: ElementRef<HTMLImageElement>;
+  selectedImage = signal<string>('assets/img/no-image.jpg');
 
+  @ViewChild('mainImage', { static: false }) mainImage!: ElementRef<HTMLImageElement>;
+  @ViewChild('lens', { static: false }) lens!: ElementRef<HTMLDivElement>;
+  @ViewChild('result', { static: false }) result!: ElementRef<HTMLDivElement>;
+
+  showLightbox = signal(false);
   private touchStartX = 0;
 
   constructor(
-    private detailService: ProductDetailService,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private detailService: ProductDetailService,
+    private cartService: CartService,
+    private router: Router,
+    private snack: MatSnackBar
   ) {}
 
   ngOnInit(): void {
+
     this.route.paramMap
       .pipe(
         switchMap(params => {
           const id = Number(params.get('id'));
-          if (id) {
-            this.resetState();
-            this.productId.set(id);
-            return this.detailService.getProductDetailsById(id);
-          }
-          return EMPTY;
+          this.productId.set(id);
+
+          return id ? this.detailService.getProductDetailsById(id) : EMPTY;
         })
       )
       .subscribe({
-        next: (data: ProductDetailDTO) => {
+        next: (data) => {
           this.product.set(data);
+
           this.galleryImages.set([
             'assets/img/no-image.jpg',
             'assets/img/no-image.jpg',
             'assets/img/no-image.jpg'
           ]);
+
           this.selectedIndex.set(0);
           this.selectedImage.set(this.galleryImages()[0]);
+
           this.isLoading.set(false);
         },
-        error: () => this.isLoading.set(false)
+        error: () => {
+          this.isLoading.set(false);
+          this.snack.open('Error cargando producto', 'Cerrar', { duration: 2500 });
+        }
       });
   }
 
-  resetState(): void {
-    this.product.set(null);
-    this.isLoading.set(true);
-    this.selectedIndex.set(0);
-    this.selectedImage.set(this.galleryImages()[0]);
-    this.cantidad.set(1);
-    this.showLightbox.set(false);
+
+  incrementCantidad() {
+    if (this.product() && this.cantidad() < this.product()!.unidades) {
+      this.cantidad.update(v => v + 1);
+    }
   }
 
-  setMainImage(index: number): void {
+  decrementCantidad() {
+    if (this.cantidad() > 1) {
+      this.cantidad.update(v => v - 1);
+    }
+  }
+
+
+  setMainImage(index: number) {
     this.selectedIndex.set(index);
     this.selectedImage.set(this.galleryImages()[index]);
   }
 
-  nextImage(): void {
-    const newIndex = (this.selectedIndex() + 1) % this.galleryImages().length;
-    this.selectedIndex.set(newIndex);
-    this.selectedImage.set(this.galleryImages()[newIndex]);
+  prevImage() {
+    const idx = this.selectedIndex();
+    const total = this.galleryImages().length;
+    const newIndex = idx === 0 ? total - 1 : idx - 1;
+    this.setMainImage(newIndex);
   }
 
-  prevImage(): void {
-    const newIndex = (this.selectedIndex() - 1 + this.galleryImages().length) % this.galleryImages().length;
-    this.selectedIndex.set(newIndex);
-    this.selectedImage.set(this.galleryImages()[newIndex]);
+  nextImage() {
+    const idx = this.selectedIndex();
+    const total = this.galleryImages().length;
+    const newIndex = idx === total - 1 ? 0 : idx + 1;
+    this.setMainImage(newIndex);
   }
 
-  openLightbox(): void {
+  openLightbox() {
     this.showLightbox.set(true);
   }
 
-  closeLightbox(): void {
+  closeLightbox() {
     this.showLightbox.set(false);
   }
 
+  // Swipe para móvil
   @HostListener('touchstart', ['$event'])
-  onTouchStart(event: TouchEvent): void {
-    this.touchStartX = event.changedTouches[0].clientX;
+  onTouchStart(e: TouchEvent) {
+    this.touchStartX = e.changedTouches[0].clientX;
   }
 
   @HostListener('touchend', ['$event'])
-  onTouchEnd(event: TouchEvent): void {
-    const endX = event.changedTouches[0].clientX;
-    if (endX < this.touchStartX - 50) this.nextImage();
-    if (endX > this.touchStartX + 50) this.prevImage();
+  onTouchEnd(e: TouchEvent) {
+    const end = e.changedTouches[0].clientX;
+    if (end < this.touchStartX - 50) this.nextImage();
+    if (end > this.touchStartX + 50) this.prevImage();
   }
 
-  // Zoom
-  createLens(): void {
-    if (!this.zoomLens || !this.zoomResult) return;
-    this.zoomResult.nativeElement.style.backgroundImage = `url('${this.selectedImage()}')`;
-    this.zoomResult.nativeElement.style.display = 'block';
-    this.zoomLens.nativeElement.style.display = 'block';
+  createLens() {
+    if (!this.lens || !this.result || !this.mainImage) return;
+
+    this.lens.nativeElement.style.display = "block";
+    this.result.nativeElement.style.display = "block";
+
+    const cx = this.result.nativeElement.offsetWidth / this.lens.nativeElement.offsetWidth;
+    const cy = this.result.nativeElement.offsetHeight / this.lens.nativeElement.offsetHeight;
+
+    this.result.nativeElement.style.backgroundImage = `url(${this.selectedImage()})`;
+    this.result.nativeElement.style.backgroundSize =
+      `${this.mainImage.nativeElement.width * cx}px ${this.mainImage.nativeElement.height * cy}px`;
   }
 
-  moveLens(e: MouseEvent): void {
-    if (!this.zoomLens || !this.zoomResult || !this.mainImage) return;
+  moveLens(e: MouseEvent) {
+    if (!this.lens || !this.result || !this.mainImage) return;
 
-    const img = this.mainImage.nativeElement;
-    const lens = this.zoomLens.nativeElement;
-    const result = this.zoomResult.nativeElement;
+    const pos = this.getCursorPos(e);
+    let x = pos.x - this.lens.nativeElement.offsetWidth / 2;
+    let y = pos.y - this.lens.nativeElement.offsetHeight / 2;
 
-    const rect = img.getBoundingClientRect();
-    const posX = e.clientX - rect.left - lens.offsetWidth / 2;
-    const posY = e.clientY - rect.top - lens.offsetHeight / 2;
+    const maxX = this.mainImage.nativeElement.width - this.lens.nativeElement.offsetWidth;
+    const maxY = this.mainImage.nativeElement.height - this.lens.nativeElement.offsetHeight;
 
-    lens.style.left = `${posX}px`;
-    lens.style.top = `${posY}px`;
+    if (x > maxX) x = maxX;
+    if (x < 0) x = 0;
+    if (y > maxY) y = maxY;
+    if (y < 0) y = 0;
 
-    const cx = result.offsetWidth / lens.offsetWidth;
-    const cy = result.offsetHeight / lens.offsetHeight;
+    this.lens.nativeElement.style.left = x + "px";
+    this.lens.nativeElement.style.top = y + "px";
 
-    result.style.backgroundSize = `${img.width * cx}px ${img.height * cy}px`;
-    result.style.backgroundPosition = `-${posX * cx}px -${posY * cy}px`;
+    const cx = this.result.nativeElement.offsetWidth / this.lens.nativeElement.offsetWidth;
+    const cy = this.result.nativeElement.offsetHeight / this.lens.nativeElement.offsetHeight;
+
+    this.result.nativeElement.style.backgroundPosition =
+      `-${x * cx}px -${y * cy}px`;
   }
 
-  removeLens(): void {
-    if (!this.zoomResult || !this.zoomLens) return;
-    this.zoomLens.nativeElement.style.display = 'none';
-    this.zoomResult.nativeElement.style.display = 'none';
+  removeLens() {
+    if (!this.lens || !this.result) return;
+    this.lens.nativeElement.style.display = "none";
+    this.result.nativeElement.style.display = "none";
   }
 
-  incrementCantidad(): void {
-    if (this.product() && this.cantidad() < this.product()!.unidades) {
-      this.cantidad.update(c => c + 1);
-    } else if (!this.product()) {
-      this.cantidad.update(c => c + 1);
+  getCursorPos(e: MouseEvent) {
+    const rect = this.mainImage.nativeElement.getBoundingClientRect();
+    return {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    };
+  }
+
+  addToCart(codigo: number) {
+    const prod = this.product();
+    if (!prod) return;
+
+    let idVenta = this.cartService.currentCartId();
+
+    if (!idVenta) {
+      this.cartService.crearCarrito("9611234567", 1).subscribe({
+        next: (res) => {
+          idVenta = res.idventas;
+
+          this.cartService.currentCartId.set(idVenta!);
+          localStorage.setItem("venta_id", String(idVenta));
+
+          this.guardarProducto(idVenta!, codigo);
+        },
+        error: () => {
+          this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 2500 });
+        }
+      });
+
+      return;
     }
+
+    this.guardarProducto(idVenta, codigo);
   }
 
-  decrementCantidad(): void {
-    if (this.cantidad() > 1) this.cantidad.update(c => c - 1);
-  }
-
-  addToCart(): void {
-    if (!this.product()) return;
-    this.snackBar.open(`Agregado: ${this.product()!.fldNombre} x${this.cantidad()}`, 'Cerrar', {
-      duration: 3000
+  private guardarProducto(idVenta: number, codigo: number) {
+    this.cartService.addProduct(idVenta, codigo, this.cantidad()).subscribe({
+      next: () => {
+        this.snack.open('Producto agregado al carrito', 'Cerrar', { duration: 2000 });
+        this.router.navigate(['/carrito']);
+      },
+      error: () => {
+        this.snack.open('Error al agregar', 'Cerrar', { duration: 2500 });
+      }
     });
   }
+
 }
