@@ -1,0 +1,127 @@
+<mat-toolbar color="primary">
+  <span>Productos</span>
+  <span class="spacer"></span>
+
+  <button mat-flat-button color="accent" (click)="abrirModal('create')" aria-label="Crear producto">
+    + Crear Producto
+  </button>
+</mat-toolbar>
+
+<div class="container">
+
+  <!-- ALERTA -->
+  <div *ngIf="mensaje" class="alert" [ngClass]="tipoMensaje" role="alert">
+    {{ mensaje }}
+  </div>
+
+  <!-- TABLA -->
+  <div class="table-wrapper" *ngIf="productos.length > 0; else noData">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th scope="col">Código</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Marca</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Unidades</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let producto of productos">
+          <td>{{ producto.codigo_producto }}</td>
+          <td>{{ producto.fldNombre }}</td>
+          <td>{{ producto.fldMarca }}</td>
+          <td>{{ producto.fldPrecio }}</td>
+          <td>{{ producto.unidades }}</td>
+          <td>{{ producto.descripcion }}</td>
+
+          <td>
+            <button (click)="abrirModal('edit', producto)" aria-label="Editar producto {{producto.fldNombre}}">
+              ✏️ Editar
+            </button>
+
+            <button class="danger" (click)="abrirModal('delete', producto)" aria-label="Eliminar producto {{producto.fldNombre}}">
+              🗑 Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noData>
+    <p class="no-data">No hay productos registrados.</p>
+  </ng-template>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal">
+
+    <!-- FORMULARIO CREAR -->
+    <form *ngIf="modalMode === 'create'" #productoForm="ngForm" (ngSubmit)="onSubmit(productoForm)">
+      <h2>Registrar Producto</h2>
+
+      <label for="nombreInput">Nombre:</label>
+      <input id="nombreInput" type="text" placeholder="Nombre del producto" [(ngModel)]="productoCreate.fldNombre" name="nombre" required aria-required="true" />
+
+      <label for="marcaInput">Marca:</label>
+      <input id="marcaInput" type="text" placeholder="Marca del producto" [(ngModel)]="productoCreate.fldMarca" name="marca" required aria-required="true" />
+
+      <label for="precioInput">Precio:</label>
+      <input id="precioInput" type="text" placeholder="Precio" [(ngModel)]="productoCreate.fldPrecio" name="precio" required aria-required="true" />
+
+      <label for="unidadesInput">Unidades:</label>
+      <input id="unidadesInput" type="number" placeholder="Cantidad en stock" [(ngModel)]="productoCreate.unidades" name="unidades" required aria-required="true" />
+
+      <label for="descripcionInput">Descripción:</label>
+      <textarea id="descripcionInput" placeholder="Descripción del producto" [(ngModel)]="productoCreate.descripcion" name="descripcion"></textarea>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary">Registrar</button>
+        <button type="button" class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+      </div>
+    </form>
+
+    <!-- FORMULARIO EDITAR -->
+    <form *ngIf="modalMode === 'edit'" #productoForm="ngForm" (ngSubmit)="onSubmit(productoForm)">
+      <h2>Editar Producto</h2>
+
+      <label for="nombreInputEdit">Nombre:</label>
+      <input id="nombreInputEdit" type="text" placeholder="Nombre del producto" [(ngModel)]="productoEdit.fldNombre" name="nombreEdit" required aria-required="true" />
+
+      <label for="marcaInputEdit">Marca:</label>
+      <input id="marcaInputEdit" type="text" placeholder="Marca del producto" [(ngModel)]="productoEdit.fldMarca" name="marcaEdit" required aria-required="true" />
+
+      <label for="precioInputEdit">Precio:</label>
+      <input id="precioInputEdit" type="text" placeholder="Precio" [(ngModel)]="productoEdit.fldPrecio" name="precioEdit" required aria-required="true" />
+
+      <label for="unidadesInputEdit">Unidades:</label>
+      <input id="unidadesInputEdit" type="number" placeholder="Cantidad en stock" [(ngModel)]="productoEdit.unidades" name="unidadesEdit" required aria-required="true" />
+
+      <label for="descripcionInputEdit">Descripción:</label>
+      <textarea id="descripcionInputEdit" placeholder="Descripción del producto" [(ngModel)]="productoEdit.descripcion" name="descripcionEdit"></textarea>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary">Guardar Cambios</button>
+        <button type="button" class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+      </div>
+    </form>
+
+    <!-- MODAL ELIMINAR -->
+    <div *ngIf="modalMode === 'delete'">
+      <h2>¿Eliminar Producto?</h2>
+      <p>Esta acción no se puede deshacer.</p>
+
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmarEliminar()">Eliminar</button>
+        <button class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+      </div>
+    </div>
+
+  </div>
+</div>

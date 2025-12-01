@@ -18,7 +18,6 @@
 .login__image-container {
   text-align: center;
   padding: 2rem 3rem;
-  background-color: rgba(31, 41, 55, 0.9); /* Surface con transparencia */
   border-radius: var(--border-radius-lg);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);

@@ -1,25 +1,43 @@
 <div class="admin-container">
 
-  <aside class="sidebar">
+  <!-- Botón hamburguesa -->
+  <button class="hamburger" mat-icon-button (click)="toggleSidebar()">
+    <mat-icon>☰</mat-icon>
+  </button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.open]="sidebarOpen">
     <div class="logo">
       <span>ADMIN PANEL</span>
     </div>
 
     <nav class="menu">
-
-      <a routerLink="categories" routerLinkActive="active">
-        Categorías
+      <a routerLink="admin-usuario"
+         routerLinkActive="active"
+         (click)="closeSidebar()">
+        Usuarios
       </a>
-
-      <a routerLink="products" routerLinkActive="active">
+      <a routerLink="admin-cliente"
+         routerLinkActive="active"
+         (click)="closeSidebar()">
+        Clientes
+      </a>
+      <a routerLink="admin-product"
+         routerLinkActive="active"
+         (click)="closeSidebar()">
         Productos
       </a>
-
+      <a routerLink="admin-ventas"
+         routerLinkActive="active"
+         (click)="closeSidebar()">
+        Ventas
+      </a>
     </nav>
   </aside>
 
-  <main class="content">
-      <router-outlet></router-outlet>
+  <!-- Contenido -->
+  <main class="content" (click)="closeSidebar()">
+    <router-outlet></router-outlet>
   </main>
 
 </div>

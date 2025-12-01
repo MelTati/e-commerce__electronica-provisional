@@ -1,0 +1,51 @@
+<mat-toolbar color="primary">
+  <span>Ventas</span>
+  <span class="spacer"></span>
+</mat-toolbar>
+
+<div class="container">
+
+  <!-- ALERTA -->
+  <div *ngIf="mensaje" class="alert" [ngClass]="tipoMensaje" role="alert">
+    {{ mensaje }}
+  </div>
+
+  <!-- TABLA -->
+  <div class="table-wrapper" *ngIf="ventas.length > 0; else noData">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Total</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let venta of ventas">
+          <td>{{ venta.idventas }}</td>
+          <td>{{ venta.fecha | date: 'short' }}</td>
+          <td>{{ venta.estado }}</td>
+          <td>{{ venta.cliente }}</td>
+          <td>{{ venta.total | currency }}</td>
+          <td>
+            <button 
+              class="btn-cancel" 
+              (click)="cancelarVenta(venta.idventas)" 
+              [disabled]="venta.estado === 'cancelado'">
+              ❌ Cancelar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noData>
+    <p class="no-data">No hay ventas registradas.</p>
+  </ng-template>
+
+</div>

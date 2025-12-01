@@ -1,0 +1,289 @@
+:host {
+  --primary-color: #3b82f6;
+  --secondary-color: #1f8a66;
+  --background-color: #ffffff;
+  --surface-color: #ffffff;
+  --text-color: #000000;
+
+  --text-color-secondary: #4b5563;
+  --border-color: #e5e7eb;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --font-family: "Manrope", sans-serif;
+
+  display: block;
+  padding: 30px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+}
+
+/* ========================================================= */
+/*                       TITULO                              */
+/* ========================================================= */
+
+.component-title {
+  padding: 18px 22px;
+  border-radius: var(--radius-md);
+  font-size: 20px;
+  font-weight: 700;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* ========================================================= */
+/*                          CARD                             */
+/* ========================================================= */
+
+.card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  padding: 25px;
+  border-radius: var(--radius-md);
+  max-width: 1100px;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+/* ========================================================= */
+/*                          TABLA                            */
+/* ========================================================= */
+
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 20px;
+  border-radius: var(--radius-md);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; 
+}
+
+th {
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-color);
+  background: var(--background-color);
+  border-bottom: 2px solid var(--border-color);
+  text-align: left;
+}
+
+td {
+  padding: 14px;
+  font-size: 14px;
+  color: var(--text-color-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--text-color);
+  transition: background-color .2s ease;
+}
+
+/* ========================================================= */
+/*                        MODAL                              */
+/* ========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal {
+  background: var(--surface-color);
+  padding: 28px;
+  width: 100%;
+  max-width: 450px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  animation: modalIn .25s ease-out;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px) scale(.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Título modal */
+.modal h2 {
+  margin-top: 0;
+  font-size: 22px;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.modal label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.modal input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  background: #f8f9fa;
+  transition: 0.2s;
+}
+
+.modal input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+/* Botones */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #000;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #d1d5db;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+/* ========================================================= */
+/*                   RESPONSIVE UNIVERSAL                    */
+/* ========================================================= */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 992px) {
+  :host { padding: 20px; }
+  .card { padding: 20px; }
+  .component-title { font-size: 18px; padding: 14px 18px; }
+  th, td { padding: 10px; font-size: 13px; }
+}
+
+/* 768px */
+@media (max-width: 768px) {
+  :host { padding: 15px; }
+  .card { padding: 16px; }
+  table { min-width: 500px; }
+  .modal { max-width: 92%; padding: 20px; }
+}
+
+/* 480px */
+@media (max-width: 480px) {
+  :host { padding: 10px; }
+  .card { padding: 12px; }
+  .component-title { font-size: 16px; padding: 12px 15px; }
+  table { min-width: 420px; }
+
+  .modal { padding: 16px; }
+  .modal h2 { font-size: 18px; }
+  .modal input { padding: 8px; font-size: 13px; }
+
+  .modal-actions { flex-direction: column; }
+  .modal-actions button { width: 100%; }
+}
+
+/* 360px */
+@media (max-width: 360px) {
+  :host { padding: 8px; }
+  .card { padding: 10px; }
+  .component-title { font-size: 15px; }
+  table { min-width: 360px; }
+
+  .modal { padding: 14px; }
+  .modal h2 { font-size: 17px; }
+
+  .modal label { font-size: 13px; }
+  .modal input { padding: 7px; font-size: 12px; }
+}
+
+/* 320px */
+@media (max-width: 320px) {
+  :host { padding: 6px; }
+  .component-title { font-size: 14px; }
+  table { min-width: 340px; }
+
+  .modal { padding: 12px; }
+  .modal h2 { font-size: 16px; }
+  .modal input { padding: 6px; }
+}
+
+/* 280px — teléfonos muy pequeños */
+@media (max-width: 280px) {
+  :host { padding: 4px; }
+  .component-title { font-size: 13px; padding: 6px 10px; }
+  table { min-width: 300px; }
+
+  .modal { padding: 10px; border-radius: 8px; }
+  .modal h2 { font-size: 15px; }
+  .modal input { padding: 5px; font-size: 11px; }
+
+  .modal-actions button {
+    font-size: 12px;
+    padding: 8px;
+  }
+}

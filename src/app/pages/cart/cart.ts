@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './cart.html',
   styleUrls: ['./cart.css']
 })
-
 export class Cart implements OnInit {
 
   detalles = signal<ProductoCarrito[]>([]);
@@ -31,9 +30,11 @@ export class Cart implements OnInit {
       return;
     }
 
+    this.isLoading.set(true);
     this.cartService.obtenerCarrito(idVentas).subscribe({
       next: res => {
-        this.detalles.set(res);
+        // Asegurar que subtotal sea number
+        this.detalles.set(res.map(p => ({ ...p, subtotal: Number(p.subtotal) })));
         this.isLoading.set(false);
       },
       error: () => {
@@ -45,34 +46,39 @@ export class Cart implements OnInit {
   }
 
   get total(): number {
-    return this.detalles().reduce((acc, item) => acc + Number(item.subtotal), 0);
+    return this.detalles().reduce((acc, item) => acc + item.subtotal, 0);
   }
 
   // ------------------ CANTIDAD ------------------
   incrementar(item: ProductoCarrito) {
     const idVentas = this.cartService.currentCartId();
-    if (!idVentas) return;
+    if (!idVentas || item.cantidad >= item.DetalleUnidades) return;
 
-    if (item.cantidad < item.DetalleUnidades) {
-      const nuevaCantidad = item.cantidad + 1;
-      this.cartService.actualizarProducto(idVentas, item.codigo_producto, nuevaCantidad).subscribe({
-        next: () => this.loadCarrito(),
-        error: () => this.snack.open('No se pudo actualizar la cantidad', 'Cerrar', { duration: 2500 })
-      });
-    }
+    const nuevaCantidad = item.cantidad + 1;
+    this.cartService.actualizarProducto(idVentas, item.codigo_producto, nuevaCantidad).subscribe({
+      next: () => {
+        // Actualizar localmente para UX más rápida
+        this.detalles.set(this.detalles().map(p =>
+          p.codigo_producto === item.codigo_producto ? { ...p, cantidad: nuevaCantidad, subtotal: nuevaCantidad * p.PrecioUnitario } : p
+        ));
+      },
+      error: () => this.snack.open('No se pudo actualizar la cantidad', 'Cerrar', { duration: 2500 })
+    });
   }
 
   decrementar(item: ProductoCarrito) {
     const idVentas = this.cartService.currentCartId();
-    if (!idVentas) return;
+    if (!idVentas || item.cantidad <= 1) return;
 
-    if (item.cantidad > 1) {
-      const nuevaCantidad = item.cantidad - 1;
-      this.cartService.actualizarProducto(idVentas, item.codigo_producto, nuevaCantidad).subscribe({
-        next: () => this.loadCarrito(),
-        error: () => this.snack.open('No se pudo actualizar la cantidad', 'Cerrar', { duration: 2500 })
-      });
-    }
+    const nuevaCantidad = item.cantidad - 1;
+    this.cartService.actualizarProducto(idVentas, item.codigo_producto, nuevaCantidad).subscribe({
+      next: () => {
+        this.detalles.set(this.detalles().map(p =>
+          p.codigo_producto === item.codigo_producto ? { ...p, cantidad: nuevaCantidad, subtotal: nuevaCantidad * p.PrecioUnitario } : p
+        ));
+      },
+      error: () => this.snack.open('No se pudo actualizar la cantidad', 'Cerrar', { duration: 2500 })
+    });
   }
 
   // ------------------ ELIMINAR ------------------
@@ -81,7 +87,10 @@ export class Cart implements OnInit {
     if (!idVentas) return;
 
     this.cartService.eliminarProducto(idVentas, item.codigo_producto).subscribe({
-      next: () => this.loadCarrito(),
+      next: () => {
+        this.detalles.set(this.detalles().filter(p => p.codigo_producto !== item.codigo_producto));
+        this.snack.open('Producto eliminado', 'Cerrar', { duration: 2500 });
+      },
       error: () => this.snack.open('No se pudo eliminar el producto', 'Cerrar', { duration: 2500 })
     });
   }
@@ -117,5 +126,4 @@ export class Cart implements OnInit {
       error: () => this.snack.open('No se pudo cancelar la venta', 'Cerrar', { duration: 2500 })
     });
   }
-
 }

@@ -67,6 +67,21 @@
           <span *ngIf="f['email'].hasError('email')">Ingresa un correo válido.</span>
         </small>
       </div>
+      <!-- Correo -->
+       <!-- Contraseña -->
+        <div class="register__form-group">
+          <div class="register__floating-label">
+            <input type="password" formControlName="contrasena" class="register__input" placeholder=" "
+                  [class.invalid]="f['contrasena'].invalid && (f['contrasena'].dirty || f['contrasena'].touched)">
+            <label class="register__label">Contraseña</label>
+          </div>
+          <small class="register__error" *ngIf="f['contrasena'].invalid && (f['contrasena'].dirty || f['contrasena'].touched)">
+            <span *ngIf="f['contrasena'].hasError('required')">La contraseña es obligatoria.</span>
+            <span *ngIf="f['contrasena'].hasError('minlength')">
+              Debe tener al menos {{ f['contrasena'].getError('minlength').requiredLength }} caracteres.
+            </span>
+          </small>
+        </div>
 
       <!-- Botón de registro -->
       <button type="submit" class="register__button" [disabled]="registerForm.invalid || loading">

@@ -1,3 +1,6 @@
+/* =============================
+   Contenedor principal
+============================= */
 .carrito {
   max-width: 1100px;
   margin: 2rem auto;
@@ -21,10 +24,12 @@
   font-size: 1.2rem;
 }
 
-/* Encabezado tipo tabla */
+/* =============================
+   Encabezado tipo tabla
+============================= */
 .carrito-header-row {
   display: grid;
-  grid-template-columns: 40% 20% 20% 20% 1fr; /* añadimos columna para acciones */
+  grid-template-columns: 40% 20% 20% 20% 1fr;
   font-weight: 700;
   color: #555;
   font-size: 0.9rem;
@@ -32,21 +37,23 @@
   border-bottom: 2px solid #e0e0e0;
 }
 
-/* Fila de producto */
+/* =============================
+   Fila de producto
+============================= */
 .carrito-item-row {
   display: grid;
-  grid-template-columns: 40% 20% 20% 20% 1fr; /* añadimos columna para acciones */
+  grid-template-columns: 40% 20% 20% 20% 1fr;
   align-items: center;
   padding: 1rem 0;
   border-bottom: 1px solid #eaeaea;
-  transition: background .2s ease;
+  transition: background 0.2s ease;
 }
 
 .carrito-item-row:hover {
   background: #f9f9f9;
 }
 
-/* Columna: Producto */
+/* Columnas */
 .carrito-item__product {
   font-size: 1rem;
   color: #222;
@@ -59,7 +66,6 @@
   color: #666;
 }
 
-/* Cantidad / Precio / Subtotal */
 .carrito-item__quantity,
 .carrito-item__price,
 .carrito-item__subtotal {
@@ -116,7 +122,7 @@
   color: #111;
 }
 
-/* Contenedor de botones de finalizar/cancelar */
+/* Contenedor de botones */
 .carrito__buttons {
   display: flex;
   justify-content: flex-end;
@@ -125,31 +131,57 @@
 }
 
 .carrito__buttons button {
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  font-weight: 600;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 .carrito__buttons button:first-child {
-  background-color: #43a047; /* Finalizar Compra */
+  background-color: #43a047;
   color: #fff;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
 .carrito__buttons button:first-child:hover {
   background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+.carrito__buttons button:first-child::after {
+  content: "¡Compra segura!";
+  position: absolute;
+  bottom: -1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  color: #fff;
+  background-color: #43a047;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+
+.carrito__buttons button:first-child:hover::after {
+  opacity: 1;
 }
 
 .carrito__buttons button:last-child {
-  background-color: #e53935; /* Cancelar Venta */
+  background-color: #e53935;
   color: #fff;
+  font-size: 1.3rem;
+  padding: 0.8rem 1.5rem;
 }
 
 .carrito__buttons button:last-child:hover {
   background-color: #c62828;
+  transform: scale(1.05);
 }
 
 /* Selector tipo de pago */
@@ -166,4 +198,93 @@
   font-size: 1rem;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+
+/* =============================
+   MEDIA QUERIES RESPONSIVE
+============================= */
+
+/* Tablets medianas (<= 992px) */
+@media (max-width: 992px) {
+  .carrito-header-row,
+  .carrito-item-row {
+    grid-template-columns: 35% 25% 20% 20%;
+  }
+
+  .carrito__total,
+  .carrito__buttons {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .carrito__buttons button {
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+  }
+
+  .carrito__pago {
+    justify-content: center;
+  }
+}
+
+/* Tablets pequeñas / móviles grandes (<= 768px) */
+@media (max-width: 768px) {
+  .carrito-header-row,
+  .carrito-item-row {
+    grid-template-columns: 50% 25% 25%;
+  }
+
+  .carrito-item__description {
+    display: none; /* Oculta descripción para ahorrar espacio */
+  }
+
+  .carrito__total {
+    font-size: 1.5rem;
+  }
+}
+
+/* Móviles (<= 480px) */
+@media (max-width: 480px) {
+  .carrito-header-row,
+  .carrito-item-row {
+    display: block;
+    grid-template-columns: 1fr;
+    padding: 0.5rem 0;
+  }
+
+  .carrito-item__product,
+  .carrito-item__quantity,
+  .carrito-item__price,
+  .carrito-item__subtotal,
+  .carrito-item__actions {
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
+
+  .carrito-item__quantity {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .carrito__total {
+    text-align: center;
+    font-size: 1.3rem;
+  }
+
+  .carrito__buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .carrito__buttons button {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .carrito__pago {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }

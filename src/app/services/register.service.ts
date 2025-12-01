@@ -10,7 +10,7 @@ import { RegisterDTO } from '../interfaces/register.interface';
 
 export class RegisterService {
 
-  private readonly registroUrl = '/api/clientes';
+  private readonly registroUrl = '/api/auth/cliente/registro'
 
   constructor(private http: HttpClient) {}
 

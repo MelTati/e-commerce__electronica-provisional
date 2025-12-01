@@ -11,7 +11,6 @@ import { RegisterDTO } from '../../interfaces/register.interface';
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
-
 export class RegisterComponent {
   readonly registerForm: FormGroup;
   loading = false;
@@ -21,7 +20,8 @@ export class RegisterComponent {
       telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       nombres: ['', [Validators.required, Validators.minLength(3)]],
       apellidos: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      contrasena: ['', [Validators.required, Validators.minLength(6)]] // <-- contraseña añadida
     });
   }
 
@@ -42,7 +42,8 @@ export class RegisterComponent {
       telefono: this.f['telefono'].value || '',
       fldNombres: this.f['nombres'].value || '',
       fldApellidos: this.f['apellidos'].value || '',
-      fldCorreoElectronico: this.f['email'].value || ''
+      fldCorreoElectronico: this.f['email'].value || '',
+      fldContrasena: this.f['contrasena'].value || '' // <-- contraseña añadida
     };
 
     this.registerService.registroCliente(payload).subscribe({

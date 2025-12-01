@@ -1,4 +1,4 @@
 export interface LoginDTO {
-  fldCorreoElectronico: string,
-  fldContrasena: string
+  correo: string;
+  contrasena: string;
 }

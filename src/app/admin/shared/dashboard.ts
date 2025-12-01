@@ -7,9 +7,20 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-dashboard-sidebar',
   standalone: true,
-  imports: [CommonModule,MatIconModule,MatButtonModule,RouterModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, RouterModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
 
-export class AdminLayout {}
+export class AdminLayout {
+
+  sidebarOpen: boolean = false;
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  closeSidebar() {
+    this.sidebarOpen = false;
+  }
+}

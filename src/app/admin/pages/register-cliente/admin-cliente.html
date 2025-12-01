@@ -1,0 +1,117 @@
+<mat-toolbar color="primary">
+  <span>Clientes</span>
+  <span class="spacer"></span>
+
+  <button mat-flat-button color="accent" (click)="abrirModal('create')" aria-label="Crear cliente">
+    + Crear Cliente
+  </button>
+</mat-toolbar>
+
+<div class="container">
+
+  <!-- ALERTA -->
+  <div *ngIf="mensaje" class="alert" [ngClass]="tipoMensaje" role="alert">
+    {{ mensaje }}
+  </div>
+
+  <!-- TABLA -->
+  <div class="table-wrapper" *ngIf="clientes.length > 0; else noData">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th scope="col">Teléfono</th>
+          <th scope="col">Nombres</th>
+          <th scope="col">Apellidos</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let cliente of clientes">
+          <td>{{ cliente.telefono }}</td>
+          <td>{{ cliente.fldNombres }}</td>
+          <td>{{ cliente.fldApellidos }}</td>
+          <td>{{ cliente.fldCorreoElectronico }}</td>
+
+          <td>
+            <button (click)="abrirModal('edit', cliente)" aria-label="Editar cliente {{cliente.fldNombres}}">
+              ✏️ Editar
+            </button>
+
+            <button class="danger" (click)="abrirModal('delete', cliente)" aria-label="Eliminar cliente {{cliente.fldNombres}}">
+              🗑 Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noData>
+    <p class="no-data">No hay clientes registrados.</p>
+  </ng-template>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal">
+
+    <!-- FORMULARIO CREAR -->
+    <form *ngIf="modalMode === 'create'" #clienteForm="ngForm" (ngSubmit)="onSubmit(clienteForm)">
+      <h2>Registrar Cliente</h2>
+
+      <label for="telefonoInput">Teléfono:</label>
+      <input id="telefonoInput" type="text" placeholder="10 dígitos" [(ngModel)]="clienteCreate.telefono" name="telefono" required aria-required="true" />
+
+      <label for="nombresInput">Nombres:</label>
+      <input id="nombresInput" type="text" placeholder="Ingresa nombres" [(ngModel)]="clienteCreate.fldNombres" name="nombres" required aria-required="true" />
+
+      <label for="apellidosInput">Apellidos:</label>
+      <input id="apellidosInput" type="text" placeholder="Ingresa apellidos" [(ngModel)]="clienteCreate.fldApellidos" name="apellidos" required aria-required="true" />
+
+      <label for="correoInput">Correo:</label>
+      <input id="correoInput" type="email" placeholder="correo@ejemplo.com" [(ngModel)]="clienteCreate.fldCorreoElectronico" name="correo" required aria-required="true" />
+
+      <label for="passInput">Contraseña:</label>
+      <input id="passInput" type="password" placeholder="********" [(ngModel)]="clienteCreate.fldContrasena" name="contrasena" required aria-required="true" />
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary">Registrar</button>
+        <button type="button" class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+      </div>
+    </form>
+
+    <!-- FORMULARIO EDITAR -->
+    <form *ngIf="modalMode === 'edit'" #clienteForm="ngForm" (ngSubmit)="onSubmit(clienteForm)">
+      <h2>Editar Cliente</h2>
+
+      <label for="nombresInputEdit">Nombres:</label>
+      <input id="nombresInputEdit" type="text" placeholder="Ingresa nombres" [(ngModel)]="clienteEdit.fldNombres" name="nombresEdit" required aria-required="true" />
+
+      <label for="apellidosInputEdit">Apellidos:</label>
+      <input id="apellidosInputEdit" type="text" placeholder="Ingresa apellidos" [(ngModel)]="clienteEdit.fldApellidos" name="apellidosEdit" required aria-required="true" />
+
+      <label for="correoInputEdit">Correo:</label>
+      <input id="correoInputEdit" type="email" placeholder="correo@ejemplo.com" [(ngModel)]="clienteEdit.fldCorreoElectronico" name="correoEdit" required aria-required="true" />
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary">Guardar Cambios</button>
+        <button type="button" class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+      </div>
+    </form>
+
+    <!-- MODAL ELIMINAR -->
+    <div *ngIf="modalMode === 'delete'">
+      <h2>¿Eliminar Cliente?</h2>
+      <p>Esta acción no se puede deshacer.</p>
+
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmarEliminar()">Eliminar</button>
+        <button class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+      </div>
+    </div>
+
+  </div>
+</div>

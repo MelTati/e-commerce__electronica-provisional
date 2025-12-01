@@ -1,0 +1,142 @@
+<mat-toolbar color="primary">
+  <span>Administradores</span>
+  <span class="spacer"></span>
+
+  <button mat-flat-button color="accent" (click)="abrirModal('create')" aria-label="Crear administrador">
+    + Crear Administrador
+  </button>
+</mat-toolbar>
+
+<div class="container">
+
+  <!-- ALERTA -->
+  <div *ngIf="mensaje" class="alert" [ngClass]="tipoMensaje" role="alert">
+    {{ mensaje }}
+  </div>
+
+  <!-- TABLA -->
+  <div class="table-wrapper" *ngIf="admins.length > 0; else noData">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Teléfono</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let admin of admins">
+          <td>{{ admin.id_usuario }}</td>
+          <td>{{ admin.fldNombre }}</td>
+          <td>{{ admin.fldCorreoElectronico }}</td>
+          <td>{{ admin.fldTelefono }}</td>
+          <td>
+            <button 
+              (click)="abrirModal('edit', admin)"
+              aria-label="Editar administrador {{admin.fldNombre}}">
+              ✏️ Editar
+            </button>
+
+            <button 
+              class="danger"
+              (click)="abrirModal('delete', admin)"
+              aria-label="Eliminar administrador {{admin.fldNombre}}">
+              🗑 Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noData>
+    <p class="no-data">No hay administradores registrados.</p>
+  </ng-template>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal">
+
+    <!-- CREAR / EDITAR -->
+    <form 
+      *ngIf="modalMode !== 'delete'" 
+      #adminForm="ngForm" 
+      (ngSubmit)="onSubmit(adminForm)"
+      aria-label="Formulario administrador">
+
+      <h2>{{ modalMode === 'create' ? 'Crear Administrador' : 'Editar Administrador' }}</h2>
+
+      <!-- NOMBRE -->
+      <label for="nombreInput">Nombre:</label>
+      <input 
+        id="nombreInput"
+        type="text" 
+        placeholder="Ingresa el nombre"
+        [(ngModel)]="adminData.fldNombre" 
+        name="nombre" 
+        required 
+        aria-required="true" />
+
+      <!-- CORREO -->
+      <label for="correoInput">Correo:</label>
+      <input 
+        id="correoInput"
+        type="email" 
+        placeholder="correo@ejemplo.com"
+        [(ngModel)]="adminData.fldCorreoElectronico" 
+        name="correo" 
+        required 
+        aria-required="true" />
+
+      <!-- TELÉFONO -->
+      <label for="telefonoInput">Teléfono:</label>
+      <input 
+        id="telefonoInput"
+        type="text"
+        placeholder="10 dígitos"
+        [(ngModel)]="adminData.fldTelefono" 
+        name="telefono" 
+        required 
+        aria-required="true" />
+
+      <!-- CONTRASEÑA SOLO EN CREAR -->
+      <label *ngIf="modalMode === 'create'" for="passInput">Contraseña:</label>
+      <input 
+        *ngIf="modalMode === 'create'"
+        id="passInput"
+        type="password"
+        placeholder="********"
+        [(ngModel)]="adminData.fldContrasena" 
+        name="contrasena" 
+        required
+        aria-required="true" />
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary">
+          {{ modalMode === 'create' ? 'Crear' : 'Guardar Cambios' }}
+        </button>
+
+        <button type="button" class="btn-secondary" (click)="cerrarModal()">
+          Cancelar
+        </button>
+      </div>
+    </form>
+
+    <!-- ELIMINAR -->
+    <div *ngIf="modalMode === 'delete'">
+      <h2>¿Eliminar administrador?</h2>
+      <p>Esta acción no se puede deshacer.</p>
+
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmarEliminar()">Eliminar</button>
+        <button class="btn-secondary" (click)="cerrarModal()">Cancelar</button>
+      </div>
+    </div>
+
+  </div>
+</div>

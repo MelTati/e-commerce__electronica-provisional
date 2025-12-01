@@ -54,7 +54,9 @@
     <!-- Selección de tipo de pago -->
     <div class="carrito__pago">
       <label for="tipoPago">Tipo de pago:</label>
-      <select id="tipoPago" [(ngModel)]="tipoPago">
+      <select id="tipoPago" 
+              [ngModel]="tipoPago()" 
+              (ngModelChange)="tipoPago.set($event)">
         <option [value]="1">Tarjeta</option>
         <option [value]="2">Efectivo</option>
         <option [value]="3">Transferencia</option>
