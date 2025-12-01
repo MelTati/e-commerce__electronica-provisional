@@ -15,8 +15,10 @@ import { AdminUsuarios} from './admin/pages/register-admin/admin-usuarios';
 import { AdminClientes } from './admin/pages/register-cliente/admin-cliente';
 import { AdminProductos } from './admin/pages/register-products/admin-product';
 import { AdminVentas} from './admin/pages/register-ventas/admin-ventas';
+import { LoginAdmin}  from './admin/pages/login-admin/login-admin';
 
 export const routes: Routes = [
+  
   { path: '', component: Home },
   { path: 'products', component: Products },
   { path: 'product/:id', component: productDetail },
@@ -28,6 +30,7 @@ export const routes: Routes = [
   {path: 'categoria/:id', component: CategoriaPage},
   { path: 'productos/:id', component: ProductDetailComponent },
   { path: 'carrito', component: Cart },
+  { path: 'login-admin', component: LoginAdmin },
 
   {
     path: 'admin',

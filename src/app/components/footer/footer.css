@@ -1,39 +1,72 @@
-
 .footer {
-  background-color: var(--secondary-color); 
-  color: var(--text-color); 
-  padding: 7rem; 
-  border-top: 1px solid var(--border-color); 
-  text-align: center; 
-  font-family: var(--font-family);
-  border: solid 1px var(--border-color);
+    background-color: var(--secondary-color);
+    color: var(--background-color);
+    padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 5vw, 2rem);
+    font-size: clamp(0.75rem, 2vw, 0.95rem);
+    font-family: var(--font-family);
 }
 
 .footer__social {
-  margin-top: 1rem; 
-  text-align: center; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2rem);
 }
 
 .footer__social p {
-  margin-bottom: 0.5rem; 
-  color: var(--surface-color);
+    margin: 0;
+    font-weight: 600;
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    text-align: center;
+    color: var(--background-color);
+}
+
+.social-icons {
+    display: flex;
+    gap: clamp(0.8rem, 3vw, 1.5rem);
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .social-icons a {
-  margin: 0 0.5rem; 
-  display: inline-block;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(32px, 8vw, 40px);
+    height: clamp(32px, 8vw, 40px);
+    border-radius: var(--border-radius-md);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
 }
 
 .social-icons a:hover {
-  opacity: 1;
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
 }
 
 .social-icons img {
-  vertical-align: middle; 
+    display: block;
+    width: clamp(18px, 6vw, 30px);
+    height: clamp(18px, 6vw, 30px);
+}
+
+.footer__social a[routerLink] {
+    margin-top: 1rem;
+    text-decoration: none;
+    color: var(--background-color);
+    font-weight: 600;
+    transition: color 0.3s;
+    font-size: clamp(0.75rem, 2vw, 0.95rem);
+}
+
+.footer__social a[routerLink]:hover {
+    color: var(--text-color);
 }
 
 .footer__text {
-  margin-top: 0.5rem; 
+    margin-top: clamp(1rem, 3vw, 2rem);
+    text-align: center;
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    color: var(--background-color);
+    line-height: 1.6;
 }

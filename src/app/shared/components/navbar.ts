@@ -1,4 +1,4 @@
-import { Component, signal, AfterViewInit } from '@angular/core';
+import { Component, signal, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CategoriesService } from '../../services/categories.service';
@@ -11,35 +11,43 @@ import { CategoriesListInterface } from '../../interfaces/categories.list.interf
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
 })
-export class Navbar implements AfterViewInit {
+export class Navbar implements OnInit {
 
   categories = signal<CategoriesListInterface[]>([]);
+  menuOpen = signal(false);
 
   constructor(private categoriesService: CategoriesService) {}
 
-  ngOnInit() {
-    // Cargar categorías desde el servicio
-    this.categoriesService.getCategories()
-      .subscribe({
-        next: (data) => this.categories.set(data),
-        error: (err) => console.error('Error cargando categorías:', err)
-      });
+  ngOnInit(): void {
+    this.categoriesService.getCategories().subscribe({
+      next: (data) => this.categories.set(data),
+      error: (err) => console.error('Error cargando categorías:', err)
+    });
   }
 
-  ngAfterViewInit() {
-    // Menú hamburguesa responsivo
-    const hamburger = document.querySelector<HTMLButtonElement>('.header__hamburger');
-    const menu = document.querySelector<HTMLDivElement>('.header__menu');
+  toggleMenu(): void {
+    this.menuOpen.update(open => !open);
+  }
 
-    hamburger?.addEventListener('click', () => {
-      menu?.classList.toggle('active');
-    });
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
 
-    // Cerrar menú si se hace clic fuera
-    document.addEventListener('click', (event) => {
-      if (!hamburger?.contains(event.target as Node) && !menu?.contains(event.target as Node)) {
-        menu?.classList.remove('active');
-      }
-    });
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    const menu = document.querySelector('.header__menu');
+    const hamburger = document.querySelector('.header__hamburger');
+
+    if (
+      menu && hamburger &&
+      !menu.contains(event.target as Node) &&
+      !hamburger.contains(event.target as Node)
+    ) {
+      this.closeMenu();
+    }
+  }
+
+  trackById(index: number, item: CategoriesListInterface) {
+    return item.id_categorias;
   }
 }
