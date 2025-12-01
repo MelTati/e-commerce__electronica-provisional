@@ -1,5 +1,26 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { switchMap, Observable } from 'rxjs';
+
+export interface FinalizarVentaResponse {
+  total_pagado: number;
+}
+
+export interface CrearCarritoResponse {
+  idventas: number; // exactamente idventas
+}
+
+export interface ProductoCarrito {
+  idventas: number; // exactamente idventas
+  codigo_producto: number;
+  Producto: string;
+  Marca: string;
+  DetalleDescripcion: string;
+  DetalleUnidades: number;
+  PrecioUnitario: number;
+  cantidad: number;
+  subtotal: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +28,6 @@ import { HttpClient } from '@angular/common/http';
 export class CartService {
 
   private api = '/api/ventas';
-
   currentCartId = signal<number | null>(null);
 
   constructor(private http: HttpClient) {
@@ -16,18 +36,54 @@ export class CartService {
   }
 
   crearCarrito(telefono: string, id_usuario: number) {
-    return this.http.post<any>(this.api, { telefono, id_usuario });
+    return this.http.post<CrearCarritoResponse>(this.api, { telefono, id_usuario });
   }
 
-  addProduct(idVenta: number, codigo_producto: number, cantidad: number) {
-    return this.http.post(`${this.api}/${idVenta}/productos`, {
-      codigo_producto,
-      cantidad
+  addProduct(idventas: number, codigo_producto: number, cantidad: number) {
+    return this.http.post(`${this.api}/${idventas}/productos`, { codigo_producto, cantidad });
+  }
+
+  actualizarProducto(idventas: number, codigo_producto: number, nuevaCantidad: number) {
+    return this.http.put(`${this.api}/${idventas}/productos/${codigo_producto}`, {
+      nueva_cantidad: nuevaCantidad
     });
   }
-
-  obtenerCarrito(idVenta: number) {
-    return this.http.get(`${this.api}/${idVenta}`);
+   // Eliminar producto
+  eliminarProducto(idventas: number, codigo_producto: number) {
+    return this.http.delete(`${this.api}/${idventas}/productos/${codigo_producto}`);
   }
 
+  obtenerCarrito(idventas: number): Observable<ProductoCarrito[]> {
+    return this.http.get<ProductoCarrito[]>(`${this.api}/${idventas}`);
+  }
+
+  addOrUpdateProduct(idventas: number, codigo_producto: number, cantidad: number) {
+    return this.obtenerCarrito(idventas).pipe(
+      switchMap(carrito => {
+        const item = carrito.find(p => p.codigo_producto === codigo_producto);
+        if (item) {
+          const nuevaCantidad = item.cantidad + cantidad;
+          return this.actualizarProducto(idventas, codigo_producto, nuevaCantidad);
+        }
+        return this.addProduct(idventas, codigo_producto, cantidad);
+      })
+    );
+  }
+
+
+      // Finalizar venta
+  finalizarVenta(idventas: number, id_tipo_pago: number) {
+      // Asegurarse de enviar número y no string
+      return this.http.post<FinalizarVentaResponse>(`${this.api}/${idventas}/finalizar`, {
+        id_tipo_pago: Number(id_tipo_pago)
+      });
+      
+   }
+  
+
+  // Cancelar venta
+  cancelarVenta(idventas: number) {
+    return this.http.put(`${this.api}/${idventas}/cancelar`, {});
+  }
+  
 }

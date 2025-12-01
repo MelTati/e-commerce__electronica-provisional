@@ -30,7 +30,6 @@ export class ProductDetailComponent implements OnInit {
     'assets/img/no-image.jpg',
     'assets/img/no-image.jpg'
   ]);
-
   selectedImage = signal<string>('assets/img/no-image.jpg');
 
   @ViewChild('mainImage', { static: false }) mainImage!: ElementRef<HTMLImageElement>;
@@ -49,13 +48,11 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.route.paramMap
       .pipe(
         switchMap(params => {
           const id = Number(params.get('id'));
           this.productId.set(id);
-
           return id ? this.detailService.getProductDetailsById(id) : EMPTY;
         })
       )
@@ -63,6 +60,7 @@ export class ProductDetailComponent implements OnInit {
         next: (data) => {
           this.product.set(data);
 
+          // Reemplazar por imágenes reales si existen
           this.galleryImages.set([
             'assets/img/no-image.jpg',
             'assets/img/no-image.jpg',
@@ -71,7 +69,6 @@ export class ProductDetailComponent implements OnInit {
 
           this.selectedIndex.set(0);
           this.selectedImage.set(this.galleryImages()[0]);
-
           this.isLoading.set(false);
         },
         error: () => {
@@ -81,7 +78,6 @@ export class ProductDetailComponent implements OnInit {
       });
   }
 
-
   incrementCantidad() {
     if (this.product() && this.cantidad() < this.product()!.unidades) {
       this.cantidad.update(v => v + 1);
@@ -89,11 +85,8 @@ export class ProductDetailComponent implements OnInit {
   }
 
   decrementCantidad() {
-    if (this.cantidad() > 1) {
-      this.cantidad.update(v => v - 1);
-    }
+    if (this.cantidad() > 1) this.cantidad.update(v => v - 1);
   }
-
 
   setMainImage(index: number) {
     this.selectedIndex.set(index);
@@ -103,30 +96,20 @@ export class ProductDetailComponent implements OnInit {
   prevImage() {
     const idx = this.selectedIndex();
     const total = this.galleryImages().length;
-    const newIndex = idx === 0 ? total - 1 : idx - 1;
-    this.setMainImage(newIndex);
+    this.setMainImage(idx === 0 ? total - 1 : idx - 1);
   }
 
   nextImage() {
     const idx = this.selectedIndex();
     const total = this.galleryImages().length;
-    const newIndex = idx === total - 1 ? 0 : idx + 1;
-    this.setMainImage(newIndex);
+    this.setMainImage(idx === total - 1 ? 0 : idx + 1);
   }
 
-  openLightbox() {
-    this.showLightbox.set(true);
-  }
+  openLightbox() { this.showLightbox.set(true); }
+  closeLightbox() { this.showLightbox.set(false); }
 
-  closeLightbox() {
-    this.showLightbox.set(false);
-  }
-
-  // Swipe para móvil
   @HostListener('touchstart', ['$event'])
-  onTouchStart(e: TouchEvent) {
-    this.touchStartX = e.changedTouches[0].clientX;
-  }
+  onTouchStart(e: TouchEvent) { this.touchStartX = e.changedTouches[0].clientX; }
 
   @HostListener('touchend', ['$event'])
   onTouchEnd(e: TouchEvent) {
@@ -137,16 +120,18 @@ export class ProductDetailComponent implements OnInit {
 
   createLens() {
     if (!this.lens || !this.result || !this.mainImage) return;
+    const lensEl = this.lens.nativeElement;
+    const resultEl = this.result.nativeElement;
+    const imgEl = this.mainImage.nativeElement;
 
-    this.lens.nativeElement.style.display = "block";
-    this.result.nativeElement.style.display = "block";
+    lensEl.style.display = "block";
+    resultEl.style.display = "block";
 
-    const cx = this.result.nativeElement.offsetWidth / this.lens.nativeElement.offsetWidth;
-    const cy = this.result.nativeElement.offsetHeight / this.lens.nativeElement.offsetHeight;
+    const cx = resultEl.offsetWidth / lensEl.offsetWidth;
+    const cy = resultEl.offsetHeight / lensEl.offsetHeight;
 
-    this.result.nativeElement.style.backgroundImage = `url(${this.selectedImage()})`;
-    this.result.nativeElement.style.backgroundSize =
-      `${this.mainImage.nativeElement.width * cx}px ${this.mainImage.nativeElement.height * cy}px`;
+    resultEl.style.backgroundImage = `url(${this.selectedImage()})`;
+    resultEl.style.backgroundSize = `${imgEl.width * cx}px ${imgEl.height * cy}px`;
   }
 
   moveLens(e: MouseEvent) {
@@ -159,10 +144,8 @@ export class ProductDetailComponent implements OnInit {
     const maxX = this.mainImage.nativeElement.width - this.lens.nativeElement.offsetWidth;
     const maxY = this.mainImage.nativeElement.height - this.lens.nativeElement.offsetHeight;
 
-    if (x > maxX) x = maxX;
-    if (x < 0) x = 0;
-    if (y > maxY) y = maxY;
-    if (y < 0) y = 0;
+    x = Math.max(0, Math.min(x, maxX));
+    y = Math.max(0, Math.min(y, maxY));
 
     this.lens.nativeElement.style.left = x + "px";
     this.lens.nativeElement.style.top = y + "px";
@@ -170,8 +153,7 @@ export class ProductDetailComponent implements OnInit {
     const cx = this.result.nativeElement.offsetWidth / this.lens.nativeElement.offsetWidth;
     const cy = this.result.nativeElement.offsetHeight / this.lens.nativeElement.offsetHeight;
 
-    this.result.nativeElement.style.backgroundPosition =
-      `-${x * cx}px -${y * cy}px`;
+    this.result.nativeElement.style.backgroundPosition = `-${x * cx}px -${y * cy}px`;
   }
 
   removeLens() {
@@ -182,49 +164,47 @@ export class ProductDetailComponent implements OnInit {
 
   getCursorPos(e: MouseEvent) {
     const rect = this.mainImage.nativeElement.getBoundingClientRect();
-    return {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    };
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }
 
-  addToCart(codigo: number) {
-    const prod = this.product();
-    if (!prod) return;
+  // -------------------- CARRITO --------------------
 
-    let idVenta = this.cartService.currentCartId();
+  addToCart(codigo_producto: number) {
+  const prod = this.product();
+  if (!prod) return;
 
-    if (!idVenta) {
-      this.cartService.crearCarrito("9611234567", 1).subscribe({
-        next: (res) => {
-          idVenta = res.idventas;
+  const idventas = this.cartService.currentCartId();
 
-          this.cartService.currentCartId.set(idVenta!);
-          localStorage.setItem("venta_id", String(idVenta));
-
-          this.guardarProducto(idVenta!, codigo);
-        },
-        error: () => {
-          this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 2500 });
-        }
-      });
-
-      return;
-    }
-
-    this.guardarProducto(idVenta, codigo);
-  }
-
-  private guardarProducto(idVenta: number, codigo: number) {
-    this.cartService.addProduct(idVenta, codigo, this.cantidad()).subscribe({
-      next: () => {
-        this.snack.open('Producto agregado al carrito', 'Cerrar', { duration: 2000 });
-        this.router.navigate(['/carrito']);
+  if (!idventas) {
+    this.cartService.crearCarrito("9614309950", 1).subscribe({
+      next: (res) => {
+        this.cartService.currentCartId.set(res.idventas);
+        localStorage.setItem("venta_id", String(res.idventas));
+        this.addOrUpdateProduct(res.idventas, codigo_producto);
       },
       error: () => {
-        this.snack.open('Error al agregar', 'Cerrar', { duration: 2500 });
+        this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 2500 });
       }
     });
+  } else {
+    this.addOrUpdateProduct(idventas, codigo_producto);
   }
+}
+
+  private addOrUpdateProduct(idventas: number, codigo_producto: number) {
+  this.cartService.addOrUpdateProduct(idventas, codigo_producto, this.cantidad()).subscribe({
+    next: () => {
+      // Mostrar notificación
+      this.snack.open('Producto agregado al carrito', 'Cerrar', { duration: 2000 });
+      // Redirigir automáticamente al carrito después de un pequeño delay
+      setTimeout(() => {
+        this.router.navigate(['/carrito']);
+      }, 300); // 300ms para que el snack se vea antes de navegar
+    },
+    error: () => {
+      this.snack.open('Error al agregar el producto', 'Cerrar', { duration: 2500 });
+    }
+  });
+}
 
 }

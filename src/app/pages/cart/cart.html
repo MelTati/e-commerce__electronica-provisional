@@ -6,13 +6,14 @@
     Cargando...
   </div>
 
-  <section *ngIf="!isLoading()" class="carrito__content">
+  <section *ngIf="!isLoading() && detalles().length > 0" class="carrito__content">
 
     <div class="carrito-header-row">
       <span>Producto</span>
       <span>Cantidad</span>
       <span>Precio</span>
       <span>Subtotal</span>
+      <span>Acciones</span>
     </div>
 
     <div *ngFor="let item of detalles()" class="carrito-item-row">
@@ -25,15 +26,21 @@
       </div>
 
       <div class="carrito-item__quantity">
+        <button (click)="decrementar(item)">-</button>
         {{ item.cantidad }}
+        <button (click)="incrementar(item)">+</button>
       </div>
 
       <div class="carrito-item__price">
-        ${{ item.PrecioUnitario }}
+        ${{ item.PrecioUnitario | number:'1.2-2' }}
       </div>
 
       <div class="carrito-item__subtotal">
-        ${{ item.subtotal }}
+        ${{ item.subtotal | number:'1.2-2' }}
+      </div>
+
+      <div class="carrito-item__actions">
+        <button (click)="eliminar(item)">Eliminar</button>
       </div>
 
     </div>
@@ -41,8 +48,28 @@
     <hr class="carrito__divider">
 
     <h2 class="carrito__total">
-      Total: ${{ total }}
+      Total: ${{ total | number:'1.2-2' }}
     </h2>
 
+    <!-- Selección de tipo de pago -->
+    <div class="carrito__pago">
+      <label for="tipoPago">Tipo de pago:</label>
+      <select id="tipoPago" [(ngModel)]="tipoPago">
+        <option [value]="1">Tarjeta</option>
+        <option [value]="2">Efectivo</option>
+        <option [value]="3">Transferencia</option>
+      </select>
+    </div>
+
+    <div class="carrito__buttons">
+      <button (click)="finalizarCompra()">Finalizar Compra</button>
+      <button (click)="cancelarVenta()">Cancelar Venta</button>
+    </div>
+
   </section>
+
+  <div *ngIf="!isLoading() && detalles().length === 0" class="carrito__empty">
+    Tu carrito está vacío.
+  </div>
+
 </main>
