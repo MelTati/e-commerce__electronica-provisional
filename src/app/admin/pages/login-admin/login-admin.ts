@@ -1,8 +1,10 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AdminLoginService, AdminLoginResponse } from '../../../services/login-admin.service';
 import { LoginDTO } from '../../../interfaces/login.interface';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login-admin',
@@ -20,7 +22,9 @@ export class LoginAdmin {
   constructor(
     private fb: FormBuilder,
     private adminLoginService: AdminLoginService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -44,7 +48,7 @@ export class LoginAdmin {
 
       const payload: LoginDTO = {
         correo: this.loginForm.value.email,
-        contrasena: this.loginForm.value.password
+        contrasena: this.loginForm.value.password,
       };
 
       this.adminLoginService.iniciarSesion(payload).subscribe({
@@ -54,13 +58,15 @@ export class LoginAdmin {
           localStorage.setItem('token', res.token);
           localStorage.setItem('adminId', res.id);
           localStorage.setItem('rol', res.rol);
+          this.authService.updateStatus();
 
           console.log('LOGIN ADMIN EXITOSO:', res);
+          this.router.navigate(['/admin/admin-usuario']);
         },
-        error: (err: Error) => {
+        error: (err: any) => {
           this.loading = false;
-          this.errorMessage = err.message;
-        }
+          this.errorMessage = err?.error?.message || 'Error al iniciar sesión';
+        },
       });
     } else {
       this.loginForm.markAllAsTouched();

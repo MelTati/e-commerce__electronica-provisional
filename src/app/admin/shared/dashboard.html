@@ -1,43 +1,30 @@
-<div class="admin-container">
+<div *ngIf="isAdminLoggedIn" class="admin-container">
 
-  <!-- Botón hamburguesa -->
-  <button class="hamburger" mat-icon-button (click)="toggleSidebar()">
+  <button type="button" class="hamburger" mat-icon-button (click)="toggleSidebar()">
     <mat-icon>☰</mat-icon>
   </button>
 
-  <!-- Sidebar -->
   <aside class="sidebar" [class.open]="sidebarOpen">
     <div class="logo">
       <span>ADMIN PANEL</span>
     </div>
 
     <nav class="menu">
-      <a routerLink="admin-usuario"
-         routerLinkActive="active"
-         (click)="closeSidebar()">
-        Usuarios
-      </a>
-      <a routerLink="admin-cliente"
-         routerLinkActive="active"
-         (click)="closeSidebar()">
-        Clientes
-      </a>
-      <a routerLink="admin-product"
-         routerLinkActive="active"
-         (click)="closeSidebar()">
-        Productos
-      </a>
-      <a routerLink="admin-ventas"
-         routerLinkActive="active"
-         (click)="closeSidebar()">
-        Ventas
-      </a>
+      <a routerLink="admin-usuario" routerLinkActive="active" (click)="closeSidebar()">Usuarios</a>
+      <a routerLink="admin-cliente" routerLinkActive="active" (click)="closeSidebar()">Clientes</a>
+      <a routerLink="admin-product" routerLinkActive="active" (click)="closeSidebar()">Productos</a>
+      <a routerLink="admin-ventas" routerLinkActive="active" (click)="closeSidebar()">Ventas</a>
     </nav>
+
+    <button mat-button (click)="logout()">Cerrar sesión</button>
   </aside>
 
-  <!-- Contenido -->
   <main class="content" (click)="closeSidebar()">
     <router-outlet></router-outlet>
   </main>
 
+</div>
+
+<div *ngIf="!isAdminLoggedIn" class="no-access">
+  <p>No tienes acceso. <a routerLink="/login-admin">Inicia sesión</a></p>
 </div>
