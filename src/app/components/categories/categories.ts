@@ -42,10 +42,6 @@ export class CategoriesComponent implements OnInit {
     console.log(`Añadiendo ${product.label} (ID: ${product.id}) al carrito.`);
   }
 
-  /**
-   * Genera el enlace de detalle del producto.
-   */
-
   getProductDetailLink(id: number): string {
     return `/product-detail/${id}`;
   }

@@ -9,7 +9,8 @@ import { AdminProductosService } from '../../../services/admin-product.service';
 import { 
   ProductoDTO, 
   ProductoCreateDTO, 
-  ProductoUpdateDTO 
+  ProductoUpdateDTO,
+  CategoriaDTO
 } from '../../../interfaces/product-admin.interface';
 
 @Component({
@@ -27,6 +28,7 @@ import {
 export class AdminProductos implements OnInit {
 
   productos: ProductoDTO[] = [];
+  categorias: CategoriaDTO[] = [];
 
   showModal = false;
   modalMode: 'create' | 'edit' | 'delete' | null = null;
@@ -48,6 +50,7 @@ export class AdminProductos implements OnInit {
 
   ngOnInit(): void {
     this.obtenerProductos();
+    this.obtenerCategorias();
   }
 
   obtenerProductos(): void {
@@ -59,9 +62,16 @@ export class AdminProductos implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err: HttpErrorResponse) => {
-        this.mostrarAlerta(`❌ Error al cargar productos: ${err.message}`, 'error');
+        this.mostrarAlerta(`Error al cargar productos: ${err.message}`, 'error');
         this.isLoading = false;
       }
+    });
+  }
+
+  obtenerCategorias(): void {
+    this.productoService.listarCategorias().subscribe({
+      next: (cats) => this.categorias = cats,
+      error: () => this.mostrarAlerta('Error al cargar categorías', 'error')
     });
   }
 
@@ -76,11 +86,13 @@ export class AdminProductos implements OnInit {
     if (mode === 'edit' && producto) {
       this.productoEdit = {
         fldNombre: producto.fldNombre,
-        fldPrecio: producto.fldPrecio,
+        fldPrecio: Number(producto.fldPrecio),
         fldMarca: producto.fldMarca,
         descripcion: producto.descripcion,
-        unidades: producto.unidades
+        unidades: producto.unidades,
+        categorias: producto.categorias_ids.split(',').map(id => Number(id.trim()))
       };
+
       this.productoAEliminar = producto;
     }
 
@@ -99,28 +111,23 @@ export class AdminProductos implements OnInit {
 
   onSubmit(form: NgForm): void {
     if (!form.valid) {
-      this.mostrarAlerta('⚠️ Completa todos los campos obligatorios.', 'error');
+      this.mostrarAlerta('Completa todos los campos obligatorios.', 'error');
       return;
     }
 
-    if (this.modalMode === 'create') {
-      this.crearProducto(form);
-    }
-
-    if (this.modalMode === 'edit') {
-      this.editarProducto(form);
-    }
+    if (this.modalMode === 'create') this.crearProducto(form);
+    if (this.modalMode === 'edit') this.editarProducto(form);
   }
 
   private crearProducto(form: NgForm): void {
     this.productoService.crearProducto(this.productoCreate).subscribe({
       next: () => {
-        this.mostrarAlerta('✅ Producto registrado correctamente.', 'success');
+        this.mostrarAlerta('Producto registrado correctamente.', 'success');
         this.obtenerProductos();
         this.cerrarModalConRetraso(form);
       },
       error: (err: HttpErrorResponse) => {
-        this.mostrarAlerta(`❌ No se pudo registrar: ${err.error?.mensaje || err.message}`, 'error');
+        this.mostrarAlerta(err.error?.mensaje || err.message, 'error');
       }
     });
   }
@@ -133,12 +140,12 @@ export class AdminProductos implements OnInit {
       this.productoEdit
     ).subscribe({
       next: () => {
-        this.mostrarAlerta('✅ Producto actualizado correctamente.', 'success');
+        this.mostrarAlerta('Producto actualizado correctamente.', 'success');
         this.obtenerProductos();
         this.cerrarModalConRetraso(form);
       },
       error: (err: HttpErrorResponse) => {
-        this.mostrarAlerta(`❌ No se pudo actualizar: ${err.error?.mensaje || err.message}`, 'error');
+        this.mostrarAlerta(err.error?.mensaje || err.message, 'error');
       }
     });
   }
@@ -148,34 +155,35 @@ export class AdminProductos implements OnInit {
 
     this.productoService.eliminarProducto(this.productoAEliminar.codigo_producto).subscribe({
       next: () => {
-        this.mostrarAlerta('🗑 Producto eliminado correctamente', 'success');
+        this.mostrarAlerta('Producto eliminado correctamente', 'success');
         this.obtenerProductos();
         this.cerrarModal();
       },
       error: (err: HttpErrorResponse) => {
-        this.mostrarAlerta(`❌ No se pudo eliminar: ${err.error?.mensaje || err.message}`, 'error');
+        this.mostrarAlerta(err.error?.mensaje || err.message, 'error');
       }
     });
   }
 
-  // UTILIDADES
   private getEmptyCreateDTO(): ProductoCreateDTO {
     return {
       fldNombre: '',
-      fldPrecio: '',
+      fldPrecio: 0,
       fldMarca: '',
       descripcion: '',
-      unidades: 0
+      unidades: 0,
+      categorias: []
     };
   }
 
   private getEmptyUpdateDTO(): ProductoUpdateDTO {
     return {
       fldNombre: '',
-      fldPrecio: '',
+      fldPrecio: 0,
       fldMarca: '',
       descripcion: '',
-      unidades: 0
+      unidades: 0,
+      categorias: []
     };
   }
 

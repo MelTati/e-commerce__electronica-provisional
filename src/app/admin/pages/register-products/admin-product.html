@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary"> 
   <span>Productos</span>
   <span class="spacer"></span>
 
@@ -9,23 +9,22 @@
 
 <div class="container">
 
-  <!-- ALERTA -->
   <div *ngIf="mensaje" class="alert" [ngClass]="tipoMensaje" role="alert">
     {{ mensaje }}
   </div>
 
-  <!-- TABLA -->
   <div class="table-wrapper" *ngIf="productos.length > 0; else noData">
     <table class="tabla">
       <thead>
         <tr>
-          <th scope="col">Código</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Marca</th>
-          <th scope="col">Precio</th>
-          <th scope="col">Unidades</th>
-          <th scope="col">Descripción</th>
-          <th scope="col">Acciones</th>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Marca</th>
+          <th>Precio</th>
+          <th>Unidades</th>
+          <th>Categorías</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
         </tr>
       </thead>
 
@@ -36,6 +35,7 @@
           <td>{{ producto.fldMarca }}</td>
           <td>{{ producto.fldPrecio }}</td>
           <td>{{ producto.unidades }}</td>
+          <td>{{ producto.categorias_nombres }}</td>
           <td>{{ producto.descripcion }}</td>
 
           <td>
@@ -58,28 +58,34 @@
 
 </div>
 
-<!-- MODAL -->
 <div class="modal-backdrop" *ngIf="showModal">
   <div class="modal">
 
-    <!-- FORMULARIO CREAR -->
+    <!-- CREAR -->
     <form *ngIf="modalMode === 'create'" #productoForm="ngForm" (ngSubmit)="onSubmit(productoForm)">
       <h2>Registrar Producto</h2>
 
       <label for="nombreInput">Nombre:</label>
-      <input id="nombreInput" type="text" placeholder="Nombre del producto" [(ngModel)]="productoCreate.fldNombre" name="nombre" required aria-required="true" />
+      <input id="nombreInput" type="text" [(ngModel)]="productoCreate.fldNombre" name="nombre" required />
 
       <label for="marcaInput">Marca:</label>
-      <input id="marcaInput" type="text" placeholder="Marca del producto" [(ngModel)]="productoCreate.fldMarca" name="marca" required aria-required="true" />
+      <input id="marcaInput" type="text" [(ngModel)]="productoCreate.fldMarca" name="marca" required />
 
       <label for="precioInput">Precio:</label>
-      <input id="precioInput" type="text" placeholder="Precio" [(ngModel)]="productoCreate.fldPrecio" name="precio" required aria-required="true" />
+      <input id="precioInput" type="number" [(ngModel)]="productoCreate.fldPrecio" name="precio" required />
 
       <label for="unidadesInput">Unidades:</label>
-      <input id="unidadesInput" type="number" placeholder="Cantidad en stock" [(ngModel)]="productoCreate.unidades" name="unidades" required aria-required="true" />
+      <input id="unidadesInput" type="number" [(ngModel)]="productoCreate.unidades" name="unidades" required />
+
+      <label for="categoriaSelectCreate">Categorías:</label>
+      <select id="categoriaSelectCreate" class="menu-select" multiple [(ngModel)]="productoCreate.categorias" name="categorias" required>
+        <option *ngFor="let cat of categorias" [value]="cat.id_categorias">
+          {{ cat.fldNombre }}
+        </option>
+      </select>
 
       <label for="descripcionInput">Descripción:</label>
-      <textarea id="descripcionInput" placeholder="Descripción del producto" [(ngModel)]="productoCreate.descripcion" name="descripcion"></textarea>
+      <textarea id="descripcionInput" [(ngModel)]="productoCreate.descripcion" name="descripcion"></textarea>
 
       <div class="modal-actions">
         <button type="submit" class="btn-primary">Registrar</button>
@@ -87,24 +93,31 @@
       </div>
     </form>
 
-    <!-- FORMULARIO EDITAR -->
+    <!-- EDITAR -->
     <form *ngIf="modalMode === 'edit'" #productoForm="ngForm" (ngSubmit)="onSubmit(productoForm)">
       <h2>Editar Producto</h2>
 
       <label for="nombreInputEdit">Nombre:</label>
-      <input id="nombreInputEdit" type="text" placeholder="Nombre del producto" [(ngModel)]="productoEdit.fldNombre" name="nombreEdit" required aria-required="true" />
+      <input id="nombreInputEdit" type="text" [(ngModel)]="productoEdit.fldNombre" name="nombreEdit" required />
 
       <label for="marcaInputEdit">Marca:</label>
-      <input id="marcaInputEdit" type="text" placeholder="Marca del producto" [(ngModel)]="productoEdit.fldMarca" name="marcaEdit" required aria-required="true" />
+      <input id="marcaInputEdit" type="text" [(ngModel)]="productoEdit.fldMarca" name="marcaEdit" required />
 
       <label for="precioInputEdit">Precio:</label>
-      <input id="precioInputEdit" type="text" placeholder="Precio" [(ngModel)]="productoEdit.fldPrecio" name="precioEdit" required aria-required="true" />
+      <input id="precioInputEdit" type="number" [(ngModel)]="productoEdit.fldPrecio" name="precioEdit" required />
 
       <label for="unidadesInputEdit">Unidades:</label>
-      <input id="unidadesInputEdit" type="number" placeholder="Cantidad en stock" [(ngModel)]="productoEdit.unidades" name="unidadesEdit" required aria-required="true" />
+      <input id="unidadesInputEdit" type="number" [(ngModel)]="productoEdit.unidades" name="unidadesEdit" required />
+
+      <label for="categoriaSelectEdit">Categorías:</label>
+      <select id="categoriaSelectEdit" class="menu-select" multiple [(ngModel)]="productoEdit.categorias" name="categoriasEdit">
+        <option *ngFor="let cat of categorias" [value]="cat.id_categorias">
+          {{ cat.fldNombre }}
+        </option>
+      </select>
 
       <label for="descripcionInputEdit">Descripción:</label>
-      <textarea id="descripcionInputEdit" placeholder="Descripción del producto" [(ngModel)]="productoEdit.descripcion" name="descripcionEdit"></textarea>
+      <textarea id="descripcionInputEdit" [(ngModel)]="productoEdit.descripcion" name="descripcionEdit"></textarea>
 
       <div class="modal-actions">
         <button type="submit" class="btn-primary">Guardar Cambios</button>
@@ -112,7 +125,7 @@
       </div>
     </form>
 
-    <!-- MODAL ELIMINAR -->
+    <!-- ELIMINAR -->
     <div *ngIf="modalMode === 'delete'">
       <h2>¿Eliminar Producto?</h2>
       <p>Esta acción no se puede deshacer.</p>

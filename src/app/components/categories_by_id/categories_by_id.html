@@ -13,8 +13,8 @@
 
       <div class="product-card__image-container">
         <img
-          src="assets/img/no-image.jpg"
-          alt="{{ product.Producto }}"
+          [src]="getProductImage(product)"
+          [alt]="product.Producto"
           class="product-card__image"
           width="300"
           height="300"

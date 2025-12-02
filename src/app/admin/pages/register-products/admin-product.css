@@ -19,52 +19,46 @@
   font-family: var(--font-family);
 }
 
-/* ========================================================= */
-/*                       TITULO                              */
-/* ========================================================= */
-
-.component-title {
-  padding: 18px 22px;
+/* Toolbar */
+mat-toolbar {
   border-radius: var(--radius-md);
-  font-size: 20px;
-  font-weight: 700;
-  background-color: var(--primary-color);
-  color: #ffffff;
-  margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  margin-bottom: 25px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
 
-/* ========================================================= */
-/*                          CARD                             */
-/* ========================================================= */
+.spacer {
+  flex: 1 1 auto;
+}
 
-.card {
-  background-color: var(--surface-color);
-  border: 1px solid var(--border-color);
-  padding: 25px;
-  border-radius: var(--radius-md);
+/* Contenedor */
+.container {
   max-width: 1100px;
   margin: auto;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
 }
 
-/* ========================================================= */
-/*                          TABLA                            */
-/* ========================================================= */
+/* Alertas */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+.success { background: #d1fae5; color: #065f46; }
+.error { background: #fee2e2; color: #991b1b; }
 
+/* Tabla */
 .table-wrapper {
   overflow-x: auto;
-  margin-top: 20px;
   border-radius: var(--radius-md);
 }
 
-table {
+table.tabla {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px; 
+  min-width: 600px;
 }
 
-th {
+table.tabla th {
   padding: 14px;
   font-size: 15px;
   font-weight: 600;
@@ -74,27 +68,49 @@ th {
   text-align: left;
 }
 
-td {
+table.tabla td {
   padding: 14px;
   font-size: 14px;
   color: var(--text-color-secondary);
   border-bottom: 1px solid var(--border-color);
 }
 
-tr:last-child td {
+table.tabla tr:last-child td {
   border-bottom: none;
 }
 
-tr:hover td {
+table.tabla tr:hover td {
   background-color: rgba(59, 130, 246, 0.1);
   color: var(--text-color);
   transition: background-color .2s ease;
 }
 
-/* ========================================================= */
-/*                        MODAL                              */
-/* ========================================================= */
+/* Botones de acciones */
+td button {
+  padding: 6px 12px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  margin-right: 6px;
+  transition: 0.2s;
+  font-size: 13px;
+}
 
+td button:hover {
+  background: #2563eb;
+}
+
+td button.danger {
+  background: #dc2626;
+}
+
+td button.danger:hover {
+  background: #b91c1c;
+}
+
+/* Modal */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -127,7 +143,6 @@ tr:hover td {
   }
 }
 
-/* Título modal */
 .modal h2 {
   margin-top: 0;
   font-size: 22px;
@@ -136,7 +151,6 @@ tr:hover td {
   margin-bottom: 20px;
 }
 
-/* Inputs */
 .modal label {
   display: block;
   font-weight: 600;
@@ -146,7 +160,9 @@ tr:hover td {
   color: var(--text-color);
 }
 
-.modal input {
+.modal input,
+.modal textarea,
+.modal select {
   width: 100%;
   padding: 10px;
   border: 1px solid var(--border-color);
@@ -156,13 +172,28 @@ tr:hover td {
   transition: 0.2s;
 }
 
-.modal input:focus {
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
 }
 
-/* Botones */
+/* Select múltiple moderno */
+.menu-select {
+  height: auto;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: var(--radius-md);
+}
+
+.menu-select option {
+  padding: 6px;
+  border-radius: 6px;
+}
+
+/* Botones del modal */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -178,12 +209,9 @@ tr:hover td {
   border: none;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.btn-primary:hover {
-  background: #2563eb;
-}
+.btn-primary:hover { background: #2563eb; }
 
 .btn-secondary {
   background: #e5e7eb;
@@ -192,12 +220,9 @@ tr:hover td {
   border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.btn-secondary:hover {
-  background: #d1d5db;
-}
+.btn-secondary:hover { background: #d1d5db; }
 
 .btn-danger {
   background: #dc2626;
@@ -208,80 +233,69 @@ tr:hover td {
   cursor: pointer;
 }
 
-.btn-danger:hover {
-  background: #b91c1c;
+.btn-danger:hover { background: #b91c1c; }
+
+/* NO DATA */
+.no-data {
+  text-align: center;
+  color: var(--text-color-secondary);
+  margin-top: 25px;
+  font-size: 15px;
 }
 
-/* ========================================================= */
-/*                   RESPONSIVE UNIVERSAL                    */
-/* ========================================================= */
-
-/* Tablets y pantallas medianas */
+/* RESPONSIVE */
 @media (max-width: 992px) {
   :host { padding: 20px; }
-  .card { padding: 20px; }
-  .component-title { font-size: 18px; padding: 14px 18px; }
   th, td { padding: 10px; font-size: 13px; }
 }
 
-/* 768px */
 @media (max-width: 768px) {
   :host { padding: 15px; }
-  .card { padding: 16px; }
-  table { min-width: 500px; }
+  table.tabla { min-width: 500px; }
   .modal { max-width: 92%; padding: 20px; }
 }
 
-/* 480px */
 @media (max-width: 480px) {
   :host { padding: 10px; }
-  .card { padding: 12px; }
-  .component-title { font-size: 16px; padding: 12px 15px; }
-  table { min-width: 420px; }
-
+  table.tabla { min-width: 420px; }
   .modal { padding: 16px; }
   .modal h2 { font-size: 18px; }
-  .modal input { padding: 8px; font-size: 13px; }
-
+  .modal input,
+  .modal textarea,
+  .modal select { padding: 8px; font-size: 13px; }
   .modal-actions { flex-direction: column; }
   .modal-actions button { width: 100%; }
 }
 
-/* 360px */
 @media (max-width: 360px) {
   :host { padding: 8px; }
-  .card { padding: 10px; }
-  .component-title { font-size: 15px; }
-  table { min-width: 360px; }
-
+  table.tabla { min-width: 360px; }
   .modal { padding: 14px; }
   .modal h2 { font-size: 17px; }
-
   .modal label { font-size: 13px; }
-  .modal input { padding: 7px; font-size: 12px; }
+  .modal input,
+  .modal textarea,
+  .modal select { padding: 7px; font-size: 12px; }
 }
 
-/* 320px */
 @media (max-width: 320px) {
   :host { padding: 6px; }
-  .component-title { font-size: 14px; }
-  table { min-width: 340px; }
-
+  table.tabla { min-width: 340px; }
   .modal { padding: 12px; }
   .modal h2 { font-size: 16px; }
-  .modal input { padding: 6px; }
+  .modal input,
+  .modal textarea,
+  .modal select { padding: 6px; }
 }
 
-/* 280px — teléfonos muy pequeños */
 @media (max-width: 280px) {
   :host { padding: 4px; }
-  .component-title { font-size: 13px; padding: 6px 10px; }
-  table { min-width: 300px; }
-
+  table.tabla { min-width: 300px; }
   .modal { padding: 10px; border-radius: 8px; }
   .modal h2 { font-size: 15px; }
-  .modal input { padding: 5px; font-size: 11px; }
-
+  .modal input,
+  .modal textarea,
+  .modal select { padding: 5px; font-size: 11px; }
   .modal-actions button {
     font-size: 12px;
     padding: 8px;

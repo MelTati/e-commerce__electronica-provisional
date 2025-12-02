@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, Observable } from 'rxjs';
 
@@ -7,11 +8,11 @@ export interface FinalizarVentaResponse {
 }
 
 export interface CrearCarritoResponse {
-  idventas: number; // exactamente idventas
+  idventas: number;
 }
 
 export interface ProductoCarrito {
-  idventas: number; // exactamente idventas
+  idventas: number;
   codigo_producto: number;
   Producto: string;
   Marca: string;
@@ -29,10 +30,19 @@ export class CartService {
 
   private api = '/api/ventas';
   currentCartId = signal<number | null>(null);
+  private isBrowser = false;
 
-  constructor(private http: HttpClient) {
-    const saved = localStorage.getItem("venta_id");
-    if (saved) this.currentCartId.set(Number(saved));
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
+    // Solo acceder a localStorage en el navegador
+    if (this.isBrowser) {
+      const saved = localStorage.getItem("venta_id");
+      if (saved) this.currentCartId.set(Number(saved));
+    }
   }
 
   crearCarrito(telefono: string, id_usuario: number) {
@@ -48,7 +58,7 @@ export class CartService {
       nueva_cantidad: nuevaCantidad
     });
   }
-   // Eliminar producto
+
   eliminarProducto(idventas: number, codigo_producto: number) {
     return this.http.delete(`${this.api}/${idventas}/productos/${codigo_producto}`);
   }
@@ -70,20 +80,13 @@ export class CartService {
     );
   }
 
-
-      // Finalizar venta
   finalizarVenta(idventas: number, id_tipo_pago: number) {
-      // Asegurarse de enviar número y no string
-      return this.http.post<FinalizarVentaResponse>(`${this.api}/${idventas}/finalizar`, {
-        id_tipo_pago: Number(id_tipo_pago)
-      });
-      
-   }
-  
+    return this.http.post<FinalizarVentaResponse>(`${this.api}/${idventas}/finalizar`, {
+      id_tipo_pago: Number(id_tipo_pago)
+    });
+  }
 
-  // Cancelar venta
   cancelarVenta(idventas: number) {
     return this.http.put(`${this.api}/${idventas}/cancelar`, {});
   }
-  
 }
