@@ -22,7 +22,7 @@
                     [attr.aria-label]="'Ver imagen ' + (idx + 1)">
               <img [src]="img"
                    loading="lazy"
-                   [alt]="'Miniatura ' + (idx + 1)"
+                   [alt]="'Miniatura ' + (idx + 1 + ' de ' + galleryImages().length)"
                    class="product-detail__gallery-thumb">
             </button>
           </div>
@@ -37,8 +37,9 @@
 
               <img #mainImage
                    [src]="selectedImage()"
-                   [alt]="product()!.fldNombre"
+                   [alt]="product()?.fldNombre || 'Imagen del producto'"
                    class="product-detail__gallery-main-image"
+                   loading="lazy"
                    (mousemove)="moveLens($event)"
                    (mouseenter)="createLens()"
                    (mouseleave)="removeLens()"
@@ -58,38 +59,39 @@
         <!-- Detalles del producto -->
         <section class="product-detail__details product-detail__details--spaced">
           <h1 id="product-detail__title" class="product-detail__title">
-            {{ product()!.fldNombre }}
+            {{ product()?.fldNombre || 'Sin nombre' }}
           </h1>
 
           <p class="product-detail__price">
-            ${{ product()!.fldPrecio | number:'1.2-2' }}
+            ${{ product()?.fldPrecio | number:'1.2-2' }}
           </p>
 
           <div class="product-detail__info">
 
             <h3 class="product-detail__specs-title">Detalles del producto</h3>
             <ul class="product-detail__specs-list">
-              <li><strong>Marca:</strong> {{ product()!.fldMarca }}</li>
-              <li><strong>Descripción:</strong> {{ product()!.descripcion }}</li>
-              <li><strong>Disponibles:</strong> {{ product()!.unidades }} unidades</li>
+              <li><strong>Marca:</strong> {{ product()?.fldMarca || 'N/A' }}</li>
+              <li><strong>Descripción:</strong> {{ product()?.descripcion || 'N/A' }}</li>
+              <li><strong>Disponibles:</strong> {{ product()?.unidades ?? 0 }} unidades</li>
             </ul>
 
             <!-- Cantidad -->
             <div class="product-detail__cantidad">
-              <label>Cantidad</label>
+              <label for="cantidad-input">Cantidad</label>
               <div class="product-detail__cantidad-control">
                 <button type="button"
                         (click)="decrementCantidad()"
                         [disabled]="cantidad() <= 1">−</button>
 
-                <input type="text"
+                <input id="cantidad-input"
+                       type="text"
                        [value]="cantidad()"
                        readonly
-                       aria-label="Cantidad" />
+                       aria-label="Cantidad seleccionada" />
 
                 <button type="button"
                         (click)="incrementCantidad()"
-                        [disabled]="cantidad() >= product()!.unidades">+</button>
+                        [disabled]="cantidad() >= (product()?.unidades ?? 0)">+</button>
               </div>
             </div>
 
@@ -97,8 +99,8 @@
             <div class="product-detail__actions">
               <button type="button"
                       class="product-detail__btn product-detail__btn--primary"
-                      (click)="addToCart(product()!.codigo_producto)"
-                      [disabled]="product()!.unidades === 0">
+                      (click)="addToCart(product()?.codigo_producto!)"
+                      [disabled]="(product()?.unidades ?? 0) === 0">
                 Agregar al Carrito
               </button>
             </div>
@@ -123,7 +125,8 @@
          aria-modal="true">
       <img class="product-detail__lightbox-image"
            [src]="selectedImage()"
-           [alt]="product()?.fldNombre" />
+           [alt]="product()?.fldNombre || 'Imagen del producto'"
+           loading="lazy" />
     </div>
   </ng-container>
 
