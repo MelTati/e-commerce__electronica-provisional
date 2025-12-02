@@ -14,7 +14,7 @@
 
           <!-- Miniaturas -->
           <div class="product-detail__gallery-thumbs">
-            <button  *ngFor="let img of galleryImages(); let idx = index"
+            <button *ngFor="let img of galleryImages(); let idx = index"
                     type="button"
                     class="product-detail__gallery-thumb-wrapper"
                     [class.active]="selectedIndex() === idx"
