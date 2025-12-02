@@ -60,82 +60,62 @@ export class ProductDetailComponent implements OnInit {
         next: (data) => {
           this.product.set(data);
 
-          // Selección de imágenes externas según el nombre del producto
           const nombre = data.fldNombre || '';
+
           const galleryMap: Record<string, string[]> = {
-          // Circuito integrado 555
-          '555': [
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBKyeQ56LvXTJVPHr1BTWNYAS6swzezmNk4DkMeX5c2dYw?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBniBJdV-ThQ6P9zjjhkaLlAcPa7YbsRNAzwZUJwEX7AIc?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDETcwCIgP9S4Gd_C6SWPPLAe8l86Ad0R6BaUQ0x5-BA9o?download=1'
-          ],
-
-          // Condensador 10uF
-          '10uF': [
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD1nSU8zRXZRZM0RsYyVk40AYCgxajeJlWSrNZ0EyVH3rA?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAzN5SXuW53TIQ4WPzkh1iSAZpR-1wShDcFqowEU2kW03w?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBCuP7djt1XR5LLuEZq7qu-ATQPQ5sH-YNYciUEDQvodKM?download=1'
-          ],
-
-          // Condensador 100uF
-          '100uF': [
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBxX8M40m94QJfmYzLu7_nUARWbbHrU2ZLMo5D1Q-fB9Kw?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDhPQnX0CYfTatGt4aPK_NaARIxBUnQqT2rrR9d2odiP1M?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDURpF00IJ3TZ0J4M52RwI2Ae76UX5xdnGjXChYPcI7TU8?download=1'
-          ],
-
-          // Diodo rectificador 1N4007
-          '1N4007': [
-            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDYrodsIvyZRKkvQVvQ7ILaAUqHhSTg7NTxJEp2wDNDkO8?download=1',
-            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA0U0ynqS2dSITCTSjvjwWEATty7DvLJLeXjrx22RjdZ-0?download=1',
-            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA5b64TloIxSbFNDUhk6oxIAdKsP124Rv4FAe-K6OYbdIk?download=1'
-          ],
-
-          // LED rojo 5mm
-          'LED rojo': [
-            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQCAmk2l6wRMTZMoDIh1zg4lAbCEMtR2w5m_iI6MahQiDhM?download=1',
-            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAElwE9OXH4SLgEsC-fvY1cARQHGPEPat2a4xg0KY7bq8E?download=1',
-            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDhsz_bxQiuT5PwOzIRQ0f9AUi_OoLJTQaIyky9DP8poRU?download=1'
-          ],
-
-          // LED verde 5mm
-          'LED verde': [
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBpWyJIy869RoZI6T3RPInUAc1oyOsyrulqytkdAxXTlvU?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDRToak0TvQS4gqiM4nxnmEAbJOILRY0n2eECg1FkGqtWM?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQASFBNXWYERQ6Q7KhsK1-A4ASuWi29OLobkLo4g-LvvF7M?download=1'
-          ],
-
-          // Resistor 10kΩ
-          '10kΩ': [
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQA67S2QOfjiSJrnzfqeGbPzAS1JDEK4yDgYEPvGzzFlBgw?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQA5RI6XkE27SLsckfpJAzkIAcBDwqs91rgToaD3UmDFvyI?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCtztiqse08SphWq1S7iKleARZl6Pgfu84A24geGsQSJZE?download=1'
-          ],
-
-          // Resistor 1/4 W
-          '1/4W': [
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCF6vcgUA5KRqZhMxhWDg2wAT9NJE_gh5WbPL5hwhSL7JY?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAl9YOzAIq2SqVbhftDpre8AeNNEcG6kglEe2m90wfR2Ro?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBb6MIOkk_sR5nrXwz4HjnFAagZZrpj_P2JACD9gwF5jN4?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQA1Q0vhujRET5siQYB2-YwZAZCn99-UaE5VNPRgp6YF9R0?download=1'
-          ],
-
-          // Transistor NPN
-          'NPN': [
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAco-RBkJwcQ4hbFZvd5TwmAfNta5TUM0sdoXVJkGgpQnY?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCXa8Q5_gTGSpDb95juVojAASuUCHCc9FxzAmCr1CAWYOM?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDmNxpDmPbnR74-vaDjLnI2AZeWEiWH9WMkEj46XLNz5bc?download=1'
-          ],
-
-          // Transistor PNP BC558
-          'PNP': [
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQC-9nWcsqC-SZU6-KrxImhrAakq1L5jSShd2HVTxKau0Rs?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBLlY8KdGQrQ6kP48A6a6ySAUdpr4M1KHYGWrutEderipM?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCj618xQxHeRp-Ys-hOZHYcAdy9y3tkLhQaFextQ8zoxj4?download=1',
-            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD4nS0COaVVQZ2kfbv4ANdkAeLh-2423ziSrzN3eNGQNaI?download=1'
-          ]
-        };
-
+            '555': [
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBKyeQ56LvXTJVPHr1BTWNYAS6swzezmNk4DkMeX5c2dYw?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBniBJdV-ThQ6P9zjjhkaLlAcPa7YbsRNAzwZUJwEX7AIc?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDETcwCIgP9S4Gd_C6SWPPLAe8l86Ad0R6BaUQ0x5-BA9o?download=1'
+            ],
+            '10uF': [
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD1nSU8zRXZRZM0RsYyVk40AYCgxajeJlWSrNZ0EyVH3rA?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAzN5SXuW53TIQ4WPzkh1iSAZpR-1wShDcFqowEU2kW03w?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBCuP7djt1XR5LLuEZq7qu-ATQPQ5sH-YNYciUEDQvodKM?download=1'
+            ],
+            '100uF': [
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBxX8M40m94QJfmYzLu7_nUARWbbHrU2ZLMo5D1Q-fB9Kw?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDhPQnX0CYfTatGt4aPK_NaARIxBUnQqT2rrR9d2odiP1M?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDURpF00IJ3TZ0J4M52RwI2Ae76UX5xdnGjXChYPcI7TU8?download=1'
+            ],
+            '1N4007': [
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDYrodsIvyZRKkvQVvQ7ILaAUqHhSTg7NTxJEp2wDNDkO8?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA0U0ynqS2dSITCTSjvjwWEATty7DvLJLeXjrx22RjdZ-0?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA5b64TloIxSbFNDUhk6oxIAdKsP124Rv4FAe-K6OYbdIk?download=1'
+            ],
+            'LED rojo': [
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQCAmk2l6wRMTZMoDIh1zg4lAbCEMtR2w5m_iI6MahQiDhM?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAElwE9OXH4SLgEsC-fvY1cARQHGPEPat2a4xg0KY7bq8E?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDhsz_bxQiuT5PwOzIRQ0f9AUi_OoLJTQaIyky9DP8poRU?download=1'
+            ],
+            'LED verde': [
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBpWyJIy869RoZI6T3RPInUAc1oyOsyrulqytkdAxXTlvU?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDRToak0TvQS4gqiM4nxnmEAbJOILRY0n2eECg1FkGqtWM?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQASFBNXWYERQ6Q7KhsK1-A4ASuWi29OLobkLo4g-LvvF7M?download=1'
+            ],
+            '10kΩ': [
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQA67S2QOfjiSJrnzfqeGbPzAS1JDEK4yDgYEPvGzzFlBgw?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQA5RI6XkE27SLsckfpJAzkIAcBDwqs91rgToaD3UmDFvyI?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCtztiqse08SphWq1S7iKleARZl6Pgfu84A24geGsQSJZE?download=1'
+            ],
+            '1/4W': [
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCF6vcgUA5KRqZhMxhWDg2wAT9NJE_gh5WbPL5hwhSL7JY?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAl9YOzAIq2SqVbhftDpre8AeNNEcG6kglEe2m90wfR2Ro?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBb6MIOkk_sR5nrXwz4HjnFAagZZrpj_P2JACD9gwF5jN4?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQA1Q0vhujRET5siQYB2-YwZAZCn99-UaE5VNPRgp6YF9R0?download=1'
+            ],
+            'NPN': [
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAco-RBkJwcQ4hbFZvd5TwmAfNta5TUM0sdoXVJkGgpQnY?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCXa8Q5_gTGSpDb95juVojAASuUCHCc9FxzAmCr1CAWYOM?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDmNxpDmPbnR74-vaDjLnI2AZeWEiWH9WMkEj46XLNz5bc?download=1'
+            ],
+            'PNP': [
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQC-9nWcsqC-SZU6-KrxImhrAakq1L5jSShd2HVTxKau0Rs?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBLlY8KdGQrQ6kP48A6a6ySAUdpr4M1KHYGWrutEderipM?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCj618xQxHeRp-Ys-hOZHYcAdy9y3tkLhQaFextQ8zoxj4?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD4nS0COaVVQZ2kfbv4ANdkAeLh-2423ziSrzN3eNGQNaI?download=1'
+            ]
+          };
 
           let selectedGallery = Object.keys(galleryMap).find(key => nombre.includes(key));
           this.galleryImages.set(selectedGallery ? galleryMap[selectedGallery] : [
