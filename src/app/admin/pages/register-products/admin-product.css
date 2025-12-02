@@ -4,9 +4,9 @@
   --background-color: #ffffff;
   --surface-color: #ffffff;
   --text-color: #000000;
-
   --text-color-secondary: #4b5563;
   --border-color: #e5e7eb;
+
   --radius-md: 10px;
   --radius-lg: 14px;
 
@@ -19,7 +19,6 @@
   font-family: var(--font-family);
 }
 
-/* Toolbar */
 mat-toolbar {
   border-radius: var(--radius-md);
   margin-bottom: 25px;
@@ -30,13 +29,11 @@ mat-toolbar {
   flex: 1 1 auto;
 }
 
-/* Contenedor */
 .container {
   max-width: 1100px;
   margin: auto;
 }
 
-/* Alertas */
 .alert {
   padding: 12px 16px;
   border-radius: var(--radius-md);
@@ -46,7 +43,6 @@ mat-toolbar {
 .success { background: #d1fae5; color: #065f46; }
 .error { background: #fee2e2; color: #991b1b; }
 
-/* Tabla */
 .table-wrapper {
   overflow-x: auto;
   border-radius: var(--radius-md);
@@ -75,9 +71,7 @@ table.tabla td {
   border-bottom: 1px solid var(--border-color);
 }
 
-table.tabla tr:last-child td {
-  border-bottom: none;
-}
+table.tabla tr:last-child td { border-bottom: none; }
 
 table.tabla tr:hover td {
   background-color: rgba(59, 130, 246, 0.1);
@@ -85,7 +79,6 @@ table.tabla tr:hover td {
   transition: background-color .2s ease;
 }
 
-/* Botones de acciones */
 td button {
   padding: 6px 12px;
   background: var(--primary-color);
@@ -98,19 +91,10 @@ td button {
   font-size: 13px;
 }
 
-td button:hover {
-  background: #2563eb;
-}
+td button:hover { background: #2563eb; }
+td button.danger { background: #dc2626; }
+td button.danger:hover { background: #b91c1c; }
 
-td button.danger {
-  background: #dc2626;
-}
-
-td button.danger:hover {
-  background: #b91c1c;
-}
-
-/* Modal */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -133,14 +117,8 @@ td button.danger:hover {
 }
 
 @keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: translateY(-15px) scale(.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(-15px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .modal h2 {
@@ -177,7 +155,7 @@ td button.danger:hover {
 .modal select:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.25);
 }
 
 /* Select múltiple moderno */
@@ -193,7 +171,6 @@ td button.danger:hover {
   border-radius: 6px;
 }
 
-/* Botones del modal */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -235,7 +212,6 @@ td button.danger:hover {
 
 .btn-danger:hover { background: #b91c1c; }
 
-/* NO DATA */
 .no-data {
   text-align: center;
   color: var(--text-color-secondary);
@@ -243,7 +219,6 @@ td button.danger:hover {
   font-size: 15px;
 }
 
-/* RESPONSIVE */
 @media (max-width: 992px) {
   :host { padding: 20px; }
   th, td { padding: 10px; font-size: 13px; }
@@ -299,5 +274,39 @@ td button.danger:hover {
   .modal-actions button {
     font-size: 12px;
     padding: 8px;
+  }
+}
+
+@media (max-width: 1366px) and (min-width: 769px) {
+  .modal {
+    max-width: 320px;
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .modal h2 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .modal label {
+    font-size: 13px;
+  }
+
+  .modal input,
+  .modal textarea,
+  .modal select {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .modal-actions {
+    margin-top: 18px;
+    gap: 8px;
+  }
+
+  .modal-actions button {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 }
