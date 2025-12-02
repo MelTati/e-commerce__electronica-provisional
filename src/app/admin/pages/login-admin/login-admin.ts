@@ -11,6 +11,7 @@ import { LoginDTO } from '../../../interfaces/login.interface';
   templateUrl: './login-admin.html',
   styleUrls: ['./login-admin.css'],
 })
+
 export class LoginAdmin {
   loginForm: FormGroup;
   loading = false;
