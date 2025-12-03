@@ -18,6 +18,7 @@ import { PLATFORM_ID } from '@angular/core';
   templateUrl: './ProductDetail.html',
   styleUrls: ['./ProductDetail.css']
 })
+
 export class ProductDetailComponent implements OnInit {
 
   product = signal<ProductDetailDTO | null>(null);
