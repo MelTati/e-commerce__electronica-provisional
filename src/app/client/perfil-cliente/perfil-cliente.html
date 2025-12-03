@@ -1,0 +1,44 @@
+<div class="perfil-container">
+  <h2>Editar mi Perfil</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <label for="nombres">Nombres</label>
+    <input
+      id="nombres"
+      formControlName="fldNombres"
+      placeholder="Ingresa tus nombres"
+      type="text"
+    />
+
+    <label for="apellidos">Apellidos</label>
+    <input
+      id="apellidos"
+      formControlName="fldApellidos"
+      placeholder="Ingresa tus apellidos"
+      type="text"
+    />
+
+    <label for="correo">Correo electrónico</label>
+    <input
+      id="correo"
+      formControlName="fldCorreoElectronico"
+      placeholder="correo@ejemplo.com"
+      type="email"
+    />
+
+    <label for="contrasena">Nueva contraseña (opcional)</label>
+    <input
+      id="contrasena"
+      formControlName="fldContrasena"
+      placeholder="••••••••"
+      type="password"
+    />
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Guardando...' : 'Actualizar' }}
+    </button>
+
+    <p class="mensaje">{{ message }}</p>
+  </form>
+</div>

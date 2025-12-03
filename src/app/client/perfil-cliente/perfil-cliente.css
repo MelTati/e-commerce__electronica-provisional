@@ -1,0 +1,68 @@
+:root {
+  --bg: #ffffff;
+  --text: #222222;
+  --primary: #4a6cf7;
+  --border: #dddddd;
+  --radius: 10px;
+}
+
+.perfil-container {
+  max-width: 480px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--bg);
+  color: var(--text);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-sizing: border-box;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 0.95rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mensaje {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+  .perfil-container {
+    margin: 1rem;
+    padding: 1.2rem;
+  }
+}

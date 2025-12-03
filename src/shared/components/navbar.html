@@ -1,0 +1,71 @@
+<header class="header">
+
+  <div class="header__top">
+    <p class="header__info">Envío gratis en compras mayores a $50.00</p>
+    <nav class="header__nav">
+      <ul class="header__nav-list">
+        <li class="header__nav-item"><a routerLink="/location">Ubicanos</a></li>
+        <li class="header__nav-item"><a routerLink="/contact">Contacto</a></li>
+        <li class="header__nav-item"><a routerLink="/about">Acerca de</a></li>
+        <li class="header__nav-item header__nav-der">
+          <a routerLink="login-admin" aria-label="Iniciar sesión como administrador">
+            <img src="assets/img/perfil.png" height="20px" width="20px" alt="Icono de perfil">
+          </a>
+       </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="header__container" id="main-header-container">
+
+    <div class="header__logo">
+      <a routerLink="">
+        <img src="assets/img/logo.png" alt="Logo de SmartPoint">
+      </a>
+    </div>
+
+    <div class="header__search">
+      <input id="search" type="search" class="header__search-input"
+        placeholder="Busca tus productos..." />
+    </div>
+
+    <div class="header__user-actions">
+
+      <div class="header__user" *ngIf="!isClientLogged()">
+        <a routerLink="/login" class="header__user-link header__user-link--login">Iniciar Sesión</a>
+        <a routerLink="/register" class="header__user-link header__user-link--register">Registrarse</a>
+      </div>
+
+      <div class="header__user" *ngIf="isClientLogged()">
+        <a routerLink="/perfil" aria-label="Ver perfil">
+          <img src="assets/img/perfil.png" height="32" width="32" alt="Perfil">
+        </a>
+
+        <button  type="button"   (click)="logout()" class="header__logout-btn">
+          Exit
+        </button>
+      </div>
+
+      <a routerLink="/carrito" class="header__cart" aria-label="Carrito de compras">
+        <span class="header__cart-total">$0.00</span>
+        <i class="fa-solid fa-cart-shopping"></i>
+      </a>
+
+      <button type="button" class="header__hamburger"
+        (click)="toggleMenu()" aria-label="Abrir menú">☰</button>
+    </div>
+  </div>
+
+  <nav class="header__menu" [class.active]="menuOpen()">
+    <ul class="header__menu-list">
+      <li *ngFor="let cat of categories(); trackBy: trackById"
+          class="header__menu-item">
+        <a class="header__menu-link"
+           [routerLink]="['/categoria', cat.id_categorias]">
+          {{ cat.fldNombre }}
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+</header>
