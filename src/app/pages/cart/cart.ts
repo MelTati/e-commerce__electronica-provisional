@@ -30,6 +30,12 @@ export class Cart implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.isBrowser && !this.cartService.currentCartId()) {
+      const storedId = localStorage.getItem('venta_id');
+      if (storedId) {
+        this.cartService.currentCartId.set(Number(storedId));
+      }
+    }
     this.loadCarrito();
   }
 

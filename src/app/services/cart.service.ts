@@ -1,7 +1,7 @@
 import { Injectable, signal, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { switchMap, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface FinalizarVentaResponse {
   total_pagado: number;
@@ -68,16 +68,7 @@ export class CartService {
   }
 
   addOrUpdateProduct(idventas: number, codigo_producto: number, cantidad: number) {
-    return this.obtenerCarrito(idventas).pipe(
-      switchMap(carrito => {
-        const item = carrito.find(p => p.codigo_producto === codigo_producto);
-        if (item) {
-          const nuevaCantidad = item.cantidad + cantidad;
-          return this.actualizarProducto(idventas, codigo_producto, nuevaCantidad);
-        }
-        return this.addProduct(idventas, codigo_producto, cantidad);
-      })
-    );
+    return this.addProduct(idventas, codigo_producto, cantidad);
   }
 
   finalizarVenta(idventas: number, id_tipo_pago: number) {

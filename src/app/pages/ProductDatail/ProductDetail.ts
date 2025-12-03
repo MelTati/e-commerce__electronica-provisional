@@ -1,6 +1,7 @@
-import { Component, OnInit, signal, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ElementRef, HostListener, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProductDetailService } from '../../services/ProductDetail.service';
@@ -8,6 +9,7 @@ import { CartService } from '../../services/cart.service';
 import { ProductDetailDTO } from '../../interfaces/ProductDetail.interface';
 import { switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
+import { PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-product-detail',
@@ -39,15 +41,27 @@ export class ProductDetailComponent implements OnInit {
   showLightbox = signal(false);
   private touchStartX = 0;
 
+  private isBrowser: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private detailService: ProductDetailService,
     private cartService: CartService,
     private router: Router,
-    private snack: MatSnackBar
-  ) {}
+    private snack: MatSnackBar,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
+    if (this.isBrowser && !this.cartService.currentCartId()) {
+      const storedId = localStorage.getItem('venta_id');
+      if (storedId) {
+        this.cartService.currentCartId.set(Number(storedId));
+      }
+    }
+
     this.route.paramMap
       .pipe(
         switchMap(params => {
@@ -236,7 +250,9 @@ export class ProductDetailComponent implements OnInit {
       this.cartService.crearCarrito("9614309950", 1).subscribe({
         next: (res) => {
           this.cartService.currentCartId.set(res.idventas);
-          localStorage.setItem("venta_id", String(res.idventas));
+          if (this.isBrowser) {
+            localStorage.setItem("venta_id", String(res.idventas));
+          }
           this.addOrUpdateProduct(res.idventas, codigo_producto);
         },
         error: () => {
