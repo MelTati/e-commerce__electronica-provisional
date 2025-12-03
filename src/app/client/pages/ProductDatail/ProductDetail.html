@@ -1,18 +1,19 @@
 <main class="product-detail">
 
-  <!-- Loading -->
   <ng-container *ngIf="isLoading(); else loadedContent">
-    <div class="product-detail__loading">Cargando...</div>
+    <div class="product-detail__loading" role="status" aria-live="polite">
+      Cargando...
+    </div>
   </ng-container>
 
   <ng-template #loadedContent>
-    <!-- Producto -->
+
     <ng-container *ngIf="product(); else notFound">
+
       <section class="product-detail__product" aria-labelledby="product-detail__title">
 
         <div class="product-detail__gallery-wrapper">
 
-          <!-- Miniaturas -->
           <div class="product-detail__gallery-thumbs">
             <button *ngFor="let img of galleryImages(); let idx = index"
                     type="button"
@@ -22,12 +23,12 @@
                     [attr.aria-label]="'Ver imagen ' + (idx + 1)">
               <img [src]="img"
                    loading="lazy"
-                   [alt]="'Miniatura ' + (idx + 1 + ' de ' + galleryImages().length)"
+                   (error)="selectedImage.set('assets/img/no-image.jpg')"
+                   [alt]="'Miniatura ' + (idx + 1) + ' de ' + galleryImages().length"
                    class="product-detail__gallery-thumb">
             </button>
           </div>
 
-          <!-- Imagen principal con zoom -->
           <div class="product-detail__image-with-zoom">
             <div class="product-detail__gallery-main">
               <button type="button"
@@ -43,7 +44,8 @@
                    (mousemove)="moveLens($event)"
                    (mouseenter)="createLens()"
                    (mouseleave)="removeLens()"
-                   (click)="openLightbox()">
+                   (click)="openLightbox()"
+                   (error)="selectedImage.set('assets/img/no-image.jpg')">
 
               <button type="button"
                       class="product-detail__gallery-arrow product-detail__gallery-arrow--right"
@@ -54,15 +56,15 @@
             <div #lens class="product-detail__zoom-lens" aria-hidden="true"></div>
             <div #result class="product-detail__zoom-result" aria-hidden="true"></div>
           </div>
+
         </div>
 
-        <!-- Detalles del producto -->
-        <section class="product-detail__details product-detail__details--spaced">
+        <section class="product-detail__details" aria-labelledby="product-detail__title">
           <h1 id="product-detail__title" class="product-detail__title">
             {{ product()?.fldNombre || 'Sin nombre' }}
           </h1>
 
-          <p class="product-detail__price">
+          <p class="product-detail__price" aria-label="Precio">
             ${{ product()?.fldPrecio | number:'1.2-2' }}
           </p>
 
@@ -75,13 +77,13 @@
               <li><strong>Disponibles:</strong> {{ product()?.unidades ?? 0 }} unidades</li>
             </ul>
 
-            <!-- Cantidad -->
             <div class="product-detail__cantidad">
               <label for="cantidad-input">Cantidad</label>
               <div class="product-detail__cantidad-control">
                 <button type="button"
                         (click)="decrementCantidad()"
-                        [disabled]="cantidad() <= 1">−</button>
+                        [disabled]="cantidad() <= 1"
+                        aria-label="Disminuir cantidad">−</button>
 
                 <input id="cantidad-input"
                        type="text"
@@ -91,16 +93,17 @@
 
                 <button type="button"
                         (click)="incrementCantidad()"
-                        [disabled]="cantidad() >= (product()?.unidades ?? 0)">+</button>
+                        [disabled]="cantidad() >= (product()?.unidades ?? 0)"
+                        aria-label="Aumentar cantidad">+</button>
               </div>
             </div>
 
-            <!-- Botón Agregar al carrito -->
             <div class="product-detail__actions">
               <button type="button"
                       class="product-detail__btn product-detail__btn--primary"
                       (click)="addToCart(product()?.codigo_producto!)"
-                      [disabled]="(product()?.unidades ?? 0) === 0">
+                      [disabled]="(product()?.unidades ?? 0) === 0"
+                      aria-label="Agregar al carrito">
                 Agregar al Carrito
               </button>
             </div>
@@ -109,15 +112,17 @@
         </section>
 
       </section>
+
     </ng-container>
 
-    <!-- Producto no encontrado -->
     <ng-template #notFound>
-      <div class="product-detail__error">Producto no encontrado.</div>
+      <div class="product-detail__error" role="alert">
+        Producto no encontrado.
+      </div>
     </ng-template>
+
   </ng-template>
 
-  <!-- Lightbox -->
   <ng-container *ngIf="showLightbox()">
     <div class="product-detail__lightbox"
          (click)="closeLightbox()"
@@ -126,7 +131,8 @@
       <img class="product-detail__lightbox-image"
            [src]="selectedImage()"
            [alt]="product()?.fldNombre || 'Imagen del producto'"
-           loading="lazy" />
+           loading="lazy"
+           (error)="selectedImage.set('assets/img/no-image.jpg')"/>
     </div>
   </ng-container>
 
