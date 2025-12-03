@@ -1,21 +1,21 @@
 <div class="perfil-container">
-  <h2>Editar mi Perfil</h2>
+  <h2>Editar mi Perfil (Admin)</h2>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-    <label for="nombres">Nombres<strong>*</strong></label>
+    <label for="telefono">Teléfono<strong>*</strong></label>
     <input
-      id="nombres"
-      formControlName="fldNombres"
-      placeholder="Ingresa tus nombres"
+      id="telefono"
+      formControlName="fldTelefono"
+      placeholder="Ingresa tu teléfono"
       type="text"
     />
 
-    <label for="apellidos">Apellidos<strong>*</strong></label>
+    <label for="nombre">Nombre completo<strong>*</strong></label>
     <input
-      id="apellidos"
-      formControlName="fldApellidos"
-      placeholder="Ingresa tus apellidos"
+      id="nombre"
+      formControlName="fldNombre"
+      placeholder="Ingresa tu nombre completo"
       type="text"
     />
 

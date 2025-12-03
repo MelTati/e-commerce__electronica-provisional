@@ -17,6 +17,7 @@ export class Navbar implements OnInit {
   categories = signal<CategoriesListInterface[]>([]);
   menuOpen = signal(false);
   isClientLogged = signal(false);
+  isAdminLogged = signal(false);
 
   constructor(
     private categoriesService: CategoriesService,
@@ -30,6 +31,7 @@ export class Navbar implements OnInit {
     });
 
     this.authService.isClientLoggedIn$.subscribe(v => this.isClientLogged.set(v));
+    this.authService.isAdminLoggedIn$.subscribe(v => this.isAdminLogged.set(v));
   }
 
   toggleMenu(): void {
@@ -43,6 +45,10 @@ export class Navbar implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/']);
+  }
+
+  goToAdminProfile() {
+    this.router.navigate(['/admin/perfil-admin']);
   }
 
   trackById(index: number, item: CategoriesListInterface) {

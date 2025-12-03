@@ -46,10 +46,18 @@ export class AuthService {
 
     if (!id || rol !== 'cliente') return null;
 
-    return {
-      id,
-      rol
-    };
+    return { id, rol };
+  }
+  
+  getAdminData() {
+    if (!this.isBrowser) return null;
+
+    const id = localStorage.getItem('adminId');
+    const rol = localStorage.getItem('rol');
+
+    if (!id || rol !== 'admin') return null;
+
+    return { id, rol };
   }
 
   updateStatus(): void {

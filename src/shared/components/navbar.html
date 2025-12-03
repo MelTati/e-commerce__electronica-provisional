@@ -7,46 +7,53 @@
         <li class="header__nav-item"><a routerLink="/location">Ubicanos</a></li>
         <li class="header__nav-item"><a routerLink="/contact">Contacto</a></li>
         <li class="header__nav-item"><a routerLink="/about">Acerca de</a></li>
-        <li class="header__nav-item header__nav-der">
+
+        <li class="header__nav-item" *ngIf="isAdminLogged()">
+          <button type="button" class="header__admin-btn" (click)="goToAdminProfile()" aria-label="Editar perfil de admin">
+            <img src="assets/img/administrador.png" alt="Perfil Admin">
+          </button>
+        </li>
+
+        <li class="header__nav-item header__nav-der" *ngIf="!isAdminLogged()">
           <a routerLink="login-admin" aria-label="Iniciar sesión como administrador">
-            <img src="assets/img/perfil.png" height="20px" width="20px" alt="Icono de perfil">
+            <img src="assets/img/perfil.png" alt="Icono de perfil">
           </a>
-       </li>
+        </li>
       </ul>
     </nav>
   </div>
 
-  <div class="header__container" id="main-header-container">
+  <div class="header__container">
 
-    <div class="header__logo">
-      <a routerLink="">
+    <div class="header__logo" [class.disabled]="isAdminLogged()">
+      <a routerLink="" *ngIf="!isAdminLogged()">
         <img src="assets/img/logo.png" alt="Logo de SmartPoint">
       </a>
     </div>
 
-    <div class="header__search">
+    <div class="header__search" *ngIf="!isAdminLogged()">
       <input id="search" type="search" class="header__search-input"
         placeholder="Busca tus productos..." />
     </div>
 
     <div class="header__user-actions">
 
-      <div class="header__user" *ngIf="!isClientLogged()">
-        <a routerLink="/login" class="header__user-link header__user-link--login">Iniciar Sesión</a>
-        <a routerLink="/register" class="header__user-link header__user-link--register">Registrarse</a>
-      </div>
-
-      <div class="header__user" *ngIf="isClientLogged()">
+      <div class="header__user" *ngIf="isClientLogged() && !isAdminLogged()">
         <a routerLink="/perfil" aria-label="Ver perfil">
           <img src="assets/img/perfil.png" height="32" width="32" alt="Perfil">
         </a>
 
-        <button  type="button"   (click)="logout()" class="header__logout-btn">
-          Exit
+        <button type="button" (click)="logout()" class="header__logout-btn">
+          Salir
         </button>
       </div>
 
-      <a routerLink="/carrito" class="header__cart" aria-label="Carrito de compras">
+      <div *ngIf="!isClientLogged() && !isAdminLogged()">
+        <a routerLink="/login" class="header__user-link header__user-link--login">Iniciar Sesión</a>
+        <a routerLink="/register" class="header__user-link header__user-link--register">Registrarse</a>
+      </div>
+
+      <a routerLink="/carrito" class="header__cart" aria-label="Carrito de compras" *ngIf="!isAdminLogged()">
         <span class="header__cart-total">$0.00</span>
         <i class="fa-solid fa-cart-shopping"></i>
       </a>
@@ -56,7 +63,7 @@
     </div>
   </div>
 
-  <nav class="header__menu" [class.active]="menuOpen()">
+  <nav class="header__menu" [class.active]="menuOpen()" *ngIf="!isAdminLogged()">
     <ul class="header__menu-list">
       <li *ngFor="let cat of categories(); trackBy: trackById"
           class="header__menu-item">

@@ -18,6 +18,7 @@ import { AdminVentas } from './admin/pages/register-ventas/admin-ventas';
 import { LoginAdmin } from './admin/pages/login-admin/login-admin';
 import { AdminGuard } from './services/admin.guard';
 import { PerfilCliente } from './client/perfil-cliente/perfil-cliente';
+import { PerfilAdmin } from './admin/perfil-admin/perfil-admin';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -42,6 +43,7 @@ export const routes: Routes = [
       { path: 'admin-cliente', component: AdminClientes },
       { path: 'admin-product', component: AdminProductos },
       { path: 'admin-ventas', component: AdminVentas },
+      { path: 'perfil-admin', component: PerfilAdmin },
       { path: '', redirectTo: 'admin-usuario', pathMatch: 'full' },
     ],
   },
