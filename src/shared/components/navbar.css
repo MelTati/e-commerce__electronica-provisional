@@ -101,16 +101,74 @@
   gap: 1em;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  min-height: 60px;
 }
 
 .header__logo {
   flex: 0 0 auto;
+  display: flex;
+  align-items: center;
 }
 
 .header__logo img {
   height: 3em;
   max-width: 100%;
   object-fit: contain;
+}
+
+/* Estilo cuando es admin - logo a la izquierda */
+.header__logo.header__logo--admin {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 2%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.header__logo.header__logo--admin img {
+  height: 2.5em;
+  width: auto;
+}
+
+/* Contenedor para el logo cuando es admin */
+.header__logo-text {
+  display: flex;
+  align-items: center;
+  cursor: default;
+}
+
+/* Botón de admin a la derecha */
+.header__admin-profile {
+  position: absolute;
+  right: 2%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: auto;
+}
+
+.header__admin-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.header__admin-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.header__admin-btn img {
+  width: 32px;
+  height: 32px;
+  filter: brightness(0) invert(0);
+}
+
+.header:has(.header__top:not(*)) {
+  background-color: #ffffff;
 }
 
 .header__search {
@@ -378,6 +436,20 @@
     justify-content: center;
     padding: 0.5em;
     width: 100%;
+  }
+
+  /* Estilos responsive para admin */
+  .header__logo.header__logo--admin {
+    position: static;
+    transform: none;
+    order: 1;
+  }
+  
+  .header__admin-profile {
+    position: static;
+    transform: none;
+    margin-left: auto;
+    order: 2;
   }
 }
 

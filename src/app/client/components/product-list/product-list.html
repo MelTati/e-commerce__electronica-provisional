@@ -3,20 +3,12 @@
     <mat-card class="categories__item product-card">
       <div class="product__image-container">
         <img mat-card-image
-            [ngSrc]="product.imageUrl"
-            [alt]="product.label"
-            [title]="product.label" class="categories__image"
-            width="300"
-            height="300" />
-
-        <div class="categories__quick-view-wrapper">
-          <button mat-stroked-button
-                  color="accent"
-                  class="categories__button categories__button--quick-view"
-                  (click)="openQuickView(product.id)">
-            Vista Rápida
-          </button>
-        </div>
+             [ngSrc]="product.imageUrl"
+             [alt]="product.label"
+             [title]="product.label"
+             class="categories__image"
+             width="300"
+             height="300" />
       </div>
 
       <mat-card-content>
@@ -28,8 +20,8 @@
         <button mat-flat-button
                 color="primary"
                 class="categories__button categories__button--full-width"
-                (click)="addToCart(product)">
-          Añadir Al Carrito
+                (click)="openQuickView(product.id)">
+          Ver Vista Previa
         </button>
       </mat-card-actions>
     </mat-card>

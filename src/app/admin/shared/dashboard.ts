@@ -12,18 +12,16 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
-
 export class AdminLayout implements OnInit {
 
-  sidebarOpen: boolean = false;
-  isAdminLoggedIn: boolean = false;
+  sidebarOpen = false;
+  isAdminLoggedIn = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.authService.isAdminLoggedIn$.subscribe(status => {
       this.isAdminLoggedIn = status;
-
       if (!status) {
         this.router.navigate(['/login-admin']);
       }
@@ -35,7 +33,9 @@ export class AdminLayout implements OnInit {
   }
 
   closeSidebar() {
-    this.sidebarOpen = false;
+    if (window.innerWidth <= 900) {
+      this.sidebarOpen = false;
+    }
   }
 
   logout() {

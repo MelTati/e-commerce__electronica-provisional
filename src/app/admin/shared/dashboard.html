@@ -1,7 +1,7 @@
 <div *ngIf="isAdminLoggedIn" class="admin-container">
 
-  <button type="button" class="hamburger" mat-icon-button (click)="toggleSidebar()">
-    <mat-icon>☰</mat-icon>
+  <button type="button" class="hamburger" (click)="toggleSidebar()">
+    ☰
   </button>
 
   <aside class="sidebar" [class.open]="sidebarOpen">
@@ -10,13 +10,21 @@
     </div>
 
     <nav class="menu">
-      <a routerLink="admin-usuario" routerLinkActive="active" (click)="closeSidebar()">Usuarios</a>
-      <a routerLink="admin-cliente" routerLinkActive="active" (click)="closeSidebar()">Clientes</a>
-      <a routerLink="admin-product" routerLinkActive="active" (click)="closeSidebar()">Productos</a>
-      <a routerLink="admin-ventas" routerLinkActive="active" (click)="closeSidebar()">Ventas</a>
+      <a routerLink="admin-usuario" routerLinkActive="active" (click)="closeSidebar()">
+        Usuarios
+      </a>
+      <a routerLink="admin-cliente" routerLinkActive="active" (click)="closeSidebar()">
+        Clientes
+      </a>
+      <a routerLink="admin-product" routerLinkActive="active" (click)="closeSidebar()">
+        Productos
+      </a>
+      <a routerLink="admin-ventas" routerLinkActive="active" (click)="closeSidebar()">
+        Ventas
+      </a>
     </nav>
 
-    <button mat-button (click)="logout()">Cerrar sesión</button>
+    <button mat-button class="logout" (click)="logout()">Cerrar sesión</button>
   </aside>
 
   <main class="content" (click)="closeSidebar()">

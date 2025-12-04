@@ -23,9 +23,12 @@
   <div class="header__container">
 
     <div class="header__logo" [class.header__logo--admin]="isAdminLogged()">
-      <a routerLink="/">
+      <a *ngIf="!isAdminLogged()" routerLink="/">
         <img src="assets/img/logo.png" alt="Logo de SmartPoint">
       </a>
+      <span *ngIf="isAdminLogged()" class="header__logo-text">
+        <img src="assets/img/logo.png" alt="Logo de SmartPoint">
+      </span>
     </div>
 
     <div class="header__admin-profile" *ngIf="isAdminLogged()">
