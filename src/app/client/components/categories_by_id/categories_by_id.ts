@@ -85,34 +85,47 @@ export class CategoriaPage implements OnInit {
   addToCart(product: CategoriesXProductDTO): void {
     // Verificar si el cliente ha iniciado sesión
     const clientData = this.authService.getClientData();
-    if (!clientData) {
-      this.snack.open('Debe iniciar sesión para agregar productos al carrito', 'Cerrar', { duration: 2500 });
-      this.router.navigate(['/login']); // Redirigir al login
-      return;
-    }
+    if (clientData) {
+      // Lógica de backend existente
+      const telefonoCliente = clientData.id;
+      const idventas = this.cartService.currentCartId();
 
-    // El id del cliente es su teléfono (ej: "9612345678")
-    const telefonoCliente = clientData.id;
-    
-    const idventas = this.cartService.currentCartId();
-
-    if (!idventas) {
-      // Usar el teléfono del cliente y id_usuario siempre = 1
-      this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
-        next: (res) => {
-          this.cartService.currentCartId.set(res.idventas);
-          if (this.isBrowser) {
-            localStorage.setItem("venta_id", String(res.idventas));
+      if (!idventas) {
+        this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
+          next: (res) => {
+            this.cartService.currentCartId.set(res.idventas);
+            if (this.isBrowser) {
+              localStorage.setItem("venta_id", String(res.idventas));
+            }
+            this.addOrUpdateProduct(res.idventas, product.codigo_producto);
+          },
+          error: (error) => {
+            console.error('Error al crear carrito:', error);
+            this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 2500 });
           }
-          this.addOrUpdateProduct(res.idventas, product.codigo_producto);
-        },
-        error: (error) => {
-          console.error('Error al crear carrito:', error);
-          this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 2500 });
-        }
-      });
+        });
+      } else {
+        this.addOrUpdateProduct(idventas, product.codigo_producto);
+      }
     } else {
-      this.addOrUpdateProduct(idventas, product.codigo_producto);
+      // Lógica de localStorage para usuarios no logueados
+      let cart = JSON.parse(localStorage.getItem('localCart') || '[]');
+      const existing = cart.find((item: any) => item.codigo_producto === product.codigo_producto);
+      if (existing) {
+        existing.cantidad += 1;
+      } else {
+        cart.push({
+          codigo_producto: product.codigo_producto,
+          nombre: product.Producto, // Ajusta si el campo es diferente
+          precio: product.fldPrecio, // Ajusta al campo real de precio (e.g., fldPrecio si existe)
+          cantidad: 1
+        });
+      }
+      localStorage.setItem('localCart', JSON.stringify(cart));
+      this.snack.open('Producto agregado al carrito', 'Cerrar', { duration: 2000 });
+      setTimeout(() => {
+        this.router.navigate(['/carrito']);
+      }, 300);
     }
   }
 

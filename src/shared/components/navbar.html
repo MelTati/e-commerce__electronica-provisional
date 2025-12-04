@@ -52,7 +52,7 @@
       </div>
 
       <a routerLink="/carrito" class="header__cart" aria-label="Carrito" *ngIf="!isAdminLogged()">
-        <span class="header__cart-total">$0.00</span>
+        <span class="header__cart-total">{{ cartTotal() }}</span>
         <i class="fa-solid fa-cart-shopping"></i>
       </a>
 
