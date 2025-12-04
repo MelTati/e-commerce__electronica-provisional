@@ -1,13 +1,11 @@
 import { Component, signal, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
-import { Inject } from '@angular/core';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 import { CategoriesXProductService } from '../../../services/categories_x_product.service';
 import { CartService } from '../../../services/cart.service';
@@ -31,7 +29,6 @@ export class CategoriaPage implements OnInit {
 
   productos = signal<CategoriesXProductDTO[]>([]);
   loading = signal<boolean>(true);
-
   private isBrowser: boolean;
 
   constructor(
@@ -59,7 +56,6 @@ export class CategoriaPage implements OnInit {
       if (!isNaN(categoriaId)) {
         this.cargarProductos(categoriaId);
       } else {
-        console.error('ID de categoría no válido');
         this.productos.set([]);
         this.loading.set(false);
       }
@@ -68,79 +64,56 @@ export class CategoriaPage implements OnInit {
 
   cargarProductos(id: number): void {
     this.loading.set(true);
-
     this.service.getCategoriesXProduct(id).subscribe({
       next: (data: CategoriesXProductDTO[]) => {
         this.productos.set(data);
-        this.loading.set(false); 
+        this.loading.set(false);
       },
-      error: (err) => {
-        console.error('Error al cargar productos:', err);
+      error: () => {
         this.productos.set([]);
         this.loading.set(false);
+        this.snack.open('Error al cargar los productos', 'Cerrar', { duration: 3000 });
       }
     });
   }
 
   addToCart(product: CategoriesXProductDTO): void {
-    // Verificar si el cliente ha iniciado sesión
     const clientData = this.authService.getClientData();
-    if (clientData) {
-      // Lógica de backend existente
-      const telefonoCliente = clientData.id;
-      const idventas = this.cartService.currentCartId();
 
-      if (!idventas) {
-        this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
-          next: (res) => {
-            this.cartService.currentCartId.set(res.idventas);
-            if (this.isBrowser) {
-              localStorage.setItem("venta_id", String(res.idventas));
-            }
-            this.addOrUpdateProduct(res.idventas, product.codigo_producto);
-          },
-          error: (error) => {
-            console.error('Error al crear carrito:', error);
-            this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 2500 });
+    if (!clientData) {
+      this.snack.open('Debes iniciar sesión para agregar al carrito', 'Iniciar sesión', { duration: 5000 })
+        .onAction().subscribe(() => this.router.navigate(['/login']));
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const telefonoCliente = clientData.id;
+    const idventas = this.cartService.currentCartId();
+
+    if (!idventas) {
+      this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
+        next: (res) => {
+          this.cartService.currentCartId.set(res.idventas);
+          if (this.isBrowser) {
+            localStorage.setItem('venta_id', String(res.idventas));
           }
-        });
-      } else {
-        this.addOrUpdateProduct(idventas, product.codigo_producto);
-      }
+          this.addOrUpdateProduct(res.idventas, product.codigo_producto);
+        },
+        error: () => this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 3000 })
+      });
     } else {
-      // Lógica de localStorage para usuarios no logueados
-      let cart = JSON.parse(localStorage.getItem('localCart') || '[]');
-      const existing = cart.find((item: any) => item.codigo_producto === product.codigo_producto);
-      if (existing) {
-        existing.cantidad += 1;
-      } else {
-        cart.push({
-          codigo_producto: product.codigo_producto,
-          nombre: product.Producto, // Ajusta si el campo es diferente
-          precio: product.fldPrecio, // Ajusta al campo real de precio (e.g., fldPrecio si existe)
-          cantidad: 1
-        });
-      }
-      localStorage.setItem('localCart', JSON.stringify(cart));
-      this.snack.open('Producto agregado al carrito', 'Cerrar', { duration: 2000 });
-      setTimeout(() => {
-        this.router.navigate(['/carrito']);
-      }, 300);
+      this.addOrUpdateProduct(idventas, product.codigo_producto);
     }
   }
 
   private addOrUpdateProduct(idventas: number, codigo_producto: number) {
     this.cartService.addOrUpdateProduct(idventas, codigo_producto, 1).subscribe({
       next: () => {
-        this.snack.open('Producto agregado al carrito', 'Cerrar', { duration: 2000 });
-        setTimeout(() => {
-          this.router.navigate(['/carrito']);
-        }, 300);
+        this.snack.open('Producto agregado al carrito', 'Ver carrito', { duration: 3000 })
+          .onAction().subscribe(() => this.router.navigate(['/carrito']));
+        setTimeout(() => this.router.navigate(['/carrito']), 300);
       },
-      error: (error) => {
-        console.error('Error al agregar producto:', error);
-        this.snack.open('Error al agregar el producto', 'Cerrar', { duration: 2500 });
-      }
+      error: () => this.snack.open('Error al agregar el producto', 'Cerrar', { duration: 3000 })
     });
   }
 

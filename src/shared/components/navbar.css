@@ -9,7 +9,6 @@
   box-sizing: border-box;
 }
 
-/* ===================== BARRA SUPERIOR: textos centrados + admin a la derecha ===================== */
 .header__top {
   background: var(--secondary-color);
   color: #fff;
@@ -19,11 +18,10 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  position: relative;           /* Para posicionar el icono admin */
+  position: relative;          
   min-height: 42px;
 }
 
-/* Textos centrados: envío + enlaces */
 .header__top-info {
   display: flex;
   align-items: center;
@@ -62,7 +60,6 @@
   user-select: none;
 }
 
-/* Icono admin siempre a la derecha extrema */
 .header__nav-der {
   position: absolute;
   right: 2%;
@@ -70,12 +67,11 @@
   transform: translateY(-50%);
 }
 
-/* ===================== CONTENEDOR PRINCIPAL: LOGO IZQUIERDA ===================== */
 .header__container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;   /* Logo izquierda | buscador centro | usuario derecha */
+  justify-content: space-between;  
   padding: 0.5em 2%;
   gap: 1em;
   width: 100%;
@@ -110,16 +106,15 @@
   box-sizing: border-box;
 }
 
-/* ACCIONES DE USUARIO A LA DERECHA */
 .header__user-actions {
   display: flex;
   align-items: center;
   gap: 0.5em;
   order: 3;
-  margin-left: auto;            /* Empuja todo a la derecha */
+  margin-left: auto;            
 }
 
-/* ===================== TUS ESTILOS ORIGINALES (intactos) ===================== */
+
 .header__user-link {
   text-decoration: none;
   padding: 0.4em 0.8em;
@@ -195,7 +190,6 @@
   padding: 0.3em;
 }
 
-/* Icono admin (login (usa tu clase .header__nav-der) */
 .header__nav-der a,
 .header__nav-der button {
   display: flex;
@@ -224,7 +218,6 @@
   width: 20px;
 }
 
-/* Menú categorías */
 .header__menu {
   width: 100%;
   display: flex;
@@ -260,11 +253,9 @@
   color: var(--secondary-color);
 }
 
-/* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
   .header__hamburger { display: block; }
 
-  /* Barra superior en móvil */
   .header__top {
     flex-direction: column;
     gap: 0.5em;
@@ -273,7 +264,6 @@
   .header__top-info { width: 100%; justify-content: center; gap: 1em; font-size: 0.82em; }
   .header__nav-der { position: static; transform: none; }
 
-  /* Contenedor principal en móvil */
   .header__container {
     flex-direction: column;
     gap: 0.8em;
