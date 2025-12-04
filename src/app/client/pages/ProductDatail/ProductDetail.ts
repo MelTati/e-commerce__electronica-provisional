@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProductDetailService } from '../../../services/ProductDetail.service';
 import { CartService } from '../../../services/cart.service';
+import { AuthService } from '../../../services/auth.service';
 import { ProductDetailDTO } from '../../../interfaces/ProductDetail.interface';
 import { switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
@@ -24,9 +25,7 @@ export class ProductDetailComponent implements OnInit {
   product = signal<ProductDetailDTO | null>(null);
   isLoading = signal(true);
   productId = signal<number | null>(null);
-
   cantidad = signal(1);
-
   selectedIndex = signal(0);
   galleryImages = signal<string[]>([
     'assets/img/no-image.jpg',
@@ -48,6 +47,7 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private detailService: ProductDetailService,
     private cartService: CartService,
+    private authService: AuthService,
     private router: Router,
     private snack: MatSnackBar,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -245,10 +245,22 @@ export class ProductDetailComponent implements OnInit {
     const prod = this.product();
     if (!prod) return;
 
+    // Verificar si el cliente ha iniciado sesión
+    const clientData = this.authService.getClientData();
+    if (!clientData) {
+      this.snack.open('Debe iniciar sesión para agregar productos al carrito', 'Cerrar', { duration: 2500 });
+      this.router.navigate(['/login']); // Redirigir al login
+      return;
+    }
+
+    // El id del cliente es su teléfono (ej: "9612345678")
+    const telefonoCliente = clientData.id;
+    
     const idventas = this.cartService.currentCartId();
 
     if (!idventas) {
-      this.cartService.crearCarrito("9614309950", 1).subscribe({
+      // Usar el teléfono del cliente y id_usuario siempre = 1
+      this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
         next: (res) => {
           this.cartService.currentCartId.set(res.idventas);
           if (this.isBrowser) {
@@ -256,7 +268,8 @@ export class ProductDetailComponent implements OnInit {
           }
           this.addOrUpdateProduct(res.idventas, codigo_producto);
         },
-        error: () => {
+        error: (error) => {
+          console.error('Error al crear carrito:', error);
           this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 2500 });
         }
       });
@@ -273,10 +286,10 @@ export class ProductDetailComponent implements OnInit {
           this.router.navigate(['/carrito']);
         }, 300);
       },
-      error: () => {
+      error: (error) => {
+        console.error('Error al agregar producto:', error);
         this.snack.open('Error al agregar el producto', 'Cerrar', { duration: 2500 });
       }
     });
   }
-
 }
