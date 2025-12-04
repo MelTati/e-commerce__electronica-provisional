@@ -12,6 +12,7 @@ import { AuthService } from '../../app/services/auth.service';
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
 })
+
 export class Navbar implements OnInit {
 
   categories = signal<CategoriesListInterface[]>([]);

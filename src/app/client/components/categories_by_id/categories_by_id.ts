@@ -4,8 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
+import { Inject } from '@angular/core';
 
 import { CategoriesXProductService } from '../../../services/categories_x_product.service';
+import { CartService } from '../../../services/cart.service';
+import { AuthService } from '../../../services/auth.service';
 import { CategoriesXProductDTO } from '../../../interfaces/categories_x_product.interface';
 
 @Component({
@@ -15,7 +21,8 @@ import { CategoriesXProductDTO } from '../../../interfaces/categories_x_product.
     CommonModule,
     MatCardModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSnackBarModule
   ],
   templateUrl: './categories_by_id.html',
   styleUrls: ['./categories_by_id.css'],
@@ -25,13 +32,28 @@ export class CategoriaPage implements OnInit {
   productos = signal<CategoriesXProductDTO[]>([]);
   loading = signal<boolean>(true);
 
+  private isBrowser: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private service: CategoriesXProductService,
-    private router: Router
-  ) {}
+    private cartService: CartService,
+    private authService: AuthService,
+    private router: Router,
+    private snack: MatSnackBar,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
+    if (this.isBrowser && !this.cartService.currentCartId()) {
+      const storedId = localStorage.getItem('venta_id');
+      if (storedId) {
+        this.cartService.currentCartId.set(Number(storedId));
+      }
+    }
+
     this.route.paramMap.subscribe(params => {
       const categoriaId = Number(params.get('id'));
       if (!isNaN(categoriaId)) {
@@ -61,7 +83,52 @@ export class CategoriaPage implements OnInit {
   }
 
   addToCart(product: CategoriesXProductDTO): void {
-    console.log('Añadiendo al carrito:', product);
+    // Verificar si el cliente ha iniciado sesión
+    const clientData = this.authService.getClientData();
+    if (!clientData) {
+      this.snack.open('Debe iniciar sesión para agregar productos al carrito', 'Cerrar', { duration: 2500 });
+      this.router.navigate(['/login']); // Redirigir al login
+      return;
+    }
+
+    // El id del cliente es su teléfono (ej: "9612345678")
+    const telefonoCliente = clientData.id;
+    
+    const idventas = this.cartService.currentCartId();
+
+    if (!idventas) {
+      // Usar el teléfono del cliente y id_usuario siempre = 1
+      this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
+        next: (res) => {
+          this.cartService.currentCartId.set(res.idventas);
+          if (this.isBrowser) {
+            localStorage.setItem("venta_id", String(res.idventas));
+          }
+          this.addOrUpdateProduct(res.idventas, product.codigo_producto);
+        },
+        error: (error) => {
+          console.error('Error al crear carrito:', error);
+          this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 2500 });
+        }
+      });
+    } else {
+      this.addOrUpdateProduct(idventas, product.codigo_producto);
+    }
+  }
+
+  private addOrUpdateProduct(idventas: number, codigo_producto: number) {
+    this.cartService.addOrUpdateProduct(idventas, codigo_producto, 1).subscribe({
+      next: () => {
+        this.snack.open('Producto agregado al carrito', 'Cerrar', { duration: 2000 });
+        setTimeout(() => {
+          this.router.navigate(['/carrito']);
+        }, 300);
+      },
+      error: (error) => {
+        console.error('Error al agregar producto:', error);
+        this.snack.open('Error al agregar el producto', 'Cerrar', { duration: 2500 });
+      }
+    });
   }
 
   openQuickView(id: number): void {
