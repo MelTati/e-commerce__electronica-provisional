@@ -14,9 +14,11 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./login.css'],
 })
 export class LoginCliente {
+
   loginForm: FormGroup;
   loading = false;
   errorMessage = '';
+  showDeniedModal = false;
 
   constructor(
     private fb: FormBuilder,
@@ -49,21 +51,37 @@ export class LoginCliente {
         next: (res: LoginResponse) => {
           this.loading = false;
 
+          if (!res || !res.token || !res.id || !res.rol) {
+            this.showDeniedModal = true;
+            return;
+          }
+
           localStorage.setItem('token', res.token);
           localStorage.setItem('clienteId', res.id);
           localStorage.setItem('rol', res.rol);
 
           this.authService.updateStatus();
-
           this.router.navigate(['/']);
         },
-        error: (err: Error) => {
+
+        error: (err: any) => {
           this.loading = false;
-          this.errorMessage = err.message;
+
+          if (err.status === 401 || err.status === 403) {
+            this.showDeniedModal = true;
+            return;
+          }
+
+          this.errorMessage = 'Ocurrió un error inesperado. Inténtalo más tarde.';
         }
       });
+
     } else {
       this.loginForm.markAllAsTouched();
     }
+  }
+
+  closeDeniedModal() {
+    this.showDeniedModal = false;
   }
 }

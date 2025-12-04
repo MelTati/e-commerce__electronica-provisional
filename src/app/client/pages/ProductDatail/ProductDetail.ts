@@ -1,7 +1,6 @@
 import { Component, OnInit, signal, ViewChild, ElementRef, HostListener, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProductDetailService } from '../../../services/ProductDetail.service';
@@ -11,6 +10,7 @@ import { ProductDetailDTO } from '../../../interfaces/ProductDetail.interface';
 import { switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import { PLATFORM_ID } from '@angular/core';
+
 @Component({
   selector: 'app-product-detail',
   standalone: true,
@@ -30,12 +30,15 @@ export class ProductDetailComponent implements OnInit {
     'assets/img/no-image.jpg'
   ]);
   selectedImage = signal<string>('assets/img/no-image.jpg');
+
   @ViewChild('mainImage', { static: false }) mainImage!: ElementRef<HTMLImageElement>;
   @ViewChild('lens', { static: false }) lens!: ElementRef<HTMLDivElement>;
   @ViewChild('result', { static: false }) result!: ElementRef<HTMLDivElement>;
+
   showLightbox = signal(false);
   private touchStartX = 0;
   private isBrowser: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private detailService: ProductDetailService,
@@ -47,6 +50,7 @@ export class ProductDetailComponent implements OnInit {
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
+
   ngOnInit(): void {
     if (this.isBrowser && !this.cartService.currentCartId()) {
       const storedId = localStorage.getItem('venta_id');
@@ -54,6 +58,7 @@ export class ProductDetailComponent implements OnInit {
         this.cartService.currentCartId.set(Number(storedId));
       }
     }
+
     this.route.paramMap
       .pipe(
         switchMap(params => {
@@ -65,6 +70,7 @@ export class ProductDetailComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.product.set(data);
+
           const nombre = data.fldNombre || '';
           const galleryMap: Record<string, string[]> = {
             '555': [
@@ -120,12 +126,14 @@ export class ProductDetailComponent implements OnInit {
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD4nS0COaVVQZ2kfbv4ANdkAeLh-2423ziSrzN3eNGQNaI?download=1'
             ]
           };
-          let selectedGallery = Object.keys(galleryMap).find(key => nombre.includes(key));
-          this.galleryImages.set(selectedGallery ? galleryMap[selectedGallery] : [
+
+          const selectedGalleryKey = Object.keys(galleryMap).find(key => nombre.includes(key));
+          this.galleryImages.set(selectedGalleryKey ? galleryMap[selectedGalleryKey] : [
             'assets/img/no-image.jpg',
             'assets/img/no-image.jpg',
             'assets/img/no-image.jpg'
           ]);
+
           this.selectedIndex.set(0);
           this.selectedImage.set(this.galleryImages()[0]);
           this.isLoading.set(false);
@@ -136,38 +144,47 @@ export class ProductDetailComponent implements OnInit {
         }
       });
   }
+
   incrementCantidad() {
     if (this.product() && this.cantidad() < this.product()!.unidades) {
       this.cantidad.update(v => v + 1);
     }
   }
+
   decrementCantidad() {
     if (this.cantidad() > 1) this.cantidad.update(v => v - 1);
   }
+
   setMainImage(index: number) {
     this.selectedIndex.set(index);
     this.selectedImage.set(this.galleryImages()[index]);
   }
+
   prevImage() {
     const idx = this.selectedIndex();
     const total = this.galleryImages().length;
     this.setMainImage(idx === 0 ? total - 1 : idx - 1);
   }
+
   nextImage() {
     const idx = this.selectedIndex();
     const total = this.galleryImages().length;
     this.setMainImage(idx === total - 1 ? 0 : idx + 1);
   }
+
   openLightbox() { this.showLightbox.set(true); }
   closeLightbox() { this.showLightbox.set(false); }
+
   @HostListener('touchstart', ['$event'])
   onTouchStart(e: TouchEvent) { this.touchStartX = e.changedTouches[0].clientX; }
+
   @HostListener('touchend', ['$event'])
   onTouchEnd(e: TouchEvent) {
     const end = e.changedTouches[0].clientX;
     if (end < this.touchStartX - 50) this.nextImage();
     if (end > this.touchStartX + 50) this.prevImage();
   }
+
   createLens() {
     if (!this.lens || !this.result || !this.mainImage) return;
     const lensEl = this.lens.nativeElement;
@@ -180,6 +197,7 @@ export class ProductDetailComponent implements OnInit {
     resultEl.style.backgroundImage = `url(${this.selectedImage()})`;
     resultEl.style.backgroundSize = `${imgEl.width * cx}px ${imgEl.height * cy}px`;
   }
+
   moveLens(e: MouseEvent) {
     if (!this.lens || !this.result || !this.mainImage) return;
     const pos = this.getCursorPos(e);
@@ -195,74 +213,68 @@ export class ProductDetailComponent implements OnInit {
     const cy = this.result.nativeElement.offsetHeight / this.lens.nativeElement.offsetHeight;
     this.result.nativeElement.style.backgroundPosition = `-${x * cx}px -${y * cy}px`;
   }
+
   removeLens() {
     if (!this.lens || !this.result) return;
     this.lens.nativeElement.style.display = "none";
     this.result.nativeElement.style.display = "none";
   }
+
   getCursorPos(e: MouseEvent) {
     const rect = this.mainImage.nativeElement.getBoundingClientRect();
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }
-  // -------------------- CARRITO --------------------
+
   addToCart(codigo_producto: number) {
     const prod = this.product();
     if (!prod) return;
-    // Verificar si el cliente ha iniciado sesión
+
     const clientData = this.authService.getClientData();
-    if (clientData) {
-      // Lógica de backend existente
-      const telefonoCliente = clientData.id;
-      const idventas = this.cartService.currentCartId();
-      if (!idventas) {
-        this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
-          next: (res) => {
-            this.cartService.currentCartId.set(res.idventas);
-            if (this.isBrowser) {
-              localStorage.setItem("venta_id", String(res.idventas));
-            }
-            this.addOrUpdateProduct(res.idventas, codigo_producto);
-          },
-          error: (error) => {
-            console.error('Error al crear carrito:', error);
-            this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 2500 });
+
+    if (!clientData) {
+      this.snack.open('Debes iniciar sesión para agregar productos al carrito', 'Iniciar sesión', {
+        duration: 5000
+      }).onAction().subscribe(() => {
+        this.router.navigate(['/login']);
+      });
+
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const telefonoCliente = clientData.id;
+    const idventas = this.cartService.currentCartId();
+
+    if (!idventas) {
+      this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
+        next: (res) => {
+          this.cartService.currentCartId.set(res.idventas);
+          if (this.isBrowser) {
+            localStorage.setItem("venta_id", String(res.idventas));
           }
-        });
-      } else {
-        this.addOrUpdateProduct(idventas, codigo_producto);
-      }
+          this.addOrUpdateProduct(res.idventas, codigo_producto);
+        },
+        error: (error) => {
+          console.error('Error al crear carrito:', error);
+          this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 3000 });
+        }
+      });
     } else {
-      // Lógica de localStorage para usuarios no logueados
-      let cart = JSON.parse(localStorage.getItem('localCart') || '[]');
-      const existing = cart.find((item: any) => item.codigo_producto === codigo_producto);
-      if (existing) {
-        existing.cantidad += this.cantidad();
-      } else {
-        cart.push({
-          codigo_producto: codigo_producto,
-          nombre: prod.fldNombre,
-          precio: prod.fldPrecio,
-          cantidad: this.cantidad()
-        });
-      }
-      localStorage.setItem('localCart', JSON.stringify(cart));
-      this.snack.open('Producto agregado al carrito', 'Cerrar', { duration: 2000 });
-      setTimeout(() => {
-        this.router.navigate(['/carrito']);
-      }, 300);
+      this.addOrUpdateProduct(idventas, codigo_producto);
     }
   }
+
   private addOrUpdateProduct(idventas: number, codigo_producto: number) {
     this.cartService.addOrUpdateProduct(idventas, codigo_producto, this.cantidad()).subscribe({
       next: () => {
-        this.snack.open('Producto agregado al carrito', 'Cerrar', { duration: 2000 });
-        setTimeout(() => {
-          this.router.navigate(['/carrito']);
-        }, 300);
+        this.snack.open('¡Producto agregado al carrito!', 'Ver carrito', { duration: 3000 })
+          .onAction().subscribe(() => this.router.navigate(['/carrito']));
+
+        setTimeout(() => this.router.navigate(['/carrito']), 300);
       },
-      error: (error) => {
-        console.error('Error al agregar producto:', error);
-        this.snack.open('Error al agregar el producto', 'Cerrar', { duration: 2500 });
+      error: (err) => {
+        console.error('Error al agregar al carrito:', err);
+        this.snack.open('Error al agregar el producto', 'Cerrar', { duration: 3000 });
       }
     });
   }

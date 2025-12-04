@@ -18,7 +18,6 @@
         <p class="login__subtitle">Inicia sesión para continuar</p>
       </div>
 
-      <!-- Campo correo -->
       <div class="login__form-group">
         <div class="login__floating-label">
           <input
@@ -39,7 +38,6 @@
         </div>
       </div>
 
-      <!-- Campo contraseña -->
       <div class="login__form-group">
         <div class="login__floating-label">
           <input
@@ -62,7 +60,6 @@
         </div>
       </div>
 
-      <!-- Botón -->
       <button
         type="submit"
         class="login__button"
@@ -71,7 +68,6 @@
         {{ loading ? 'Ingresando...' : 'Ingresar' }}
       </button>
 
-      <!-- Error general -->
       <div *ngIf="errorMessage" class="login__error general-error">
         {{ errorMessage }}
       </div>
@@ -82,3 +78,11 @@
     </form>
   </div>
 </section>
+
+<div class="modal-denied-backdrop" *ngIf="showDeniedModal">
+  <div class="modal-denied">
+    <h3>Acceso Denegado</h3>
+    <p>Las credenciales ingresadas no son válidas.</p>
+    <button class="modal-denied-btn" (click)="closeDeniedModal()">Cerrar</button>
+  </div>
+</div>
