@@ -72,31 +72,6 @@
           <p class="product__stock">
             <strong>Cantidad disponible:</strong> {{ product.stock }} unidades
           </p>
-
-          <div class="cantidad-container">
-
-            <label for="cantidad">Cantidad *</label>
-
-            <div class="cantidad-control">
-              <button id="decrement" (click)="decrementCantidad()">−</button>
-
-              <input
-                type="text"
-                id="cantidad"
-                [value]="cantidad"
-                readonly
-              />
-
-              <button id="increment" (click)="incrementCantidad()">+</button>
-            </div>
-          </div>
-
-          <div class="product__actions">
-            <button class="btn btn--primary" (click)="addToCart()">
-              Agregar al Carrito
-            </button>
-          </div>
-
         </div>
 
       </section>

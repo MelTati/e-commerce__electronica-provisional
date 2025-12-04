@@ -29,15 +29,14 @@
   flex-wrap: wrap;
   justify-content: center;
   font-weight: 500;
+  text-align: center;
 }
 
 .header__info {
   margin: 0;
   white-space: nowrap;
-  -webkit-user-select: none; 
-  -moz-user-select: none;    
-  -ms-user-select: none;    
-  user-select: none;        
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .top-link {
@@ -54,10 +53,8 @@
 .separator {
   opacity: 0.7;
   font-weight: 300;
-  -webkit-user-select: none; 
-  -moz-user-select: none;    
-  -ms-user-select: none;     
-  user-select: none;         
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .header__nav-der {
@@ -106,9 +103,9 @@
 }
 
 .header__logo {
-  flex: 0 0 auto;
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
 }
 
 .header__logo img {
@@ -117,35 +114,21 @@
   object-fit: contain;
 }
 
-/* Estilo cuando es admin - logo a la izquierda */
 .header__logo.header__logo--admin {
   margin: 0;
   padding: 0;
-  position: absolute;
-  left: 2%;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
-.header__logo.header__logo--admin img {
-  height: 2.5em;
-  width: auto;
-}
-
-/* Contenedor para el logo cuando es admin */
 .header__logo-text {
   display: flex;
   align-items: center;
   cursor: default;
 }
 
-/* Botón de admin a la derecha */
 .header__admin-profile {
-  position: absolute;
-  right: 2%;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 }
 
 .header__admin-btn {
@@ -165,10 +148,6 @@
   width: 32px;
   height: 32px;
   filter: brightness(0) invert(0);
-}
-
-.header:has(.header__top:not(*)) {
-  background-color: #ffffff;
 }
 
 .header__search {
@@ -201,14 +180,16 @@
   flex-shrink: 0;
 }
 
-.header__user-link {
+.header__user-link,
+.header__logout-btn {
   text-decoration: none;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 0.85em;
   padding: 0.5em 1em;
   border-radius: var(--border-radius-sm, 5px);
-  font-size: 0.85em;
-  font-weight: 600;
   transition: all 0.3s ease;
-  white-space: nowrap;
+  cursor: pointer;
 }
 
 .header__user-link--login {
@@ -236,16 +217,8 @@
 }
 
 .header__logout-btn {
-  padding: 0.5em 1em;
   background-color: var(--danger-color, #e74c3c);
   border: none;
-  border-radius: var(--border-radius-sm, 5px);
-  color: #fff;
-  font-size: 0.85em;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
 }
 
 .header__logout-btn:hover {
@@ -265,28 +238,15 @@
   color: var(--secondary-color);
   font-weight: 600;
   font-size: 0.85em;
-  white-space: nowrap;
-  transition: color 0.3s;
-}
-
-.header__user a:hover {
-  color: #02cba4;
 }
 
 .header__cart {
+  text-decoration: none;
   display: flex;
   align-items: center;
   gap: 0.3em;
   color: var(--text-color);
   font-size: 0.85em;
-  text-decoration: none;
-  padding: 0.3em 0.6em;
-  border-radius: var(--border-radius-sm);
-  transition: background-color 0.3s;
-}
-
-.header__cart:hover {
-  background-color: var(--background-color);
 }
 
 .header__cart i {
@@ -326,8 +286,6 @@
   padding: 0;
   margin: 0;
   overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
 }
 
 .header__menu-list::-webkit-scrollbar {
@@ -361,53 +319,39 @@
 @media (max-width: 768px) {
   .header__hamburger {
     display: block;
-  }
-  
-  .header__top {
-    flex-direction: column;
-    gap: 0.5em;
-    padding: 0.6em 2%;
-    text-align: center;
-  }
-  
-  .header__top-info {
-    width: 100%;
-    justify-content: center;
-    gap: 1em;
-    font-size: 0.82em;
-  }
-  
-  .header__nav-der {
-    position: static;
-    transform: none;
-    margin-top: 0.5em;
-  }
-  
-  .header__container {
-    flex-wrap: wrap;
-    gap: 0.8em;
-  }
-  
-  .header__logo {
     order: 1;
   }
-  
-  .header__hamburger {
+
+  .header__admin-profile {
     order: 2;
+    margin: 0 auto;
+  }
+
+  .header__logo.header__logo--admin {
+    order: 3;
     margin-left: auto;
   }
-  
-  .header__search {
-    order: 3;
-    width: 100%;
-    margin: 0;
+
+  .header__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 2%;
+    flex-wrap: wrap;
   }
-  
-  .header__user-actions {
-    order: 4;
+
+  .header__top-info {
+    display: flex !important;
     justify-content: center;
-    width: 100%;
+    flex-wrap: wrap;
     gap: 0.6em;
+    text-align: center;
+  }
+
+  .header__search {
+    order: 4;
+    width: 100%;
+    margin: 0.5em 0;
   }
 
   .header__menu {
@@ -415,41 +359,27 @@
     display: none;
     padding: 0.8em 2%;
   }
-  
+
   .header__menu.active {
     display: flex;
   }
-  
+
   .header__menu-list {
     flex-direction: column;
     gap: 0.8em;
     align-items: center;
     overflow-x: visible;
   }
-  
+
   .header__menu-list li {
     width: 100%;
     text-align: center;
   }
-  
+
   .header__menu-list li a {
     justify-content: center;
     padding: 0.5em;
     width: 100%;
-  }
-
-  /* Estilos responsive para admin */
-  .header__logo.header__logo--admin {
-    position: static;
-    transform: none;
-    order: 1;
-  }
-  
-  .header__admin-profile {
-    position: static;
-    transform: none;
-    margin-left: auto;
-    order: 2;
   }
 }
 
@@ -457,33 +387,28 @@
   .header__logo img {
     height: 2.5em;
   }
-  
-  .header__top-info {
-    gap: 0.8em;
-    font-size: 0.8em;
+
+  .header__hamburger {
+    font-size: 1.4em;
+    padding: 0.25em;
   }
-  
-  .header__search input {
-    font-size: 0.85em;
-    padding: 0.5em 0.9em;
-  }
-  
+
   .header__user-link,
   .header__logout-btn {
     padding: 0.4em 0.8em;
     font-size: 0.8em;
   }
-  
+
   .header__user a,
   .header__cart {
     font-size: 0.8em;
   }
-  
-  .header__hamburger {
-    font-size: 1.4em;
-    padding: 0.25em;
+
+  .header__top-info {
+    font-size: 0.75em;
+    gap: 0.4em;
   }
-  
+
   .header__menu-list li a {
     font-size: 0.85em;
   }

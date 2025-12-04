@@ -1,33 +1,30 @@
 <div *ngIf="isAdminLoggedIn" class="admin-container">
 
-  <button type="button" class="hamburger" (click)="toggleSidebar()">
-    ☰
+  <button class="hamburger" (click)="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
   </button>
 
+  <div class="overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+
   <aside class="sidebar" [class.open]="sidebarOpen">
-    <div class="logo">
-      <span>ADMIN PANEL</span>
+
+    <div class="logo desktop-only">
+      <img src="assets/img/logo.png" alt="Admin Panel">
     </div>
 
     <nav class="menu">
-      <a routerLink="admin-usuario" routerLinkActive="active" (click)="closeSidebar()">
-        Usuarios
-      </a>
-      <a routerLink="admin-cliente" routerLinkActive="active" (click)="closeSidebar()">
-        Clientes
-      </a>
-      <a routerLink="admin-product" routerLinkActive="active" (click)="closeSidebar()">
-        Productos
-      </a>
-      <a routerLink="admin-ventas" routerLinkActive="active" (click)="closeSidebar()">
-        Ventas
-      </a>
+      <a routerLink="admin-usuario" routerLinkActive="active" (click)="closeSidebar()">Usuarios</a>
+      <a routerLink="admin-cliente" routerLinkActive="active" (click)="closeSidebar()">Clientes</a>
+      <a routerLink="admin-product" routerLinkActive="active" (click)="closeSidebar()">Productos</a>
+      <a routerLink="admin-ventas" routerLinkActive="active" (click)="closeSidebar()">Ventas</a>
     </nav>
 
-    <button mat-button class="logout" (click)="logout()">Cerrar sesión</button>
+    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
   </aside>
 
-  <main class="content" (click)="closeSidebar()">
+  <main class="content">
     <router-outlet></router-outlet>
   </main>
 
