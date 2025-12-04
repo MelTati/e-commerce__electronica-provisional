@@ -46,6 +46,10 @@
     justify-content: center;
 }
 
+.slideshow__button:hover { 
+    background-color: rgba(17, 24, 39, 0.8); 
+}
+
 .slideshow__button--prev { left: 1rem; }
 .slideshow__button--next { right: 1rem; }
 
@@ -95,8 +99,8 @@
 
     .slideshow__slide img {
         width: 100vw;
-        max-height: 45vh;
-        object-fit: cover;
+        height: auto;
+        object-fit: contain;
     }
 
     .slideshow__button { 
