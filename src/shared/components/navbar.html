@@ -18,7 +18,8 @@
         <img src="assets/img/administrador.png" alt="Perfil Admin">
       </button>
 
-      <a *ngIf="!isAdminLogged()" routerLink="login-admin" class="header__admin-link"
+      <!-- Mostrar enlace de admin solo si NO hay cliente logueado Y NO hay admin logueado -->
+      <a *ngIf="!isClientLogged() && !isAdminLogged()" routerLink="login-admin" class="header__admin-link"
         aria-label="Iniciar sesión como administrador">
         <img src="assets/img/administrador.png" alt="Icono administrador">
       </a>
