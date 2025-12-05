@@ -1,7 +1,0 @@
-{
-  "version": 2,
-  "env": {
-    "API_BASE_URL": "https://smartpoint-api.onrender.com"
-  },
-  "buildCommand": "npm run build"
-}
