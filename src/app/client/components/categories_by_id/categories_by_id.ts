@@ -1,11 +1,10 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Inject, PLATFORM_ID } from '@angular/core';
 
 import { CategoriesXProductService } from '../../../services/categories_x_product.service';
 import { CartService } from '../../../services/cart.service';
@@ -29,7 +28,7 @@ export class CategoriaPage implements OnInit {
 
   productos = signal<CategoriesXProductDTO[]>([]);
   loading = signal<boolean>(true);
-  private isBrowser: boolean;
+  // Eliminamos la variable private isBrowser: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,18 +37,14 @@ export class CategoriaPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snack: MatSnackBar,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object // Inyección de la plataforma
   ) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
+    // El constructor queda limpio.
   }
 
   ngOnInit(): void {
-    if (this.isBrowser && !this.cartService.currentCartId()) {
-      const storedId = localStorage.getItem('venta_id');
-      if (storedId) {
-        this.cartService.currentCartId.set(Number(storedId));
-      }
-    }
+    // 🔑 Mover la lógica de localStorage
+    this.initializeCartId();
 
     this.route.paramMap.subscribe(params => {
       const categoriaId = Number(params.get('id'));
@@ -60,6 +55,20 @@ export class CategoriaPage implements OnInit {
         this.loading.set(false);
       }
     });
+  }
+
+  /**
+   * Nueva función para manejar el localStorage SÓLO en el navegador.
+   * Esto previene el crash de SSR.
+   */
+  private initializeCartId(): void {
+    // 🔑 Usamos la función isPlatformBrowser() directamente
+    if (isPlatformBrowser(this.platformId) && !this.cartService.currentCartId()) {
+      const storedId = localStorage.getItem('venta_id');
+      if (storedId) {
+        this.cartService.currentCartId.set(Number(storedId));
+      }
+    }
   }
 
   cargarProductos(id: number): void {
@@ -94,9 +103,12 @@ export class CategoriaPage implements OnInit {
       this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
         next: (res) => {
           this.cartService.currentCartId.set(res.idventas);
-          if (this.isBrowser) {
-            localStorage.setItem('venta_id', String(res.idventas));
+
+          // 🔑 CORRECCIÓN: Usamos la función isPlatformBrowser() directamente
+          if (isPlatformBrowser(this.platformId)) {
+             localStorage.setItem('venta_id', String(res.idventas));
           }
+
           this.addOrUpdateProduct(res.idventas, product.codigo_producto);
         },
         error: () => this.snack.open('No se pudo crear el carrito', 'Cerrar', { duration: 3000 })
@@ -131,6 +143,7 @@ export class CategoriaPage implements OnInit {
 
   getProductImage(product: CategoriesXProductDTO): string {
     const imagesMap: Record<string, string> = {
+      // ... (Mapas de imágenes omitidos para brevedad) ...
       '555': 'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBKyeQ56LvXTJVPHr1BTWNYAS6swzezmNk4DkMeX5c2dYw?download=1',
       '10uF': 'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD1nSU8zRXZRZM0RsYyVk40AYCgxajeJlWSrNZ0EyVH3rA?download=1',
       '100uF': 'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBxX8M40m94QJfmYzLu7_nUARWbbHrU2ZLMo5D1Q-fB9Kw?download=1',

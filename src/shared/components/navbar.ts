@@ -1,11 +1,11 @@
 import { Component, signal, OnInit, HostListener, Inject, PLATFORM_ID, OnDestroy } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common'; // <-- Importar isPlatformBrowser
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { CategoriesService } from '../../app/services/categories.service';
 import { CategoriesListInterface } from '../../app/interfaces/categories.list.interface';
 import { AuthService } from '../../app/services/auth.service';
 import { CartService } from '../../app/services/cart.service';
-import { Subscription, interval } from 'rxjs'; // <-- Importar para un manejo correcto
+import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -14,22 +14,21 @@ import { Subscription, interval } from 'rxjs'; // <-- Importar para un manejo co
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
 })
-export class Navbar implements OnInit, OnDestroy { // <-- Implementar OnDestroy
-
+export class Navbar implements OnInit, OnDestroy {
   categories = signal<CategoriesListInterface[]>([]);
   menuOpen = signal(false);
   isClientLogged = signal(false);
   isAdminLogged = signal(false);
   cartTotal = signal('$0.00');
 
-  private cartUpdateSubscription: Subscription | undefined; // Para limpiar el intervalo
+  private cartUpdateSubscription: Subscription | undefined;
 
   constructor(
     private categoriesService: CategoriesService,
     private authService: AuthService,
     private cartService: CartService,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object // <-- Inyectar PLATFORM_ID
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +42,7 @@ export class Navbar implements OnInit, OnDestroy { // <-- Implementar OnDestroy
     // Ejecutar lógica del navegador solo si estamos en el navegador
     if (isPlatformBrowser(this.platformId)) {
       this.updateCartTotal();
-      
+
       // Usar un observable de Angular para el intervalo y limpiar en OnDestroy
       this.cartUpdateSubscription = interval(1000).subscribe(() => this.updateCartTotal());
     }
@@ -71,7 +70,7 @@ export class Navbar implements OnInit, OnDestroy { // <-- Implementar OnDestroy
     if (isPlatformBrowser(this.platformId)) {
       const idventas = this.cartService.currentCartId();
       const emailVerified = localStorage.getItem('email_verified') === 'true' ||
-                            localStorage.getItem('email_verified_at') !== null;
+                              localStorage.getItem('email_verified_at') !== null;
 
       if (idventas && emailVerified) {
         this.cartService.obtenerCarrito(idventas).subscribe({
@@ -101,7 +100,7 @@ export class Navbar implements OnInit, OnDestroy { // <-- Implementar OnDestroy
   private finalizarLogout() {
     // Estas líneas son seguras ya que el servicio CartService (idealmente) maneja el SSR
     this.cartService.currentCartId.set(null);
-    
+
     // Proteger las interacciones con localStorage
     if (isPlatformBrowser(this.platformId)) {
         localStorage.removeItem('venta_id');
@@ -157,8 +156,11 @@ export class Navbar implements OnInit, OnDestroy { // <-- Implementar OnDestroy
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
-    // La interacción con el DOM a través de querySelector es segura en SSR
-    // ya que no se ejecuta el código del HostListener en el servidor.
+    // 🔑 CORRECCIÓN: Proteger el acceso al objeto 'document' con isPlatformBrowser
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     const menu = document.querySelector('.header__categories');
     const hamburger = document.querySelector('.header__hamburger');
 

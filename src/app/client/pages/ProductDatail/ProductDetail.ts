@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild, ElementRef, HostListener, Inject } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ElementRef, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,7 +9,7 @@ import { AuthService } from '../../../services/auth.service';
 import { ProductDetailDTO } from '../../../interfaces/ProductDetail.interface';
 import { switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
-import { PLATFORM_ID } from '@angular/core';
+
 
 @Component({
   selector: 'app-product-detail',
@@ -37,7 +37,7 @@ export class ProductDetailComponent implements OnInit {
 
   showLightbox = signal(false);
   private touchStartX = 0;
-  private isBrowser: boolean;
+  // Eliminamos: private isBrowser: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,16 +48,26 @@ export class ProductDetailComponent implements OnInit {
     private snack: MatSnackBar,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
+    // Eliminamos: this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  ngOnInit(): void {
-    if (this.isBrowser && !this.cartService.currentCartId()) {
+  /**
+   * Nueva función para manejar el localStorage SÓLO en el navegador.
+   * Esto previene el crash de SSR.
+   */
+  private initializeCartId(): void {
+    if (isPlatformBrowser(this.platformId) && !this.cartService.currentCartId()) {
       const storedId = localStorage.getItem('venta_id');
       if (storedId) {
         this.cartService.currentCartId.set(Number(storedId));
       }
     }
+  }
+
+
+  ngOnInit(): void {
+    // 🔑 CORRECCIÓN: Llamamos a la función protegida
+    this.initializeCartId();
 
     this.route.paramMap
       .pipe(
@@ -73,6 +83,7 @@ export class ProductDetailComponent implements OnInit {
 
           const nombre = data.fldNombre || '';
           const galleryMap: Record<string, string[]> = {
+            // ... (Galería de URLs de SharePoint, se mantiene igual)
             '555': [
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBKyeQ56LvXTJVPHr1BTWNYAS6swzezmNk4DkMeX5c2dYw?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBniBJdV-ThQ6P9zjjhkaLlAcPa7YbsRNAzwZUJwEX7AIc?download=1',
@@ -176,7 +187,9 @@ export class ProductDetailComponent implements OnInit {
   closeLightbox() { this.showLightbox.set(false); }
 
   @HostListener('touchstart', ['$event'])
-  onTouchStart(e: TouchEvent) { this.touchStartX = e.changedTouches[0].clientX; }
+  onTouchStart(e: TouchEvent) {
+    this.touchStartX = e.changedTouches[0].clientX;
+  }
 
   @HostListener('touchend', ['$event'])
   onTouchEnd(e: TouchEvent) {
@@ -185,8 +198,12 @@ export class ProductDetailComponent implements OnInit {
     if (end > this.touchStartX + 50) this.prevImage();
   }
 
+  // --- Lógica de Zoom (Mantenida, depende de ElementRef) ---
   createLens() {
+    if (!isPlatformBrowser(this.platformId)) return; // Aseguramos que solo corre en el navegador
     if (!this.lens || !this.result || !this.mainImage) return;
+
+    // ... (rest of createLens logic)
     const lensEl = this.lens.nativeElement;
     const resultEl = this.result.nativeElement;
     const imgEl = this.mainImage.nativeElement;
@@ -199,7 +216,10 @@ export class ProductDetailComponent implements OnInit {
   }
 
   moveLens(e: MouseEvent) {
+    if (!isPlatformBrowser(this.platformId)) return; // Aseguramos que solo corre en el navegador
     if (!this.lens || !this.result || !this.mainImage) return;
+
+    // ... (rest of moveLens logic)
     const pos = this.getCursorPos(e);
     let x = pos.x - this.lens.nativeElement.offsetWidth / 2;
     let y = pos.y - this.lens.nativeElement.offsetHeight / 2;
@@ -215,6 +235,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   removeLens() {
+    if (!isPlatformBrowser(this.platformId)) return; // Aseguramos que solo corre en el navegador
     if (!this.lens || !this.result) return;
     this.lens.nativeElement.style.display = "none";
     this.result.nativeElement.style.display = "none";
@@ -224,6 +245,8 @@ export class ProductDetailComponent implements OnInit {
     const rect = this.mainImage.nativeElement.getBoundingClientRect();
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }
+  // --- Fin Lógica de Zoom ---
+
 
   addToCart(codigo_producto: number) {
     const prod = this.product();
@@ -249,9 +272,12 @@ export class ProductDetailComponent implements OnInit {
       this.cartService.crearCarrito(telefonoCliente, 1).subscribe({
         next: (res) => {
           this.cartService.currentCartId.set(res.idventas);
-          if (this.isBrowser) {
+
+          // 🔑 CORRECCIÓN: Usamos la función isPlatformBrowser() directamente
+          if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem("venta_id", String(res.idventas));
           }
+
           this.addOrUpdateProduct(res.idventas, codigo_producto);
         },
         error: (error) => {
