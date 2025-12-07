@@ -1,41 +1,70 @@
 <section class="main__ecommerce">
   <section class="slideshow" aria-label="Galería de imágenes">
+
     <figure #slide class="slideshow__slide fade">
-      <img src="assets/img/navidad_ad.png" alt="Touch Dot S3" class="slideshow__image" height="360" width="1600">
-    </figure>
-    <figure #slide class="slideshow__slide fade">
-      <img src="assets/img/img1.webp" alt="Impresión 3D Bambu Lab" class="slideshow__image" height="360" width="1600">
-    </figure>
-    <figure #slide class="slideshow__slide fade">
-      <img src="assets/img/img2.webp" alt="Nuevas Tarjetas UNIT" class="slideshow__image" height="360" width="1600">
-    </figure>
-    <figure #slide class="slideshow__slide fade">
-      <img src="assets/img/img3.jpg" alt="Touch Dot S3" class="slideshow__image" height="360" width="1600">
-    </figure>
-    <figure #slide class="slideshow__slide fade">
-      <img src="assets/img/smarthome_ad.png" alt="Touch Dot S3" class="slideshow__image" height="360" width="1600">
-    </figure>
-    <figure #slide class="slideshow__slide fade">
-      <img src="assets/img/smartpoint_ad.png" alt="Touch Dot S3" class="slideshow__image" height="360" width="1600">
-    </figure>
-    <figure #slide class="slideshow__slide fade">
-      <img src="assets/img/yellow_ad.png" alt="Touch Dot S3" class="slideshow__image" height="360" width="1600">
+      <picture>
+        <source media="(max-width:768px)" srcset="assets/img/navidad_movil.png">
+        <img src="assets/img/navidad_ad.png" alt="Touch Dot S3" class="slideshow__image" height="360" width="1600">
+      </picture>
     </figure>
 
-    <button class="slideshow__button slideshow__button--prev" aria-label="Imagen anterior" (click)="plusSlides(-1)">❮</button>
-    <button class="slideshow__button slideshow__button--next" aria-label="Siguiente imagen" (click)="plusSlides(1)">❯</button>
+    <figure #slide class="slideshow__slide fade">
+      <picture>
+        <source media="(max-width:768px)" srcset="assets/img/bambu_lab_movil.png">
+        <img src="assets/img/img1.webp" alt="Impresión 3D Bambu Lab" class="slideshow__image" height="360" width="1600">
+      </picture>
+    </figure>
+
+    <figure #slide class="slideshow__slide fade">
+      <picture>
+        <source media="(max-width:768px)" srcset="assets/img/unit_movil.png">
+        <img src="assets/img/img2.webp" alt="Nuevas Tarjetas UNIT" class="slideshow__image" height="360" width="1600">
+      </picture>
+    </figure>
+
+    <figure #slide class="slideshow__slide fade">
+      <picture>
+        <source media="(max-width:768px)" srcset="assets/img/touch_dot_movil.png">
+        <img src="assets/img/img3.jpg" alt="Touch Dot S3" class="slideshow__image" height="360" width="1600">
+      </picture>
+    </figure>
+
+    <figure #slide class="slideshow__slide fade">
+      <picture>
+        <source media="(max-width:768px)" srcset="assets/img/hogar_inteligente_movil.png">
+        <img src="assets/img/smarthome_ad.png" alt="Smart Home" class="slideshow__image" height="360" width="1600">
+      </picture>
+    </figure>
+
+    <figure #slide class="slideshow__slide fade">
+      <picture>
+        <source media="(max-width:768px)" srcset="assets/img/tecnologia_movil.png">
+        <img src="assets/img/smartpoint_ad.png" alt="Smart Point" class="slideshow__image" height="360" width="1600">
+      </picture>
+    </figure>
+
+    <figure #slide class="slideshow__slide fade">
+      <picture>
+        <source media="(max-width:768px)" srcset="assets/img/yellow_movil.png">
+        <img src="assets/img/yellow_ad.png" alt="Yellow Ads" class="slideshow__image" height="360" width="1600">
+      </picture>
+    </figure>
+
+    <button type="button" class="slideshow__button slideshow__button--prev" aria-label="Imagen anterior" (click)="plusSlides(-1)">❮</button>
+    <button type="button" class="slideshow__button slideshow__button--next" aria-label="Siguiente imagen" (click)="plusSlides(1)">❯</button>
 
     <div class="slideshow__dots">
-      <button #dot class="slideshow__dot" (click)="currentSlide(0)" aria-label="Ir a la imagen 1"></button>
-      <button #dot class="slideshow__dot" (click)="currentSlide(1)" aria-label="Ir a la imagen 2"></button>
-      <button #dot class="slideshow__dot" (click)="currentSlide(2)" aria-label="Ir a la imagen 3"></button>
-      <button #dot class="slideshow__dot" (click)="currentSlide(3)" aria-label="Ir a la imagen 4"></button>
-      <button #dot class="slideshow__dot" (click)="currentSlide(4)" aria-label="Ir a la imagen 5"></button>
-      <button #dot class="slideshow__dot" (click)="currentSlide(5)" aria-label="Ir a la imagen 6"></button>
-      <button #dot class="slideshow__dot" (click)="currentSlide(6)" aria-label="Ir a la imagen 7"></button>
+      <button type="button" #dot class="slideshow__dot" (click)="currentSlide(0)" aria-label="Ir a la imagen 1"></button>
+      <button type="button" #dot class="slideshow__dot" (click)="currentSlide(1)" aria-label="Ir a la imagen 2"></button>
+      <button type="button" #dot class="slideshow__dot" (click)="currentSlide(2)" aria-label="Ir a la imagen 3"></button>
+      <button type="button" #dot class="slideshow__dot" (click)="currentSlide(3)" aria-label="Ir a la imagen 4"></button>
+      <button type="button" #dot class="slideshow__dot" (click)="currentSlide(4)" aria-label="Ir a la imagen 5"></button>
+      <button type="button" #dot class="slideshow__dot" (click)="currentSlide(5)" aria-label="Ir a la imagen 6"></button>
+      <button type="button" class="slideshow__dot" (click)="currentSlide(6)" aria-label="Ir a la imagen 7"></button>
     </div>
 
   </section>
 </section>
+
 
 <app-categories></app-categories>
