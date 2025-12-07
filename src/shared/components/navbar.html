@@ -40,6 +40,7 @@
 
     <div *ngIf="!isAdminLogged()">
       <div class="header__user-actions">
+
         <div class="header__user" *ngIf="isClientLogged()">
           <a routerLink="/perfil" aria-label="Ver perfil">
             <img src="assets/img/perfil.png" height="32" width="32" alt="Perfil">
@@ -57,16 +58,24 @@
           <i class="fa-solid fa-cart-shopping"></i>
         </a>
 
-        <button type="button" class="header__hamburger" (click)="toggleMenu()" aria-label="Abrir menú">☰</button>
+        <button type="button" 
+                class="header__hamburger" 
+                [class.open]="menuOpen()" 
+                (click)="toggleMenu()" 
+                aria-label="Abrir menú">☰</button>
       </div>
     </div>
 
   </div>
 
-  <nav class="header__menu" [class.active]="menuOpen()" *ngIf="!isAdminLogged()">
+  <div class="overlay" *ngIf="menuOpen()" (click)="closeMenu()"></div>
+
+  <nav class="header__menu" [class.active]="menuOpen()" [class.animate]="menuOpen()" *ngIf="!isAdminLogged()">
     <ul class="header__menu-list">
-      <li *ngFor="let cat of categories(); trackBy: trackById" class="header__menu-item">
-        <a class="header__menu-link" [routerLink]="['/categoria', cat.id_categorias]">
+      <li *ngFor="let cat of categories(); trackBy: trackById" class="header__menu-item fade-item">
+        <a class="header__menu-link" 
+           [routerLink]="['/categoria', cat.id_categorias]"
+           (click)="closeMenu()">
           {{ cat.fldNombre }}
         </a>
       </li>

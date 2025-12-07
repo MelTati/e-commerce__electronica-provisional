@@ -1,7 +1,7 @@
 .header {
   background-color: var(--surface-color);
   box-shadow: var(--shadow-md);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #e0e0e0;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -79,7 +79,7 @@
 
 .header__nav-der a:hover,
 .header__nav-der button:hover {
-  background-color: #02cba4;
+  background-color: #27ad81;
   transform: scale(1.1);
 }
 
@@ -162,7 +162,7 @@
   padding: 0.5em 1em;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-md);
-  background-color: var(--background-color);
+  background-color: #f7f7f7;
   color: var(--text-color);
   box-sizing: border-box;
   font-size: 0.9em;
@@ -194,23 +194,23 @@
 
 .header__user-link--login {
   color: #fff;
-  background-color: var(--primary-color, #63ffc3);
+  background-color: var(--primary-color);
 }
 
 .header__user-link--login:hover {
-  background-color: #574fd6;
+  background-color: #2563eb;
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
 }
 
 .header__user-link--register {
-  color: var(--primary-color, #6c63ff);
+  color: var(--primary-color);
   background-color: transparent;
-  border: 1px solid var(--primary-color, #6c63ff);
+  border: 1px solid var(--primary-color);
 }
 
 .header__user-link--register:hover {
-  background-color: var(--primary-color, #6c63ff);
+  background-color: var(--primary-color);
   color: #fff;
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
@@ -219,6 +219,7 @@
 .header__logout-btn {
   background-color: var(--danger-color, #e74c3c);
   border: none;
+  color: #fff;
 }
 
 .header__logout-btn:hover {
@@ -251,6 +252,7 @@
 
 .header__cart i {
   font-size: 1.2em;
+  color: var(--secondary-color);
 }
 
 .header__hamburger {
@@ -262,11 +264,19 @@
   cursor: pointer;
   padding: 0.3em;
   border-radius: var(--border-radius-sm);
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
+  min-width: 44px;
+  min-height: 44px;
+  line-height: 1;
 }
 
 .header__hamburger:hover {
   background-color: var(--background-color);
+}
+
+.header__hamburger.open {
+  font-size: 1.5em;
+  color: var(--primary-color);
 }
 
 .header__menu {
@@ -313,7 +323,11 @@
 
 .header__menu-list li a:hover {
   color: var(--secondary-color);
-  background-color: var(--background-color);
+  background-color: #f0fdf4;
+}
+
+.overlay {
+    display: none;
 }
 
 @media (max-width: 768px) {
@@ -332,6 +346,11 @@
     margin-left: auto;
   }
 
+  .header__user-actions {
+    flex-wrap: wrap; 
+    justify-content: flex-end;
+  }
+
   .header__container {
     display: flex;
     align-items: center;
@@ -341,10 +360,10 @@
   }
 
   .header__top-info {
-    display: flex !important;
+    font-size: 0.75em;
+    gap: 0.5em;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 0.6em;
     text-align: center;
   }
 
@@ -355,31 +374,72 @@
   }
 
   .header__menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    padding: 1.5em 1em;
+    background-color: var(--surface-color);
+    box-shadow: var(--shadow-xl, 4px 0 10px rgba(0,0,0,0.2));
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 100;
+    display: flex;
     flex-direction: column;
-    display: none;
-    padding: 0.8em 2%;
+    border-top: none;
   }
 
   .header__menu.active {
-    display: flex;
+    transform: translateX(0);
   }
 
   .header__menu-list {
     flex-direction: column;
-    gap: 0.8em;
-    align-items: center;
+    gap: 0;
+    align-items: flex-start;
     overflow-x: visible;
+    overflow-y: auto;
+    padding-top: 1em;
+    width: 100%;
   }
 
   .header__menu-list li {
     width: 100%;
-    text-align: center;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 0.2em;
+  }
+
+  .header__menu-list li:last-child {
+    border-bottom: none;
   }
 
   .header__menu-list li a {
-    justify-content: center;
-    padding: 0.5em;
+    justify-content: flex-start;
+    padding: 0.8em 0.5em;
     width: 100%;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    color: var(--text-color);
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .header__menu-list li a:hover {
+    color: var(--secondary-color);
+    background-color: #f0fdf4;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    display: block;
   }
 }
 

@@ -39,23 +39,17 @@ export class Navbar implements OnInit, OnDestroy {
     this.authService.isClientLoggedIn$.subscribe(v => this.isClientLogged.set(v));
     this.authService.isAdminLoggedIn$.subscribe(v => this.isAdminLogged.set(v));
 
-    // Ejecutar lógica del navegador solo si estamos en el navegador
     if (isPlatformBrowser(this.platformId)) {
       this.updateCartTotal();
-
-      // Usar un observable de Angular para el intervalo y limpiar en OnDestroy
       this.cartUpdateSubscription = interval(1000).subscribe(() => this.updateCartTotal());
     }
   }
 
   ngOnDestroy(): void {
-    // Limpiar la suscripción al destruir el componente
     if (this.cartUpdateSubscription) {
       this.cartUpdateSubscription.unsubscribe();
     }
   }
-
-  // --- MÉTODOS DE COMPONENTE ---
 
   toggleMenu(): void {
     this.menuOpen.update(open => !open);
@@ -63,10 +57,10 @@ export class Navbar implements OnInit, OnDestroy {
 
   closeMenu(): void {
     this.menuOpen.set(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   logout() {
-    // Toda la lógica de logout que usa localStorage debe estar protegida
     if (isPlatformBrowser(this.platformId)) {
       const idventas = this.cartService.currentCartId();
       const emailVerified = localStorage.getItem('email_verified') === 'true' ||
@@ -92,20 +86,15 @@ export class Navbar implements OnInit, OnDestroy {
         this.finalizarLogout();
       }
     } else {
-        // Si no es el navegador, simplemente hacemos el logout sin tocar localStorage
         this.finalizarLogout();
     }
   }
 
   private finalizarLogout() {
-    // Estas líneas son seguras ya que el servicio CartService (idealmente) maneja el SSR
     this.cartService.currentCartId.set(null);
-
-    // Proteger las interacciones con localStorage
     if (isPlatformBrowser(this.platformId)) {
-        localStorage.removeItem('venta_id');
+      localStorage.removeItem('venta_id');
     }
-
     this.authService.logout();
     this.router.navigate(['/']);
   }
@@ -119,10 +108,7 @@ export class Navbar implements OnInit, OnDestroy {
   }
 
   updateCartTotal(): void {
-    // Si no estamos en el navegador, no hacemos nada que dependa de localStorage
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
+    if (!isPlatformBrowser(this.platformId)) return;
 
     if (this.isClientLogged()) {
       const idventas = this.cartService.currentCartId();
@@ -134,13 +120,11 @@ export class Navbar implements OnInit, OnDestroy {
           },
           error: () => this.cartTotal.set('$0.00')
         });
-      } else {
-        this.cartTotal.set('$0.00');
-      }
+      } else this.cartTotal.set('$0.00');
+
     } else {
-      // Acceso a localStorage protegido
       const emailWasVerified = localStorage.getItem('email_verified') === 'true' ||
-                               localStorage.getItem('email_verified_at') !== null;
+                                localStorage.getItem('email_verified_at') !== null;
 
       if (!emailWasVerified) {
         localStorage.removeItem('localCart');
@@ -156,19 +140,14 @@ export class Navbar implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
-    // 🔑 CORRECCIÓN: Proteger el acceso al objeto 'document' con isPlatformBrowser
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
+    if (!isPlatformBrowser(this.platformId)) return;
 
-    const menu = document.querySelector('.header__categories');
+    const menu = document.querySelector('.header__menu');
     const hamburger = document.querySelector('.header__hamburger');
 
-    if (
-      menu && hamburger &&
-      !menu.contains(event.target as Node) &&
-      !hamburger.contains(event.target as Node)
-    ) {
+    if (menu && hamburger && 
+        !menu.contains(event.target as Node) && 
+        !hamburger.contains(event.target as Node)) {
       this.closeMenu();
     }
   }
