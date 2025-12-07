@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './perfil-admin.html',
   styleUrls: ['./perfil-admin.css']
 })
+
 export class PerfilAdmin implements OnInit {
 
   form!: FormGroup;

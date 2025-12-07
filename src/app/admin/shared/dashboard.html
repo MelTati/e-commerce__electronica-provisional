@@ -1,6 +1,6 @@
 <div *ngIf="isAdminLoggedIn" class="admin-container">
 
-  <button class="hamburger" (click)="toggleSidebar()">
+  <button type="button" class="hamburger" (click)="toggleSidebar()">
     <span></span>
     <span></span>
     <span></span>
@@ -21,7 +21,7 @@
       <a routerLink="admin-ventas" routerLinkActive="active" (click)="closeSidebar()">Ventas</a>
     </nav>
 
-    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+    <button type="button" class="logout-btn" (click)="logout()">Cerrar sesión</button>
   </aside>
 
   <main class="content">

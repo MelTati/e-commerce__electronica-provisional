@@ -90,7 +90,7 @@
 .hamburger {
   display: none;
   position: absolute;
-  top: 60px; /* ahora un poco más abajo */
+  top: 9px; 
   left: 20px;
   background: transparent;
   border: none;
