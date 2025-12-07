@@ -3,13 +3,20 @@
   <div class="header__top" *ngIf="!isAdminLogged()">
     
     <div class="header__top-info">
-      <span class="header__info">Envío gratis en compras mayores a $50.00</span>
-      <span class="separator">·</span>
-      <a routerLink="/location" class="top-link">Ubícanos</a>
-      <span class="separator">·</span>
-      <a routerLink="/contact" class="top-link">Contáctanos</a>
-      <span class="separator">·</span>
-      <a routerLink="/about" class="top-link">Acerca de</a>
+      
+      <div class="header__top-free-shipping">
+        <span class="header__info">Envío gratis en compras mayores a $50.00</span>
+        <span class="separator">·</span>
+      </div>
+
+      <div class="header__top-links">
+        <a routerLink="/location" class="top-link">Ubícanos</a>
+        <span class="separator">·</span>
+        <a routerLink="/contact" class="top-link">Contáctanos</a>
+        <span class="separator">·</span>
+        <a routerLink="/about" class="top-link">Acerca de</a>
+      </div>
+      
     </div>
 
     <div class="header__nav-der">
