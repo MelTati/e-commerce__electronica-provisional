@@ -2,14 +2,21 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/smart_point_electronica/server/server.mjs",
-      "use": "@vercel/node"
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "outputDirectory": "dist/smart_point_electronica/browser"
+      }
     }
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "https://smartpoint-api.onrender.com/api/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "dist/smart_point_electronica/server/server.mjs"
+      "dest": "dist/smart_point_electronica/browser/index.html"
     }
   ],
   "env": {
