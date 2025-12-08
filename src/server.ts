@@ -12,6 +12,7 @@ app.use(express.json());
 
 const angularApp = new AngularNodeAppEngine();
 
+// 1. Manejo Consolidado de APIs
 app.use(
   '/api',
   createProxyMiddleware({
@@ -20,6 +21,7 @@ app.use(
   })
 );
 
+// 2. Archivos Estáticos
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
@@ -28,6 +30,7 @@ app.use(
   }),
 );
 
+// 3. Fallback de Angular (Catch-all)
 app.get('*', (req, res, next) => {
   angularApp
     .handle(req) 
