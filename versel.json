@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
+      "src": "dist/smart_point_electronica/server/server.mjs",
       "use": "@vercel/node"
     }
   ],
