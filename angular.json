@@ -16,6 +16,9 @@
             "outputPath": "dist/smart_point_electronica",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "allowedCommonJsDependencies": [
+              "http-proxy-middleware"
+            ],
             "assets": [
               {
                 "glob": "**/*",
@@ -35,18 +38,18 @@
           },
           "configurations": {
             "production": {
-                "budgets": [
-              {
+              "budgets": [
+                {
                   "type": "initial",
                   "maximumWarning": "1MB",
                   "maximumError": "1.5MB"
-              },
-              {
+                },
+                {
                   "type": "anyComponentStyle",
                   "maximumWarning": "9kB",
                   "maximumError": "10kB"
-              }
-            ],
+                }
+              ],
               "outputHashing": "all"
             },
             "development": {
