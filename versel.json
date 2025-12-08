@@ -3,10 +3,7 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "outputDirectory": "dist/smart_point_electronica"
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
