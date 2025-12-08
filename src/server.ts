@@ -1,11 +1,9 @@
-import {
-  AngularNodeAppEngine,
-  createNodeRequestHandler,
-  isMainModule,
-  writeResponseToNodeResponse,
-} from '@angular/ssr/node';
+import {AngularNodeAppEngine,createNodeRequestHandler,isMainModule,writeResponseToNodeResponse} from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { createProxyMiddleware } from 'http-proxy-middleware'; 
+
+const API_BASE_URL = process.env['API_BASE_URL'] || 'https://smartpoint-api.onrender.com';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -14,13 +12,13 @@ app.use(express.json());
 
 const angularApp = new AngularNodeAppEngine();
 
-app.post('/api/clientes', (req, res) => {
-  console.log('📥 Datos recibidos:', req.body);
-  res.status(200).json({
-    message: 'Cliente recibido correctamente',
-    data: req.body
-  });
-});
+app.use(
+  '/api',
+  createProxyMiddleware({
+    target: API_BASE_URL,
+    changeOrigin: true,
+  })
+);
 
 app.use(
   express.static(browserDistFolder, {
