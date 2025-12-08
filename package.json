@@ -4,11 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:smart_point_electronica": "node dist/smart_point_electronica/server/server.mjs",
-    "vercel-build": "npm run build"
+    "serve:ssr:smart_point_electronica": "node dist/smart_point_electronica/server/server.mjs"
   },
   "prettier": {
     "printWidth": 100,
@@ -23,7 +22,7 @@
     ]
   },
   "private": true,
-  "dependencies": {
+  "dependencies": {    
     "@angular/common": "^20.3.0",
     "@angular/compiler": "^20.3.0",
     "@angular/core": "^20.3.0",
