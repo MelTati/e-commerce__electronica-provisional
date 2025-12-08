@@ -1,4 +1,9 @@
-import {AngularNodeAppEngine,createNodeRequestHandler,isMainModule,writeResponseToNodeResponse} from '@angular/ssr/node';
+import {
+  AngularNodeAppEngine,
+  createNodeRequestHandler,
+  isMainModule,
+  writeResponseToNodeResponse
+} from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
 import { createProxyMiddleware } from 'http-proxy-middleware'; 
@@ -12,16 +17,14 @@ app.use(express.json());
 
 const angularApp = new AngularNodeAppEngine();
 
-// 1. Manejo Consolidado de APIs
 app.use(
   '/api',
   createProxyMiddleware({
     target: API_BASE_URL,
-    changeOrigin: true,
+    changeOrigin: true, 
   })
 );
 
-// 2. Archivos Estáticos (Ahora apuntando a la ruta correcta)
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
@@ -30,7 +33,6 @@ app.use(
   }),
 );
 
-// 3. Fallback de Angular (Catch-all)
 app.get('*', (req, res, next) => {
   angularApp
     .handle(req) 
