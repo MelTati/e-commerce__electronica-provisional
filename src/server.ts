@@ -5,7 +5,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const API_BASE_URL = process.env['API_BASE_URL'] || 'https://smartpoint-api.onrender.com';
 
-const browserDistFolder = join(import.meta.dirname, '../browser');
+const browserDistFolder = join(import.meta.dirname, '../../browser'); 
 
 const app = express();
 app.use(express.json()); 
@@ -21,7 +21,7 @@ app.use(
   })
 );
 
-// 2. Archivos Estáticos
+// 2. Archivos Estáticos (Ahora apuntando a la ruta correcta)
 app.use(
   express.static(browserDistFolder, {
     maxAge: '1y',
