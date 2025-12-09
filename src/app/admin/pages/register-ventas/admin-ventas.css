@@ -1,3 +1,4 @@
+/* src/app/components/admin/admin-consultas/admin-consultas.css */
 :host {
   --primary-color: #3b82f6;
   --secondary-color: #1f8a66;
@@ -92,7 +93,10 @@ td button {
 }
 
 td button:hover { background: #2563eb; }
-td button.danger { background: #dc2626; }
+td button.danger { 
+  background: #dc2626; 
+  /* Asegurar que el botón Eliminar usa el estilo peligroso */
+}
 td button.danger:hover { background: #b91c1c; }
 
 .modal-backdrop {
@@ -118,7 +122,7 @@ td button.danger:hover { background: #b91c1c; }
 
 @keyframes modalIn {
   from { opacity: 0; transform: translateY(-15px) scale(.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .modal h2 {
