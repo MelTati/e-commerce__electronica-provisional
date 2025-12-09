@@ -8,7 +8,13 @@
   </div>
 
   <div class="register__form">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register__form-container" novalidate>
+    <form 
+        [formGroup]="registerForm" 
+        (ngSubmit)="onSubmit()" 
+        class="register__form-container" 
+        novalidate
+        [class.disabled-form]="loading"
+    >
 
       <p class="register__subtitle">Regístrate para continuar</p>
 
@@ -27,17 +33,19 @@
       <div class="register__form-group">
         <div class="register__floating-label">
           <input 
-            type="text" 
+            type="tel"
             formControlName="telefono" 
             class="register__input" 
             id="register-telefono" 
+            maxlength="10"
+            pattern="[0-9]*"
             [class.invalid]="f['telefono'].invalid && (f['telefono'].dirty || f['telefono'].touched)"
           >
           <label class="register__label" for="register-telefono">Teléfono<strong>*</strong></label>
         </div>
         <small class="register__error" *ngIf="f['telefono'].invalid && (f['telefono'].dirty || f['telefono'].touched)">
           <span *ngIf="f['telefono'].hasError('required')">El teléfono es obligatorio.</span>
-          <span *ngIf="f['telefono'].hasError('pattern')">Debe tener 10 dígitos numéricos.</span>
+          <span *ngIf="f['telefono'].hasError('pattern')">Debe tener **exactamente** 10 dígitos numéricos.</span>
         </small>
       </div>
 

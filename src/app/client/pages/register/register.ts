@@ -74,13 +74,13 @@ export class RegisterComponent {
         let friendlyMessage = 'Algo salió mal. Por favor, intenta de nuevo más tarde.';
 
         if (httpStatus === 409 || backendMessage.toLowerCase().includes('duplicado') || backendMessage.toLowerCase().includes('already exists')) {
-             friendlyMessage = '¡Ya existe una cuenta con este correo electrónico o teléfono! Por favor, verifica tus datos o ve a la página de inicio de sesión.';
+            friendlyMessage = '¡Ya existe una cuenta con este correo electrónico o teléfono! Por favor, verifica tus datos o ve a la página de inicio de sesión.';
         } else if (httpStatus === 0) {
             friendlyMessage = 'No se pudo conectar al servidor. Revisa tu conexión a internet e inténtalo de nuevo.';
         } else if (httpStatus === 400 || httpStatus === 500) {
-             friendlyMessage = ' Error de registro: ' + (backendMessage || 'Ocurrió un error inesperado en el servidor.');
+            friendlyMessage = ' Error de registro: ' + (backendMessage || 'Ocurrió un error inesperado en el servidor.');
         } else {
-             friendlyMessage = 'Error al registrar: ' + (backendMessage || 'Servidor no respondió.');
+            friendlyMessage = 'Error al registrar: ' + (backendMessage || 'Servidor no respondió.');
         }
 
         this.errorMessage = friendlyMessage;
