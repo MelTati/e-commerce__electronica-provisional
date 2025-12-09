@@ -111,10 +111,11 @@ export class ProductDetailComponent implements OnInit {
               'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDw308-rXamQqZ_qYS-lSwaAagI-kQHfjNVJd13hR4lQkk?download=1',
               'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDBFfkmnh7ISaOb4YrFgn1sAbnNSdPt2aRUT4B9R9-WPkk?download=1',
             ],
-            'Cargador avanzado de baterías': [
-              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD6r8T0v2X4z6b8d0f2h4j6l8n0p1r3t5v7x9z1a3c5e?download=1',
-              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQB1s3U5w7Y9a1c3e5g7i9k1m3o5q7s9u1w3y5a7c9e1g?download=1',
-              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD8t0V2x4Z6b8d0f2h4j6l8n0p1r3t5v7x9z1a3c5e7g?download=1'
+            'Cargador avanzado de baterías individuales con pilas recargables': [
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQClKSpfJSeXSpPpYl37S3LTAaTRhcasnsuIUmG5Ku-HTkY?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQCmQClqZvIYTI7JHoWekFB3AYQJsV5gP-_-pLR8AZ5bdjg?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA3woXs_CiVT6gXxtkUdlJHAW-yH0KocDS-QxutvpOx7dc?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQBUEj2J09MvR4y5YZCAR8wUAfBQNTjcAmxAknbglp9ak7c?download=1',
             ],
             'Lindo Robot Mascota para Niños y Adultos': [
               'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDzZVfXAppuRq8X8LzT1avVAQ2cR_ZPK90OqqvXYPsaQDE?download=1',
@@ -192,42 +193,35 @@ export class ProductDetailComponent implements OnInit {
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD5d2N6p8r0t2v4x6z8a0c2e4g6i8k0m2o4q6s8u0w2y?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQB8e5P8r0t2v4x6z8a0c2e4g6i8k0m2o4q6s8u0w2y4a?download=1'
             ],
-            'Mouse inalámbrico': [
-              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQD4f1S3u5w7y9a1c3e5g7i9k1m3o5q7s9u1w3y5a7c9e?download=1',
-              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQB7h4U6w8z0b2d4f6h8j0l2n4p6r8t0v2x4z6a8c0e2g?download=1',
-              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQD0k7W9y1b3d5f7h9j1l3n5p7r9t1v3x5z7a9c1e3g5i?download=1'
-            ],
-            'Hub USB': [
-              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQB3l0X2z4b6d8f0h2j4l6n8p0r2t4v6x8z0a2c4e6g8i?download=1',
-              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQD6n3Z5a7c9e1g3i5k7m9o1q3s5u7w9y1a3c5e7g9i1k?download=1',
-              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQB9p6B8d0f2h4j6l8n0p2r4t6v8x0z2a4c6e8g0i1k3m?download=1'
-            ],
-            '555': [
+
+
+            'Circuito integrado 555 Timer': [
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBKyeQ56LvXTJVPHr1BTWNYAS6swzezmNk4DkMeX5c2dYw?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBniBJdV-ThQ6P9zjjhkaLlAcPa7YbsRNAzwZUJwEX7AIc?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDETcwCIgP9S4Gd_C6SWPPLAe8l86Ad0R6BaUQ0x5-BA9o?download=1'
             ],
-            '1Condensador 10µF 16V': [
-              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD1nSU8zRXZRZM0RsYyVk40AYCgxajeJlWSrNZ0EyVH3rA?download=1',
-              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAzN5SXuW53TIQ4WPzkh1iSAZpR-1wShDcFqowEU2kW03w?download=1',
-              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBCuP7djt1XR5LLuEZq7qu-ATQPQ5sH-YNYciUEDQvodKM?download=1'
-            ],
-            'Condensador 100µF 16V': [
+            'Condensador 10µF 16V': [
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBxX8M40m94QJfmYzLu7_nUARWbbHrU2ZLMo5D1Q-fB9Kw?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDhPQnX0CYfTatGt4aPK_NaARIxBUnQqT2rrR9d2odiP1M?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDURpF00IJ3TZ0J4M52RwI2Ae76UX5xdnGjXChYPcI7TU8?download=1'
             ],
-            '1N4007': [
+
+            'Condensador 100µF 16V': [
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD1nSU8zRXZRZM0RsYyVk40AYCgxajeJlWSrNZ0EyVH3rA?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAzN5SXuW53TIQ4WPzkh1iSAZpR-1wShDcFqowEU2kW03w?download=1',
+              'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBCuP7djt1XR5LLuEZq7qu-ATQPQ5sH-YNYciUEDQvodKM?download=1'
+            ],
+            'Diodo rectificador 1N4007': [
               'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDYrodsIvyZRKkvQVvQ7ILaAUqHhSTg7NTxJEp2wDNDkO8?download=1',
               'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA0U0ynqS2dSITCTSjvjwWEATty7DvLJLeXjrx22RjdZ-0?download=1',
               'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA5b64TloIxSbFNDUhk6oxIAdKsP124Rv4FAe-K6OYbdIk?download=1'
             ],
-            'LED rojo': [
+            'LED rojo 5mm': [
               'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQCAmk2l6wRMTZMoDIh1zg4lAbCEMtR2w5m_iI6MahQiDhM?download=1',
               'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAElwE9OXH4SLgEsC-fvY1cARQHGPEPat2a4xg0KY7bq8E?download=1',
               'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDhsz_bxQiuT5PwOzIRQ0f9AUi_OoLJTQaIyky9DP8poRU?download=1'
             ],
-            'LED verde': [
+            'LED verde 5mm': [
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBpWyJIy869RoZI6T3RPInUAc1oyOsyrulqytkdAxXTlvU?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDRToak0TvQS4gqiM4nxnmEAbJOILRY0n2eECg1FkGqtWM?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQASFBNXWYERQ6Q7KhsK1-A4ASuWi29OLobkLo4g-LvvF7M?download=1'
@@ -237,23 +231,85 @@ export class ProductDetailComponent implements OnInit {
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQA5RI6XkE27SLsckfpJAzkIAcBDwqs91rgToaD3UmDFvyI?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCtztiqse08SphWq1S7iKleARZl6Pgfu84A24geGsQSJZE?download=1'
             ],
-            '1/4W': [
+            'Resistor 1kΩ 1/4W': [
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCF6vcgUA5KRqZhMxhWDg2wAT9NJE_gh5WbPL5hwhSL7JY?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAl9YOzAIq2SqVbhftDpre8AeNNEcG6kglEe2m90wfR2Ro?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBb6MIOkk_sR5nrXwz4HjnFAagZZrpj_P2JACD9gwF5jN4?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQA1Q0vhujRET5siQYB2-YwZAZCn99-UaE5VNPRgp6YF9R0?download=1'
             ],
-            'NPN': [
+            'Transistor NPN BC547': [
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAco-RBkJwcQ4hbFZvd5TwmAfNta5TUM0sdoXVJkGgpQnY?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCXa8Q5_gTGSpDb95juVojAASuUCHCc9FxzAmCr1CAWYOM?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQDmNxpDmPbnR74-vaDjLnI2AZeWEiWH9WMkEj46XLNz5bc?download=1'
             ],
-            'PNP': [
+            'Transistor PNP BC558': [
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQC-9nWcsqC-SZU6-KrxImhrAakq1L5jSShd2HVTxKau0Rs?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBLlY8KdGQrQ6kP48A6a6ySAUdpr4M1KHYGWrutEderipM?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQCj618xQxHeRp-Ys-hOZHYcAdy9y3tkLhQaFextQ8zoxj4?download=1',
               'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQD4nS0COaVVQZ2kfbv4ANdkAeLh-2423ziSrzN3eNGQNaI?download=1'
-            ]
+            ],
+            'Seguro de Daños accidentales $5000 - $5999.99': [
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQD3dKjPOQ-9T5kSxSp5MXDAASNemxioCkfH1dRXc9PBIfo?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDze62LUaAQQqdOqFmZSxpKAaoHw48Nqa_ILNjHjnN3-gc?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQBvK_-dJASzQYNuqQ9HNxtFAZTcwtEEAyELBctGOa5TV_s?download=1'
+            ],
+            'Logitech ERGO K860 Teclado partido': [
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDx1BQM6VFXQqswLESjbc3zAc9KsNXLm312pmOhVSQk5_Y?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAWTak0lN-uS7tPpi940TvHAecXRI9OuiEqJTc8oVExpV8?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQB2kqmlVeiCTIrJ_T5WVQYvAXOiuT_E1sOnBr6VwuEbfyY?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQCcILQL8-I2SKqlkBUC1ZL2AQWX0JJZpqiTj3PKJGlrccs?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA8GFaM2uljQ7uqJFeitfO-AU-5TQOBmyUxS9Iii2LDgFI?download=1',
+            ],
+             '11 Tweezers y Pinzas de Precisión ESD Antiestáticas': [
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQALQC9Y1iF_T6NTMkfMT136AejSip9r6_FXiqMl7F9qGu4?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQCQaomNlh8mSZQfhTZ723gAAfmXUW92_MqsbqeJA6sUZqg?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAatG0PTiivSLhQH_KESNUZAVBHxuTf_xgjDxdM9PomYMw?download=1',
+            ],
+            'Medidor de energía inteligente controlado por wifi': [
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQBPw1Zki1IzSJDeVbBQg5-hAfKVnn8zzwv1vAcuKarwE9U?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQC89HZCpr3xRa1pUfUhUQz1ARMZb88WnqjjETqW6dW5fwo?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQBPz1BluT3TS7V3_gLHYR_mAQ0dcprKosq1xTRFgphvaLQ?download=1',
+            ],
+            'REGULADOR RS-1410': [
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQBMLdCFj5WCQbJsxfDtgMqBAUqLTfakiC0QGzj8liQdqtI?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAccSRMX-e8SYVB6S_hdVu8AVNZ1-SV7lxO7Pvr0HJFrRk?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQCPGUHFiYVqTr4c-tHDBPTOAeXF4kb2J9WE9a-MH7hfHtw?download=1',
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQD5Qqf2YXRgRoGO5NEuSDEdAY5TxAEdGrZPlSFbXIKhidk?download=1',
+             ],
+
+              'Tarjeta De Desarrollo Pic18f45k50': [
+              'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAmdFYSk68LR4cluXQ37FPIATesRrgiu5KnoVfhEMoSLBE?download=1',
+             ],
+
+             'Tarjeta De Desarrollo Uno R3 Dip Compatible Ide Arduino + Cable Usb Qyj' : [
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA_FDJbMqOxSJYiGYR2z0uGATssgoZnYYGSMtrnGejIihQ?download=1',
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQBC0LrDyY66QKbs29Y8GMSWAVSeylsw0AQbDY8g-BKiDR8?download=1',
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQCYMlMG7O5VTJzcUotGiQVzAaGo37TtWvcGO5zEqfsfb4k?download=1',
+             ],
+
+             'Kit Para Armar Smartbot | K-720' : [
+            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQB3podooi4gTpK-SkiB--xcAZTgR11x9cAtf73pjxUDUug?download=1',
+            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQBXAWSZ_BfzR7QFIeyd8wIPAXX7QcVbQ8eXKe1Efv6gYtE?download=1',
+            'https://tgutierrez-my.sharepoint.com/:u:/g/personal/l23270611_tuxtla_tecnm_mx/IQAZK2xnSPDTQ6txktTCFU_xAVLEYgNJ_MpwC-77hUKymzQ?download=1',
+
+             ],
+             'Torre Regleta Multicontacto Pared con 1700J Protector contra Sobretensión' : [
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAT6YVLxFxaRpeVTtws0EGUAUXflN8wxM54EaCSnluclzM?download=1',
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAz-Uz5hlgeR4xU7Vy7zxrVAQ7dWMAE_9mdLbCuS420Ci4?download=1',
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQBHQw8wJOz8QKTBQQxGp2tzAb2u98h8ZJQNpPgg9cG7Mzw?download=1',
+             ],
+
+             'Mouse inalámbrico M280 Logitech' : [
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQACQkJLGr46SYRsnLcSTqHQAcI58h0TPSAtETyBV-k9TCo?download=1',
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQA1tImIEgkaSr3X5LUcFxxPAeN0H8sMrxwLuvHM5u5OwDM?download=1',
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQDddIVv7NV8SI-THMrE6IHaAajY45EuJ__8vS0Ss_9yknA?download=1',
+             ],
+             'UGREEN Hub USB C, 6 en 1 Adaptador Tipo C' : [
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQCgsodzssdVT6IIGHDaRL3mAesoG7ArCwt1jAIrPhoX6R8?download=1',
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQAeznhWCsFCQZShR7p41gsYAYem_PCdaP4h1y5t-d1HDcs?download=1',
+            'https://tgutierrez-my.sharepoint.com/:i:/g/personal/l23270611_tuxtla_tecnm_mx/IQBlPWq0OOvwS4vlxOsR7ci1AXltEyMXqnL7AV4LPnWSMjw?download=1',
+             ],
+
           };
 
           const selectedGalleryKey = Object.keys(galleryMap).find(key => nombre.includes(key));

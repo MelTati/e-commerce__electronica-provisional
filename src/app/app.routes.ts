@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { Home } from './client/pages/home/home';
+import { Products } from './client/pages/products/products';
+import productDetail from './client/pages/product-detail/product-detail';
 import { Cart } from './client/pages/cart/cart';
 import { LoginCliente } from './client/pages/login/login';
 import { RegisterComponent } from './client/pages/register/register';
@@ -29,6 +31,8 @@ export const routes: Routes = [
   { path: 'categoria/:id', component: CategoriaPage },
   { path: 'productos/:id', component: ProductDetailComponent },
   { path: 'carrito', component: Cart },
+  { path: 'products', component: Products },
+  { path: 'product/:id', component: productDetail },
   { path: 'perfil', component: PerfilCliente },
   {
     path: 'admin',
