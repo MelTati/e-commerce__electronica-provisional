@@ -27,8 +27,7 @@ export class CategoriaPage implements OnInit {
 
   productos = signal<CategoriesXProductDTO[]>([]);
   loading = signal<boolean>(true);
-  // Eliminamos la variable private isBrowser: boolean;
-
+ 
   constructor(
     private route: ActivatedRoute,
     private service: CategoriesXProductService,
@@ -36,13 +35,13 @@ export class CategoriaPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snack: MatSnackBar,
-    @Inject(PLATFORM_ID) private platformId: Object // Inyección de la plataforma
+    @Inject(PLATFORM_ID) private platformId: Object 
   ) {
     // El constructor queda limpio.
   }
 
   ngOnInit(): void {
-    // 🔑 Mover la lógica de localStorage
+
     this.initializeCartId();
 
     this.route.paramMap.subscribe(params => {
@@ -56,12 +55,8 @@ export class CategoriaPage implements OnInit {
     });
   }
 
-  /**
-   * Nueva función para manejar el localStorage SÓLO en el navegador.
-   * Esto previene el crash de SSR.
-   */
   private initializeCartId(): void {
-    // 🔑 Usamos la función isPlatformBrowser() directamente
+
     if (isPlatformBrowser(this.platformId) && !this.cartService.currentCartId()) {
       const storedId = localStorage.getItem('venta_id');
       if (storedId) {
@@ -103,7 +98,6 @@ export class CategoriaPage implements OnInit {
         next: (res) => {
           this.cartService.currentCartId.set(res.idventas);
 
-          // 🔑 CORRECCIÓN: Usamos la función isPlatformBrowser() directamente
           if (isPlatformBrowser(this.platformId)) {
              localStorage.setItem('venta_id', String(res.idventas));
           }

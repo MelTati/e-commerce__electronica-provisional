@@ -18,6 +18,8 @@ export class LoginCliente {
   loginForm: FormGroup;
   loading = false;
   errorMessage = '';
+  successMessage = '';
+  isError = false;
   showDeniedModal = false;
 
   constructor(
@@ -38,6 +40,8 @@ export class LoginCliente {
 
   onSubmit() {
     this.errorMessage = '';
+    this.successMessage = '';
+    this.isError = false;
 
     if (this.loginForm.valid && isPlatformBrowser(this.platformId)) {
       this.loading = true;
@@ -52,6 +56,8 @@ export class LoginCliente {
           this.loading = false;
 
           if (!res || !res.token || !res.id || !res.rol) {
+            this.isError = true;
+            this.errorMessage = 'Credenciales inválidas o respuesta incompleta del servidor.';
             this.showDeniedModal = true;
             return;
           }
@@ -61,13 +67,16 @@ export class LoginCliente {
           localStorage.setItem('rol', res.rol);
 
           this.authService.updateStatus();
-          this.router.navigate(['/']);
+          
+          this.router.navigate(['/']); 
         },
 
         error: (err: any) => {
           this.loading = false;
+          this.isError = true;
 
           if (err.status === 401 || err.status === 403) {
+            this.errorMessage = 'Correo o contraseña incorrectos. Por favor, verifica tus credenciales.';
             this.showDeniedModal = true;
             return;
           }
@@ -78,6 +87,10 @@ export class LoginCliente {
 
     } else {
       this.loginForm.markAllAsTouched();
+      if(this.loginForm.invalid) {
+        this.isError = true;
+        this.errorMessage = 'Por favor, completa correctamente los campos de email y contraseña.';
+      }
     }
   }
 

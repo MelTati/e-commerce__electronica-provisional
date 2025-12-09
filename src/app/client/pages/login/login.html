@@ -18,6 +18,18 @@
         <p class="login__subtitle">Inicia sesión para continuar</p>
       </div>
 
+      <div 
+        *ngIf="errorMessage || successMessage" 
+        [ngClass]="{
+          'show-message': errorMessage || successMessage,
+          'error-message': isError,
+          'success-message': !isError && successMessage
+        }"
+        role="alert"
+        class="login__status-message"
+      >
+        {{ isError ? errorMessage : successMessage }}
+      </div>
       <div class="login__form-group">
         <div class="login__floating-label">
           <input
@@ -34,7 +46,7 @@
 
         <div class="login__error" *ngIf="email?.invalid && (email?.dirty || email?.touched)">
           <small *ngIf="email?.errors?.['required']">El correo es obligatorio.</small>
-          <small *ngIf="email?.errors?.['pattern']">Ingresa un correo válido (ej. usuario@dominio.com).</small>
+          <small *ngIf="email?.errors?.['email']">Ingresa un correo válido (ej. usuario@dominio.com).</small>
         </div>
       </div>
 
@@ -68,9 +80,6 @@
         {{ loading ? 'Ingresando...' : 'Ingresar' }}
       </button>
 
-      <div *ngIf="errorMessage" class="login__error general-error">
-        {{ errorMessage }}
-      </div>
     </form>
   </div>
 </section>
@@ -79,6 +88,6 @@
   <div class="modal-denied">
     <h3>Acceso Denegado</h3>
     <p>Las credenciales ingresadas no son válidas.</p>
-    <button class="modal-denied-btn" (click)="closeDeniedModal()">Cerrar</button>
+    <button type="button" class="modal-denied-btn" (click)="closeDeniedModal()">Cerrar</button>
   </div>
 </div>

@@ -13,11 +13,13 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './login-admin.html',
   styleUrls: ['./login-admin.css'],
 })
-
 export class LoginAdmin {
   loginForm: FormGroup;
   loading = false;
   errorMessage = '';
+  successMessage = '';
+  isError = false;
+  showDeniedModal = false;
 
   constructor(
     private fb: FormBuilder,
@@ -42,6 +44,9 @@ export class LoginAdmin {
 
   onSubmit() {
     this.errorMessage = '';
+    this.successMessage = '';
+    this.isError = false;
+    this.showDeniedModal = false;
 
     if (this.loginForm.valid && isPlatformBrowser(this.platformId)) {
       this.loading = true;
@@ -55,21 +60,43 @@ export class LoginAdmin {
         next: (res: AdminLoginResponse) => {
           this.loading = false;
 
+          if (!res || !res.token || !res.id || !res.rol) {
+            this.isError = true;
+            this.errorMessage = 'Credenciales inválidas o respuesta incompleta del servidor.';
+            this.showDeniedModal = true;
+            return;
+          }
+
           localStorage.setItem('token', res.token);
           localStorage.setItem('adminId', res.id);
           localStorage.setItem('rol', res.rol);
           this.authService.updateStatus();
 
-          console.log('LOGIN ADMIN EXITOSO:', res);
           this.router.navigate(['/admin/admin-usuario']);
         },
         error: (err: any) => {
           this.loading = false;
-          this.errorMessage = err?.error?.message || 'Error al iniciar sesión';
+          this.isError = true;
+
+          if (err.status === 401 || err.status === 403) {
+            this.errorMessage = 'Correo o contraseña incorrectos. Por favor, verifica tus credenciales.';
+            this.showDeniedModal = true;
+            return;
+          }
+
+          this.errorMessage = err?.error?.message || 'Ocurrió un error inesperado. Inténtalo más tarde.';
         },
       });
     } else {
       this.loginForm.markAllAsTouched();
+      if(this.loginForm.invalid) {
+        this.isError = true;
+        this.errorMessage = 'Por favor, completa correctamente los campos requeridos.';
+      }
     }
+  }
+
+  closeDeniedModal() {
+    this.showDeniedModal = false;
   }
 }

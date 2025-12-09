@@ -15,6 +15,9 @@ import { RouterLink} from '@angular/router';
 export class RegisterComponent {
   readonly registerForm: FormGroup;
   loading = false;
+  errorMessage = '';
+  successMessage = '';
+  isError = false;
 
   constructor(private fb: FormBuilder, private registerService: RegisterService) {
     this.registerForm = this.fb.group({
@@ -32,8 +35,15 @@ export class RegisterComponent {
 
   onSubmit(): void {
     if (this.loading) return;
+    
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.isError = false;
+
     if (this.registerForm.invalid) {
       this.markFormGroupTouched();
+      this.isError = true;
+      this.errorMessage = 'Por favor, corrige los errores en los campos.';
       return;
     }
 
@@ -49,12 +59,13 @@ export class RegisterComponent {
 
     this.registerService.registroCliente(payload).subscribe({
       next: () => {
-        alert('Usuario registrado correctamente');
+        this.successMessage = '¡Registro exitoso! Ya puedes iniciar sesión.';
         this.registerForm.reset();
         this.loading = false;
       },
       error: (err) => {
-        alert('Error al registrar usuario: ' + (err?.error?.message || err.message || 'Error desconocido'));
+        this.isError = true;
+        this.errorMessage = 'Error al registrar: ' + (err?.error?.message || 'Error de conexión o datos duplicados.');
         this.loading = false;
       }
     });
