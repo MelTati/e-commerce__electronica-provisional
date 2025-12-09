@@ -7,18 +7,17 @@ import { LoginDTO } from '../../../interfaces/login.interface';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-login-admin',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './login-admin.html',
-  styleUrls: ['./login-admin.css'],
+    selector: 'app-login-admin',
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './login-admin.html',
+    styleUrls: ['./login-admin.css'],
 })
 
 export class LoginAdmin {
     loginForm: FormGroup;
     loading = false;
     errorMessage = '';
-    successMessage = '';
     isError = false;
     showDeniedModal = false;
 
@@ -45,7 +44,6 @@ export class LoginAdmin {
 
     onSubmit() {
         this.errorMessage = '';
-        this.successMessage = '';
         this.isError = false;
         this.showDeniedModal = false;
 
@@ -78,14 +76,14 @@ export class LoginAdmin {
                 error: (err: any) => {
                     this.loading = false;
                     this.isError = true;
+                    this.showDeniedModal = true;
 
                     if (err.status === 401 || err.status === 403) {
                         this.errorMessage = 'Correo o contraseña incorrectos. Por favor, verifica tus credenciales.';
-                        this.showDeniedModal = true;
                         return;
                     }
 
-                    this.errorMessage = err?.error?.message || 'Ocurrió un error inesperado. Inténtalo más tarde.';
+                    this.errorMessage = 'La contraseña o el correo son incorrectos';
                 },
             });
         } else {
@@ -93,11 +91,13 @@ export class LoginAdmin {
             if(this.loginForm.invalid) {
                 this.isError = true;
                 this.errorMessage = 'Por favor, completa correctamente los campos requeridos.';
+                this.showDeniedModal = true;
             }
         }
     }
 
     closeDeniedModal() {
         this.showDeniedModal = false;
+        this.errorMessage = '';
     }
 }

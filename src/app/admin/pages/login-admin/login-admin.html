@@ -17,19 +17,7 @@
       <div class="login__form-group login__container-title">
         <p class="login__subtitle">Inicia sesión con tu cuenta de administrador</p>
       </div>
-
-      <div 
-        *ngIf="errorMessage || successMessage" 
-        [ngClass]="{
-          'show-message': errorMessage || successMessage,
-          'error-message': isError,
-          'success-message': !isError && successMessage
-        }"
-        role="alert"
-        class="login__status-message"
-      >
-        {{ isError ? errorMessage : successMessage }}
-      </div>
+           
       <div class="login__form-group">
         <div class="login__floating-label">
           <input
@@ -37,6 +25,7 @@
             id="login-email"
             class="login__input"
             formControlName="email"
+            placeholder=" "
             [class.invalid]="email?.invalid && (email?.dirty || email?.touched)"
             autocomplete="email"
           />
@@ -56,6 +45,7 @@
             id="login-password"
             class="login__input"
             formControlName="password"
+            placeholder=" "
             [class.invalid]="password?.invalid && (password?.dirty || password?.touched)"
             autocomplete="current-password"
           />
@@ -77,7 +67,15 @@
       >
         {{ loading ? 'Ingresando...' : 'Ingresar' }}
       </button>
-
+      
       </form>
   </div>
 </section>
+
+<div class="modal-denied-backdrop" *ngIf="showDeniedModal">
+  <div class="modal-denied">
+    <h3>Error de Acceso</h3>
+    <p>{{ errorMessage }}</p> 
+    <button type="button" class="modal-denied-btn" (click)="closeDeniedModal()">Entendido</button>
+  </div>
+</div>
