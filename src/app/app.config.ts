@@ -8,8 +8,6 @@ import {
   withFetch, 
   withInterceptors
 } from '@angular/common/http'; 
-
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { routes } from './app.routes';
 import { ApiBaseInterceptor } from './core/interceptors/api-base.interceptor'; 
 

@@ -5,7 +5,6 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthService {
 
   private isBrowser: boolean = false;
