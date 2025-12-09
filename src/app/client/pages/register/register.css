@@ -6,6 +6,10 @@
   background-color: var(--background-color);
 }
 
+strong{
+  color: red;
+}
+
 .register__image {
   flex: 1;
   background: url('/src/assets/img/electronica.png') no-repeat center center / cover;

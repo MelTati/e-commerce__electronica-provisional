@@ -33,7 +33,7 @@
             id="register-telefono" 
             [class.invalid]="f['telefono'].invalid && (f['telefono'].dirty || f['telefono'].touched)"
           >
-          <label class="register__label" for="register-telefono">Teléfono</label>
+          <label class="register__label" for="register-telefono">Teléfono<strong>*</strong></label>
         </div>
         <small class="register__error" *ngIf="f['telefono'].invalid && (f['telefono'].dirty || f['telefono'].touched)">
           <span *ngIf="f['telefono'].hasError('required')">El teléfono es obligatorio.</span>
@@ -50,7 +50,7 @@
             id="register-nombres" 
             [class.invalid]="f['nombres'].invalid && (f['nombres'].dirty || f['nombres'].touched)"
           >
-          <label class="register__label" for="register-nombres">Nombres</label>
+          <label class="register__label" for="register-nombres">Nombres<strong>*</strong></label>
         </div>
         <small class="register__error" *ngIf="f['nombres'].invalid && (f['nombres'].dirty || f['nombres'].touched)">
           <span *ngIf="f['nombres'].hasError('required')">Los nombres son obligatorios.</span>
@@ -69,7 +69,7 @@
             id="register-apellidos" 
             [class.invalid]="f['apellidos'].invalid && (f['apellidos'].dirty || f['apellidos'].touched)"
           >
-          <label class="register__label" for="register-apellidos">Apellidos</label>
+          <label class="register__label" for="register-apellidos">Apellidos<strong>*</strong></label>
         </div>
         <small class="register__error" *ngIf="f['apellidos'].invalid && (f['apellidos'].dirty || f['apellidos'].touched)">
           <span *ngIf="f['apellidos'].hasError('required')">Los apellidos son obligatorios.</span>
@@ -88,7 +88,7 @@
             id="register-email" 
             [class.invalid]="f['email'].invalid && (f['email'].dirty || f['email'].touched)"
           >
-          <label class="register__label" for="register-email">Correo Electrónico</label>
+          <label class="register__label" for="register-email">Correo Electrónico<strong>*</strong></label>
         </div>
         <small class="register__error" *ngIf="f['email'].invalid && (f['email'].dirty || f['email'].touched)">
           <span *ngIf="f['email'].hasError('required')">El correo es obligatorio.</span>
@@ -105,7 +105,7 @@
             id="register-contrasena" 
             [class.invalid]="f['contrasena'].invalid && (f['contrasena'].dirty || f['contrasena'].touched)"
           >
-          <label class="register__label" for="register-contrasena">Contraseña</label>
+          <label class="register__label" for="register-contrasena">Contraseña<strong>*</strong></label>
         </div>
         <small class="register__error" *ngIf="f['contrasena'].invalid && (f['contrasena'].dirty || f['contrasena'].touched)">
           <span *ngIf="f['contrasena'].hasError('required')">La contraseña es obligatoria.</span>

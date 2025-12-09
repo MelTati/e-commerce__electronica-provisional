@@ -41,7 +41,7 @@
             [class.invalid]="email?.invalid && (email?.dirty || email?.touched)"
             autocomplete="email"
           />
-          <label for="login-email" class="login__label">Correo Electrónico</label>
+          <label for="login-email" class="login__label">Correo Electrónico<strong>*</strong></label>
         </div>
 
         <div class="login__error" *ngIf="email?.invalid && (email?.dirty || email?.touched)">
@@ -61,7 +61,7 @@
             [class.invalid]="password?.invalid && (password?.dirty || password?.touched)"
             autocomplete="current-password"
           />
-          <label for="login-password" class="login__label">Contraseña</label>
+          <label for="login-password" class="login__label">Contraseña<strong>*</strong></label>
         </div>
 
         <div class="login__error" *ngIf="password?.invalid && (password?.dirty || password?.touched)">
