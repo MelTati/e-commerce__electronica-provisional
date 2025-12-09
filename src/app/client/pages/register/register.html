@@ -15,15 +15,15 @@
       <div 
         *ngIf="errorMessage || successMessage" 
         [ngClass]="{
-          'show-message': errorMessage || successMessage,
           'error-message': isError,
-          'success-message': !isError && successMessage
+          'success-message': !isError && successMessage 
         }"
         role="alert"
         class="register__status-message"
       >
         {{ isError ? errorMessage : successMessage }}
       </div>
+      
       <div class="register__form-group">
         <div class="register__floating-label">
           <input 

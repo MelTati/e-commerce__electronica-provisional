@@ -1,147 +1,164 @@
 .register {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  font-family: var(--font-family);
-  background-color: var(--background-color);
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    font-family: var(--font-family);
+    background-color: var(--background-color);
 }
 
-strong{
-  color: red;
+strong {
+    color: red;
 }
 
 .register__image {
-  flex: 1;
-  background: url('/src/assets/img/electronica.png') no-repeat center center / cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+    flex: 1;
+    background: url('/src/assets/img/electronica.png') no-repeat center center / cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
 }
 
 .register__image-container {
-  text-align: center;
-  padding: 2rem 3rem;
-  border-radius: var(--border-radius-lg);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-lg);
+    text-align: center;
+    padding: 2rem 3rem;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    background-color: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter:none;
+    backdrop-filter: blur(5px);
 }
 
 .register__title {
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--secondary-color);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--secondary-color);
 }
 
 .register__form {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
 }
 
 .register__form-container {
-  width: 100%;
-  max-width: 400px;
-  padding: 2.5rem;
-  border-radius: var(--border-radius-lg);
-  background: var(--surface-color);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 400px;
+    padding: 2.5rem;
+    border-radius: var(--border-radius-lg);
+    background: var(--surface-color);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
 }
 
 .register__subtitle {
-  color: var(--text-color);
-  margin-bottom: 2.5rem;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 2.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 .register__form-group {
-  margin-bottom: 1.8rem;
+    margin-bottom: 1.8rem;
 }
 
 .register__floating-label {
-  position: relative;
+    position: relative;
 }
 
 .register__input {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid var(--border-color);
-  padding: 1.2rem 0.5rem 0.6rem;
-  font-size: 1rem;
-  background: transparent;
-  color: var(--text-color);
-  transition: border-color 0.2s ease;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.2rem 0.5rem 0.6rem;
+    font-size: 1rem;
+    background: transparent;
+    color: var(--text-color);
+    transition: border-color 0.2s ease;
 }
 
 .register__input:focus {
-  outline: none;
-  border-bottom-color: var(--secondary-color);
+    outline: none;
+    border-bottom-color: var(--secondary-color);
 }
 
-.register__label {
-  position: absolute;
-  top: 1rem;
-  left: 0.5rem;
-  color: var(--text-color-secondary);
-  font-size: 1rem;
-  pointer-events: none;
-  transition: 0.2s ease all;
+.register__input.invalid {
+    border-bottom-color: var(--error-color, #dc2626);
 }
 
 .register__input:focus + .register__label,
 .register__input:not(:placeholder-shown) + .register__label {
-  top: -0.2rem;
-  font-size: 0.75rem;
-  color: var(--secondary-color);
+    top: -0.2rem;
+    font-size: 0.75rem;
+    color: var(--secondary-color);
 }
 
-.register__error small {
-  color: var(--error-color, #dc2626);
-  font-size: 0.8rem;
-  display: block;
-  margin-top: 0.2rem;
+.register__input.invalid + .register__label {
+    color: var(--error-color, #dc2626);
+}
+
+.register__label {
+    position: absolute;
+    top: 1rem;
+    left: 0.5rem;
+    color: var(--text-color-secondary);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+.register__error {
+    color: var(--error-color, #dc2626);
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 0.2rem;
 }
 
 .register__button {
-  width: 100%;
-  padding: 0.8rem 1.5rem;
-  color: white;
-  background-color: var(--secondary-color);
-  font-weight: 600;
-  border: none;
-  border-radius: var(--border-radius-md);
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  font-size: 1rem;
-  margin-top: 1rem;
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    color: white;
+    background-color: var(--secondary-color);
+    font-weight: 600;
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-size: 1rem;
+    margin-top: 1rem;
 }
 
 .register__button:hover {
-  background: #059669;
-  transform: translateY(-2px);
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+.register__button:disabled {
+    background-color: var(--disabled-color, #ccc);
+    cursor: not-allowed;
+    transform: none;
 }
 
 .register__login {
-  margin-top: 1.5rem;
-  text-align: center;
+    margin-top: 1.5rem;
+    text-align: center;
 }
 
 .register__login-link {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-size: 0.85rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.85rem;
 }
 
 .register__login-link:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
-.show-message {
+.register__status-message {
     padding: 10px;
     margin-bottom: 20px;
     border-radius: var(--border-radius-md);
@@ -163,14 +180,14 @@ strong{
 }
 
 @media (max-width: 768px) {
-  .register__image {
-    display: none;
-  }
-  .register__form {
-    padding: 1rem;
-  }
-  .register__form-container {
-    box-shadow: none;
-    max-width: 100%;
-  }
+    .register__image {
+        display: none;
+    }
+    .register__form {
+        padding: 1rem;
+    }
+    .register__form-container {
+        box-shadow: none;
+        max-width: 100%;
+    }
 }

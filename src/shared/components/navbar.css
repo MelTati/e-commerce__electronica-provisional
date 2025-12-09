@@ -360,12 +360,12 @@
 
   .header__container {
     display: flex;
-    flex-wrap: nowrap !important;
+    flex-wrap: nowrap !important; 
     align-items: center;
     justify-content: space-between;
     padding: 0.5em 2%;
     min-height: 50px;
-    gap: 0.5em;
+    gap: 0.5em; 
   }
 
   .header__logo img {
@@ -376,7 +376,7 @@
     order: 0 !important;
     width: auto !important;
     margin: 0 !important;
-    flex-shrink: 0;
+    flex-shrink: 0; 
   }
 
   .header__container > div:not(.header__logo):not(.header__admin-profile) {
@@ -385,13 +385,15 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    flex-shrink: 1; /* Permite que este contenedor se encoja si es necesario */
   }
   
   .header__user-actions {
     display: flex !important;
     align-items: center !important;
-    gap: 0.5em !important;
+    gap: 0.3em !important; /* Reducido a 0.3em */
     width: auto !important;
+    flex-shrink: 0; /* Impide que las acciones de usuario se encojan forzadamente */
   }
   
   .header__user-link,
@@ -402,6 +404,7 @@
   
   .header__cart {
     font-size: 0.9em !important;
+    white-space: nowrap; 
   }
   
   .header__hamburger {
@@ -410,6 +413,7 @@
     padding: 0.2em;
     min-width: 36px;
     min-height: 36px;
+    flex-shrink: 0; /* Impide que el botón de hamburguesa se encoja */
   }
   
   .header__container > .header__search {
