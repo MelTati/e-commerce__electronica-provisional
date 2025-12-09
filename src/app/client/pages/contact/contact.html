@@ -1,4 +1,12 @@
 <section class="contact-section">
+  <div 
+    *ngIf="mensajeNotificacion.tipo" 
+    class="toast-message" 
+    [ngClass]="{'toast-success': mensajeNotificacion.tipo === 'success', 'toast-error': mensajeNotificacion.tipo === 'error'}"
+  >
+    <p>{{ mensajeNotificacion.texto }}</p>
+  </div>
+  
   <div class="contact-card">
     <h1>Contáctanos</h1>
     <p class="contact-intro">
@@ -9,45 +17,88 @@
 
     <form id="contact-form" #contactForm="ngForm" (ngSubmit)="enviarFormulario(contactForm)" novalidate>
       
-      <!-- Teléfono -->
       <div class="form-group">
-        <label for="phone">Teléfono*</label>
-        <input type="tel" id="phone" name="phone" placeholder="Ej: 55 1234 5678" required
-               [(ngModel)]="formulario.telefono" 
-               [ngClass]="{'input-error': telefonoInvalido}">
+        <label for="phone">Teléfono</label>
+        <input 
+          type="tel" 
+          id="phone" 
+          name="telefono" 
+          placeholder="Ej: 5512345678" 
+          required
+          pattern="[0-9]{10}" 
+          [(ngModel)]="formulario.telefono" 
+          [readonly]="true" 
+          [ngClass]="{'input-error': telefonoInvalido}"
+          #telefonoCtrl="ngModel"
+        >
+        
         <div class="error-message" *ngIf="telefonoInvalido">
           El teléfono ingresado no coincide con ningún cliente registrado.
         </div>
       </div>
 
-      <!-- Tipo de Consulta -->
       <div class="form-group">
-        <label for="queryType">Tipo de Consulta*</label>
-        <select id="queryType" name="queryType" required [(ngModel)]="formulario.id_tipo">
-          <option [ngValue]="null" disabled selected>Selecciona una opción...</option>
+        <label for="queryType">Tipo de Consulta<strong>*</strong></label>
+        <select 
+          id="queryType" 
+          name="id_tipo" 
+          required 
+          [(ngModel)]="formulario.id_tipo"
+          #idTipoCtrl="ngModel"
+          [ngClass]="{'input-error': idTipoCtrl.invalid && (idTipoCtrl.dirty || idTipoCtrl.touched)}"
+        >
+          <option [ngValue]="0" disabled>Selecciona una opción...</option> 
           <option *ngFor="let tipo of tiposConsulta" [ngValue]="tipo.id_tipo">
             {{ tipo.fldOpciones }}
           </option>
         </select>
+        <div class="error-message" *ngIf="idTipoCtrl.invalid && (idTipoCtrl.dirty || idTipoCtrl.touched)">
+          Debes seleccionar un tipo de consulta.
+        </div>
       </div>
 
-      <!-- Asunto -->
       <div class="form-group">
-        <label for="subject">Asunto*</label>
-        <input type="text" id="subject" name="subject" placeholder="Ej: Cotización de componentes" required
-               [(ngModel)]="formulario.fldAsunto">
+        <label for="subject">Asunto<strong>*</strong></label>
+        <input 
+          type="text" 
+          id="subject" 
+          name="fldAsunto" 
+          placeholder="Ej: Cotización de componentes" 
+          required
+          [(ngModel)]="formulario.fldAsunto"
+          #asuntoCtrl="ngModel"
+          [ngClass]="{'input-error': asuntoCtrl.invalid && (asuntoCtrl.dirty || asuntoCtrl.touched)}"
+        >
+        <div class="error-message" *ngIf="asuntoCtrl.invalid && (asuntoCtrl.dirty || asuntoCtrl.touched)">
+          El asunto de la consulta es obligatorio.
+        </div>
       </div>
 
-      <!-- Mensaje -->
       <div class="form-group">
-        <label for="message">Mensaje*</label>
-        <textarea id="message" name="message" rows="6" placeholder="Escribe aquí tu consulta detallada..." required
-                  [(ngModel)]="formulario.fldMensaje"></textarea>
+        <label for="message">Mensaje<strong>*</strong></label>
+        <textarea 
+          id="message" 
+          name="fldMensaje" 
+          rows="6" 
+          placeholder="Escribe aquí tu consulta detallada..." 
+          required
+          [(ngModel)]="formulario.fldMensaje"
+          #mensajeCtrl="ngModel"
+          [ngClass]="{'input-error': mensajeCtrl.invalid && (mensajeCtrl.dirty || mensajeCtrl.touched)}"
+        ></textarea>
+        <div class="error-message" *ngIf="mensajeCtrl.invalid && (mensajeCtrl.dirty || mensajeCtrl.touched)">
+          El mensaje es obligatorio.
+        </div>
       </div>
 
-      <!-- Botón enviar -->
       <div class="form-group">
-        <button type="submit" class="btn-submit" [disabled]="contactForm.invalid">Enviar Mensaje</button>
+        <button 
+          type="submit" 
+          class="btn-submit" 
+          [disabled]="contactForm.invalid"
+        >
+          Enviar Mensaje
+        </button>
       </div>
 
     </form>
