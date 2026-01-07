@@ -19,7 +19,7 @@ import { LoginAdmin } from './admin/pages/login-admin/login-admin';
 import { AdminGuard } from './services/admin.guard';
 import { PerfilCliente } from './client/perfil-cliente/perfil-cliente';
 import { PerfilAdmin } from './admin/perfil-admin/perfil-admin';
-
+import {AdminConsultas} from './admin/pages/consulta-admin/consulta-admin';
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'login', component: LoginCliente },
@@ -44,6 +44,7 @@ export const routes: Routes = [
       { path: 'admin-product', component: AdminProductos },
       { path: 'admin-ventas', component: AdminVentas },
       { path: 'perfil-admin', component: PerfilAdmin },
+      { path: 'admin-consulta', component: AdminConsultas},
       { path: '', redirectTo: 'admin-usuario', pathMatch: 'full' },
     ],
   },

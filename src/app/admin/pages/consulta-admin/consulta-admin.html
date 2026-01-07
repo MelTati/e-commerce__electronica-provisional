@@ -1,0 +1,56 @@
+<mat-toolbar color="primary">
+  <span>Consultas de Soporte</span>
+  <span class="spacer"></span>
+</mat-toolbar>
+
+<div class="container">
+
+  <div *ngIf="mensaje" class="alert" [ngClass]="tipoMensaje" role="alert">
+    {{ mensaje }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    Cargando consultas...
+  </div>
+
+  <div class="table-wrapper" *ngIf="!isLoading && consultas.length > 0; else noData">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Email</th>
+          <th scope="col">Teléfono</th>
+          <th scope="col">Tipo de Consulta</th>
+          <th scope="col">Asunto</th>
+          <th scope="col">Mensaje</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let consulta of consultas">
+          <td>{{ consulta.id_consulta }}</td>
+          <td>{{ consulta.cliente_nombre }} {{ consulta.cliente_apellido }}</td>
+          <td>{{ consulta.cliente_email }}</td>
+          <td>{{ consulta.telefono }}</td>
+          <td>{{ consulta.tipo_consulta }}</td>
+          <td>{{ consulta.asunto }}</td>
+          <td>{{ consulta.mensaje.substring(0, 50) + (consulta.mensaje.length > 50 ? '...' : '') }}</td>
+          <td>
+            <button 
+              class="btn-danger" 
+              (click)="eliminarConsulta(consulta.id_consulta)">
+              🗑️ Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noData>
+    <p class="no-data" *ngIf="!isLoading">No hay consultas de soporte registradas.</p>
+  </ng-template>
+
+</div>

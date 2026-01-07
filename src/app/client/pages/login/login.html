@@ -19,17 +19,13 @@
       </div>
 
       <div 
-        *ngIf="errorMessage || successMessage" 
-        [ngClass]="{
-          'show-message': errorMessage || successMessage,
-          'error-message': isError,
-          'success-message': !isError && successMessage
-        }"
+        class="show-message error-message" 
         role="alert"
-        class="login__status-message"
+        *ngIf="loginForm.invalid && (loginForm.dirty || loginForm.touched)"
       >
-        {{ isError ? errorMessage : successMessage }}
+        Por favor, completa correctamente los campos requeridos.
       </div>
+
       <div class="login__form-group">
         <div class="login__floating-label">
           <input
@@ -80,14 +76,18 @@
         {{ loading ? 'Ingresando...' : 'Ingresar' }}
       </button>
 
+      <div class="login__links">
+        <a routerLink="/register" class="login__link">¿No tienes cuenta? Regístrate</a>
+      </div>
+      
     </form>
   </div>
 </section>
 
 <div class="modal-denied-backdrop" *ngIf="showDeniedModal">
   <div class="modal-denied">
-    <h3>Acceso Denegado</h3>
-    <p>Las credenciales ingresadas no son válidas.</p>
-    <button type="button" class="modal-denied-btn" (click)="closeDeniedModal()">Cerrar</button>
+    <h3>Error de Acceso</h3>
+    <p>{{ errorMessage }}</p> 
+    <button type="button" class="modal-denied-btn" (click)="closeDeniedModal()">Entendido</button>
   </div>
 </div>
